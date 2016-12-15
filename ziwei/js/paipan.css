@@ -1,0 +1,46 @@
+﻿body,td,th { font-size: 10.5pt; color: #0000FF; margin:0px;padding:0px; }
+.bf {color: #000000}
+.vl {layout-flow:"vertical-ideographic"; color:#000; width:14px; float:left; word-wrap:break-word;}
+.jiaStar { color:red; }
+.yiStar { color:#800080; }
+.red { color:red; }
+.black { color:black; }
+.bmsfsz {background-color:#ff0000;color:yellow;padding:2px;}
+.bmsg {background-color:yellow;color:#ff0000;padding:2px;} /*本命身宫*/
+.dot {position:absolute;margin:0px;padding:0px;}
+.sl { color:blue; }
+.sn { color:#fff;background-color:green; }
+.dxsh {color:#fff;background-color:#800000; }
+.lnsh {color:#fff;background-color:#0000FF; }
+.mg { color:purple;background-color:#fff;border:1px solid black;}
+.note td,th { padding:2px; font-size:12px; color:#000; background-color:#F7F7BC; text-align:center }
+.Space { cursor:pointer; font-size:12px;width:140px;height:140px;background-color:#FFF; margin:0px;padding:0px;} /*本命各宫宽高*/
+.XSpace { cursor:pointer; color:blue; font-size:12px;width:168px;height:168px;background-color:#F3f3f3; margin:0px;padding:3px;} /*限各宫宽高*/
+.YSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} /*年各宫宽高*/
+.MSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} /*月各宫宽高*/
+.DSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} /*日各宫宽高*/
+.HSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} /*时各宫宽高*/
+.Space td {font-size:12px;}
+#zwsj td { font-size:12px; text-align:left; color:black;}
+.selBorder { border:1px solid red; color:red;}
+.selNob { border:0px; color:blue; background-color:transparent;}
+.inpNob { border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; background-color:transparent;}
+.inpMini{ color:#fff; background-color:black;font-size:12px; width:15px; border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; }
+.inpCh  { cursor:pointer; border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; background-color:transparent;}
+#shNote { font-size:12px; text-align:left; padding:10px; background-color:#F7F7BC; }
+.arrow {font-size:24px;font-weight:bolder;}
+.bgfh { color:red;font-size:12px; /*background-color:#F7F7BC; filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9;*/ }
+.dgfh { color:#FF00FF;font-size:12px; /*background-color:#F7F7BC; filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9;*/ }
+.pdir { background-color:#FFF; /*filter:alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;*/ }
+.todo {visibility:hidden;} /*待完成*/
+.pcs  {visibility:visible;} /*十二长生*/
+.yfqj {visibility:visible;} /*年份区间*/
+.sj12 {visibility:visible;color:black;}
+.bs12 {visibility:visible;}
+.jq12 { visibility:visible; } /*hidden*/
+#xjnl {visibility:hidden;}
+#bmsh,#zwsz,#zwmz { visibility:visible; }
+#toolPanel {margin:0px;padding:5px;}
+#cplCenter { padding:45px; }
+input {border:0px}
+.tBtn {border:0px;background-color:#000;color:#fff}

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <script type="text/javascript" src="jquery.js"></script>
+  <style type="text/css">
+	#d0 {z-index:0;position:absolute;background-color:red;color:#fff;width:120px;height:100px;}
+	#d1 {z-index:-1;position:absolute;background-color:green;color:#fff}
+	#d2 {z-index:-2;position:absolute;background-color:blue;;color:#fff}
+	#d3 {z-index:-3;position:absolute;background-color:yellow;;color:#fff}
+.Space { cursor:pointer; font-size:12px;width:140px;height:140px;background-color:#FFF; margin:0px;padding:0px;} 
+.XSpace { cursor:pointer; color:blue; font-size:12px;width:168px;height:168px;background-color:#F3f3f3; margin:0px;padding:3px;}
+.YSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} 
+.MSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} 
+.DSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} 
+.HSpace { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;} 
+  </style>
+
+   <script type="text/javascript">
+  <!--
+	function resizeDiv(idBase, count, rate, baseTop, baseLeft)
+	{
+		var baseObj = $(idBase +'0');
+		var baseW = baseObj.width(), baseH = baseObj.height();
+		var maxW = parseInt(baseW * Math.pow(rate, count-1));
+		var maxH = parseInt(baseH * Math.pow(rate, count-1));
+		var iW = baseLeft||0, iH = baseTop||0;
+		var dW = maxW, dH=maxH;
+		for (var i=count,j=0; i>0 ; i--)
+		{
+			var cObj = $(idBase+(i-1));
+			cObj.css('top', iH).css('left',iH);
+			if (i>1) cObj.css('width',dW).css('height',dH)
+			if (i-2>=0)
+			{
+				dW= parseInt(dW/rate);
+				dH = parseInt(dH/rate);
+				if (i>2)
+					$(idBase +(i-2)).css('width',dW).css('height',dH);
+				iW = iW + parseInt((cObj.width() - $(idBase +(i-2)).width())/2);
+				iH = iH + parseInt((cObj.height() - $(idBase +(i-2)).height())/2);
+			}
+
+		}
+	}
+
+	$(function(){
+		resizeDiv('#d', 4, 1.2, 100, 100);
+		$('#test').click(function(){
+			$('#d3').hide();
+			resizeDiv('#d', 3, 1.2, 100, 100);
+		});
+	});
+
+  //-->
+  </script>
+
+ </head>
+ <body style="margin:0px;padding:0px">
+ <div style="width:100px;height:100px;border:1px dotted red;">
+  <button id="test">test</button>
+ </div>
+ <div id="d0">d0</div>
+ <div id="d1">d1</div>
+ <div id="d2">d2</div>
+ <div id="d3">d3</div>
+ </body>
+
+</html>

@@ -1,0 +1,1262 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>飞星紫微斗数在线排盘DHTML版 v1.0 </title>
+    <meta name="Generator" content="EditPlus">
+    <meta name="Author" content="Ridge Wong">
+    <meta name="Keywords" content="飞星紫微斗数、四化飞星、禄转忌、忌转忌">
+    <meta name="Description" content="飞星紫微斗数专用排盘、包含神煞、流月流日">
+    <link rel="stylesheet" href="js/paipan.css" type="text/css" />
+    <style type="text/css">
+        .bgui { display: none; }
+        .tab_nav { margin: 0; padding: 0; height: 25px; line-height: 24px; }
+        .tab_nav li { float: left; margin: 0 3px; list-style: none; border: 1px solid #999; border-bottom: none; cursor: pointer; height: 24px; width: 60px; text-align: center; background: #fFF; }
+        .tab_content { border: 1px solid #999; overflow: hidden; }
+        .tabActive { background: #000; color: #fff; }
+        .innerTopRight { position: absolute; right: 20px; top: 20px; }
+        .btn { background-color: #000; color: #fff; font-weight: bolder; cursor: pointer; padding: 5px; font-size: 12px; }
+        #t_1, #t_2 { width: 100%; height: 273px; }
+    </style>
+    <script type="text/javascript" language="javascript" src="js/jquery.js"></script>
+    <!--<script language="javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>-->
+    <script type="text/javascript" src="js/jquery_qtip.js"></script>
+    <script type="text/javascript" src="js/jquery_corner.js"></script>
+    <script type="text/javascript" src="js/jquery_simplemodal.js"></script>
+    <script type="text/javascript" src="js/jquery_contextmenu_r2.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/CalConv.js"></script>
+    <script type="text/javascript" src="js/ppBase.js"></script>
+    <script type="text/javascript" src="js/paipan.js"></script>
+    <script type="text/javascript">
+        if (!console)
+            var console = console || { log: alert };
+        //U+262F（太极阴阳图）U+2630-U+2637（八卦：天泽火雷风水山地 乾兑离震巽坎艮坤）
+        var shareCfg = ["一六共宗", "二七同道", "三八为朋", "四九作友", "五十同途", "十一一同宗", "十二二同位"];
+        //排盘步骤
+        //1.定十二宫干 -- 生年天干
+        function draw12GZ(ng) {
+            var wuHuDunDat = ["甲己", "丙", "乙庚", "戊", "丙辛", "庚", "丁壬", "壬", "戊癸", "甲"];
+            var gIdx = (tgNames.indexOf(ng) + 1) % 5;
+            var p2Char = gIdx == 0 ? wuHuDunDat[wuHuDunDat.length - 1] : wuHuDunDat[gIdx * 2 - 1];
+            gIdx = tgNames.indexOf(p2Char);
+            var tIdx = 0;
+            for (var i = 0, j = 12; i < j; i++) {
+                tIdx = (i < 2) ? (gIdx + i) : (gIdx + i - 2);
+                if (tIdx > 9) tIdx = tIdx % 10;
+
+                var pObj = PlateState.GetSpaceByIndex(i);
+                if (pObj) {
+                    pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+                }
+                else {
+                    var pObj = new SingleSpace('p' + i, i);
+                    pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+                    PlateState.StoreSpace(i, pObj);
+                }
+
+            }
+        }
+
+        //2.定命身宫 -- 生年月份、时辰 顺月->顺时身|逆时命
+        //3.自命宫逆布紫微宫位
+        function draw12GW(yue, shi, yz) {
+            var pIdxStart = fixRange(2 + parseInt(yue) - 1, 0, 11);
+            var pMIdx = fixRange(pIdxStart - parseInt(shi), 0, 11); //命宫索引
+            var yzIdx = dzNames.indexOf(yz);
+            var tIdx = fixRange(pMIdx + yzIdx, 0, 11);
+            PlateState.GetSpaceByIndex(tIdx).StoreStar(false, "天(才)"); //命宫顺行年支
+            PlateState["MGGZ"] = $('#pgz' + pMIdx).html(); //存储命宫干支
+            PlateState["MGIndex"] = pMIdx; //存储命宫索引
+            $('#mgdz').html(PlateState["MGGZ"].substr(1, 1));
+
+            var gwName = "*";
+            for (var i = 0, j = Space12.length; i < j; i++) {
+                gwName = Space12[i];
+                if (gwName.charAt(0) == "*") {
+                    $('#gw' + pMIdx).removeClass("bmsfsz bmsg").addClass("bmsfsz").html(gwName.substr(1).replace("命", "★命"));
+                }
+                else {
+                    $('#gw' + pMIdx).removeClass("bmsfsz bmsg").html(gwName);
+                }
+                if (Space12[i] == '疾厄')
+                    PlateState.GetSpaceByIndex(pMIdx).StoreStar(false, "天(使)");
+                if (Space12[i] == '交友')
+                    PlateState.GetSpaceByIndex(pMIdx).StoreStar(false, "天(殇)");
+                pMIdx = fixRange(pMIdx - 1, 0, 11);
+            }
+
+            var pSIdx = fixRange(pIdxStart + parseInt(shi), 0, 11); //身宫索引
+            tIdx = fixRange(pSIdx + yzIdx, 0, 11);
+            PlateState.GetSpaceByIndex(tIdx).StoreStar(false, "天(寿)"); //身宫顺行年支
+            var sgObj = $('#gw' + pSIdx), sgName = sgObj.html();
+            sgObj.addClass("bmsg").html(((sgName.charAt(0) == '★') ? '' : '☆') + sgName.substr(0, sgName.length - 1) + '身');
+            $('#sgdz').html($('#pgz' + pSIdx).html().substr(1, 1));
+
+        }
+
+        //4.定五行局
+        function draw5XJ(mggz) {
+            var chwxName = "二三四五六", wuxingName = "水木金土火", wxjN = "23456";
+            var nayinName = getGZNaYin(mggz);
+            var wx = nayinName.substr(2, 1);
+            $('#wxj').html(wx + chwxName.charAt(wuxingName.indexOf(wx)) + '局('+mggz+nayinName+')');
+            return parseInt(wxjN.charAt(wuxingName.indexOf(wx)));
+        }
+
+        //起大限布年龄段
+        function drawSpaceNld(xb, yy, wxj, mIdx) {
+            //1阳 男 0阴 女
+            var offSet = (xb ^ yy == 0) ? 1 : -1;
+            var cIdx = mIdx, begin = 0, end = 0, step = 0;
+            do {
+                begin = wxj + step;
+                end = begin + 9;
+                $('#nld' + cIdx).html(begin + '-' + end);
+                cIdx = fixRange(cIdx + offSet, 0, 11);
+                step += 10;
+            }
+            while (cIdx != mIdx);
+        }
+
+        //5.安紫微星 6.安紫微系诸星
+        //7.安天府星 8.安天府系诸星
+        function drawZWTFStar(yd, wxj) {
+            var tMS = yd % wxj;
+            var tAdd = (tMS == 0) ? 0 : (wxj - tMS)
+            var tSS = (yd + tAdd) / wxj;
+            if (tAdd > 0) tSS = (tAdd % 2 == 0) ? (tSS + tAdd) : (tSS - tAdd);
+            var tpIdx = fixRange(1 + tSS, 0, 11); //紫微所在宫位索引
+
+            var idx = 0;
+            var ziweiXX = ["(紫)微", "天(机)", "", "太(阳)", "(武)曲", "天(同)", "", "", "(廉)贞"]; //逆行
+            for (var i = 0, j = ziweiXX.length; i < j; i++) {
+                if (ziweiXX[i].length < 1) continue;
+                idx = fixRange(tpIdx - i, 0, 11);
+                PlateState.GetSpaceByIndex(idx).StoreStar(true, ziweiXX[i]);
+            }
+
+            var s1 = 2, s2 = 8; //寅申同宫2|8
+            var offSet = 0;
+            if (tpIdx != s1 || tpIdx != s2) {
+                offSet = fixRange(tpIdx - s1, 0, 11);
+            }
+            var fIdx = fixRange(s1 - offSet, 0, 11);
+            var tianfuXX = ["天(府)", "太(阴)", "(贪)狼", "(巨)门", "天(相)", "天(梁)", "七(杀)", "", "", "", "(破)军"]; //顺行
+            for (var m = 0, n = tianfuXX.length; m < n; m++) {
+                if (tianfuXX[m].length < 1) continue;
+                idx = fixRange(fIdx + m, 0, 11);
+                PlateState.GetSpaceByIndex(idx).StoreStar(true, tianfuXX[m]);
+            }
+        }
+
+        //9.安时系诸星、日系恩光天贵
+        function drawShizhi(sz, yz, rq) {
+            var sOffSet = dzNames.indexOf(sz);
+            var idx = (dzNames.indexOf(yz)) % 4; //年支三合
+            var allStars = ["文(昌)", "文(曲)", "地(空)", "地(劫)", "(火)星", "(铃)星", "*台辅", "*封诰"];
+            var linkStars = ["(恩)光", "天(贵)"]; //退后一步
+            var offSets = [['戌', -1], ['辰', 1], ['亥', -1], ['亥', 1], ['寅卯丑酉'.charAt(idx), 1], ['戌戌卯戌'.charAt(idx), 1], ['午', 1], ['寅', 1]];
+            var tIdx = -1;
+            var star = '';
+            for (var i = 0, j = allStars.length; i < j; i++) {
+                tIdx = dzNames.indexOf(offSets[i][0]);
+                if (sOffSet > 0)
+                    tIdx += sOffSet * offSets[i][1];
+                star = allStars[i];
+                if (star.charAt(0) == '*') star = star.substr(1);
+                tIdx = fixRange(tIdx, 0, 11);
+                PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0) != '*', star);
+                if (i < linkStars.length) {
+                    PlateState.GetSpaceByIndex(fixRange(tIdx + rq - 2, 0, 11)).StoreStar(false, linkStars[i]);
+                }
+            }
+        }
+
+        //10.安月系诸星、日系三台八座
+        function drawYueStar(yue, rq) {
+            var yzName = dzNames.charAt(fixRange(yue + 2 - 1, 0, 11));
+            var idx = (dzNames.indexOf(yzName)) % 4; //月支三合
+            var allStars = ["*(左)辅", "*(右)弼", "天(刑)", "天(姚)", "月马", "(解)神", "天(巫)", "阴煞"];
+            var linkStars = ["三(台)", "八(座)"], lnkOffSet = [1, -1];
+            var xIdx = ((yue % 2 == 0) ? (yue / 2) : (yue + 1) / 2) - 1;
+            var sIdx = yue % 6;
+            var offSets = [['辰', 1], ['戌', -1], ['酉', 1], ['丑', 1], ['寅亥申巳'.charAt(idx), 0], ['申戌子寅辰午'.charAt(xIdx), 0], ['寅亥巳申'.charAt(idx), 0], ['寅子戌申午辰'.charAt(sIdx - 1), 0]];
+
+            for (var i = 0, j = allStars.length; i < j; i++) {
+                tIdx = dzNames.indexOf(offSets[i][0]);
+                if (offSets[i][1] != 0)
+                    tIdx += (yue - 1) * offSets[i][1];
+                star = allStars[i];
+                if (star.charAt(0) == '*') star = star.substr(1);
+                tIdx = fixRange(tIdx, 0, 11);
+                PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0) == '*', star);
+                if (i < linkStars.length) {
+                    PlateState.GetSpaceByIndex(fixRange(tIdx + ((rq - 1) * lnkOffSet[i]), 0, 11)).StoreStar(false, linkStars[i]);
+                }
+            }
+        }
+
+        //12.13.安年干系诸星、安生年博士十二星
+        function drawLCYTBSX(ng, xb, yy) {
+            var ngIdx = tgNames.indexOf(ng);
+            var idx = [2, 3, 5, 6, 5, 6, 8, 9, 11, 0];
+            var bs12 = ["博士", "力士", "青龙", "小耗", "将军", "奏书", "飞廉", "喜神", "病符", "大耗", "伏兵", "官府"];
+            idx = idx[ngIdx]
+            PlateState.GetSpaceByIndex(fixRange(idx - 1, 0, 11)).StoreStar(true, '(陀)罗');
+            PlateState.GetSpaceByIndex(idx).StoreStar(true, '(禄)存');
+            PlateState.GetSpaceByIndex(fixRange(idx + 1, 0, 11)).StoreStar(true, '擎(羊)');
+            for (var i = 0, j = bs12.length; i < j; i++) {
+                $('#pbs' + idx).html(bs12[i]);
+                idx = fixRange(idx + 1, 0, 11);
+            }
+
+            var allStars = ["*天(魁)", "*天(钺)", "天(官)", "天(福)"];
+            var dzgwArr = ["丑子亥亥丑子丑午卯卯", "未申酉酉未申未寅巳巳", "未辰巳寅卯酉亥酉戌午", "酉申子亥卯寅午巳午巳"];
+            for (var i = 0, j = allStars.length; i < j; i++) {
+                star = allStars[i];
+                if (star.charAt(0) == '*') star = star.substr(1);
+                idx = dzNames.indexOf(dzgwArr[i].charAt(ngIdx));
+                PlateState.GetSpaceByIndex(idx).StoreStar(allStars[i].charAt(0) == '*', star);
+            }
+        }
+
+        //14.安年支系诸星
+        function drawNZStar(yz) {
+            var sOffSet = dzNames.indexOf(yz);
+            var idx = sOffSet % 4; //年支三合
+            var allStars = ["命马", "天(哭)", "天(虚)", "(龙)池", "(凤)阁", "红(鸾):天(喜)", "(孤)辰", "(寡)宿", "蜚廉", "破碎", "天空"];
+            var offSets = [['寅亥申巳'.charAt(idx), 0], ['午', -1], ['午', 1], ['辰', 1], ['戌', -1], ['卯', -1]
+			, ['寅寅巳巳巳申申申亥亥亥寅'.charAt(sOffSet), 0]	//孤辰
+			, ['戌戌丑丑丑辰辰辰未未未戌'.charAt(sOffSet), 0]	//寡宿
+			, ['申酉戌巳午未寅卯辰亥子丑'.charAt(sOffSet), 0]	//蜚廉
+			, ['巳丑酉'.charAt(sOffSet % 3), 0]	//破碎
+			, [dzNames.charAt(fixRange(sOffSet + 1, 0, 11)), 0]	//天空
+			];
+            for (var i = 0, j = offSets.length/*allStars.length*/; i < j; i++) {
+                tIdx = dzNames.indexOf(offSets[i][0]);
+                if (offSets[i][1] != 0)
+                    tIdx += sOffSet * offSets[i][1];
+                star = allStars[i];
+                tIdx = fixRange(tIdx, 0, 11);
+                if (star.indexOf(':') != -1) {
+                    var pStars = star.split(':');
+                    PlateState.GetSpaceByIndex(tIdx).StoreStar(false, pStars[0]);
+                    PlateState.GetSpaceByIndex(fixRange(tIdx + 6, 0, 11)).StoreStar(false, pStars[1]);
+                }
+                else {
+                    PlateState.GetSpaceByIndex(tIdx).StoreStar(star == '命马', star);
+                }
+            }
+        }
+
+        //左上(0) 中上(1) 右上(2) 右中(3) 右下(4) 中下(5) 左下(6) 左中(7)
+        var pLineCfg = [1, 1, 2, 3, 3, 4, 5, 5, 6, 7, 7, 0];
+        //对宫飞化自化 ↖↑↗→↘↓↙←
+        var pZhCfg = [5, 5, 6, 7, 7, 0, 1, 1, 2, 3, 3, 4]; //宫干自化箭头方向
+        var pFhChars = ["↖", "↗", "↗", "↗", "↘", "↘", "↘", "↙", "↙", "↙", "↖", "↖"];
+        var pZhChars = ["↓", "↓", "↙", "←", "←", "↖", "↑", "↑", "↗", "→", "→", "↘"];
+        var pXYCfg = [
+		function (p) { return { x: p.left, y: p.top, id: p.id }; }, 						//左上(0)
+		function (p) { return { x: p.left + (p.width / 2), y: p.top, id: p.id }; }, 			//中上(1)
+		function (p) { return { x: p.left + p.width, y: p.top, id: p.id }; }, 				//右上(2)
+		function (p) { return { x: p.left + p.width, y: p.top + (p.height / 2), id: p.id }; }, //右中(3)
+		function (p) { return { x: p.left + p.width, y: p.top + p.height, id: p.id }; }, 	//右下(4)
+		function (p) { return { x: p.left + (p.width / 2), y: p.top + p.height, id: p.id }; }, //中下(5)
+		function (p) { return { x: p.left, y: p.top + p.height, id: p.id }; }, 			//左下(6)
+		function (p) { return { x: p.left, y: p.top + (p.width / 2), id: p.id }; } 			//左中(7)
+	];
+
+		var pFHOffSetCfg = [
+		function (p) { p.css('top', (parseInt(p.css('top'))-p.height())+'px').css('left',(parseInt(p.css('left'))-p.width())+'px'); }, //左上(0)
+		function (p) { p.css('top', (parseInt(p.css('top'))-p.height())+'px').css('left',(parseInt(p.css('left'))-parseInt(p.width()/2))+'px'); }, //中上(1)
+		function (p) { p.css('top', (parseInt(p.css('top'))-p.height())+'px'); }, //右上(2)
+		function (p) { p.css('top', (parseInt(p.css('top'))-parseInt(p.height()/2))+'px');}, //右中(3)
+		function (p) { }, //右下(4)
+		function (p) { p.css('left',(parseInt(p.css('left'))-parseInt(p.width()/2))+'px'); }, //中下(5)
+		function (p) { p.css('left', (parseInt(p.css('left'))-p.width())+'px'); }, //左下(6)
+		function (p) { p.css('top', (parseInt(p.css('top'))-parseInt(p.height()/2))+'px').css('left', (parseInt(p.css('left'))-p.width())+'px'); }	//左中(7)
+	];
+
+		//自化位置修复
+		var PZHFix=function(jm,idx){
+			var fixPos = [5, 5, 6, 7, 7, 0, 1, 1, 2, 3, 3, 4];;
+			pFHOffSetCfg[fixPos[idx]](jm);
+		}
+
+		//飞化位置修复
+		var PFHFix=function(jm,idx){
+			var fixPos = [1, 1, 2, 3, 3, 4, 5, 5, 6, 7, 7, 0];
+			pFHOffSetCfg[fixPos[idx]](jm);
+		}
+
+        //显示对宫飞化及自化
+        function DrawSpaceSH(snshStars, bmshStars) {
+			for (var idx=0; idx<12 ; idx++)
+			{
+				var sPlace = PlateState.GetSpaceByObjectId('p' + idx)
+				var pObj = sPlace.GetPosition();
+				var ggIdx = tgNames.indexOf(sPlace.GetGZ().charAt(0));
+				var ggSHStars = TGSHConfig[ggIdx].split('');
+				var sZhStr='',sFHStr='',renderStr='';
+				for (var i=0,j=ggSHStars.length; i<j; i++ )
+				{
+					if (sPlace.HasStar(ggSHStars[i]))
+						sZhStr+=TGSHLevel[i];
+				}
+				var fhc = pFhChars[idx], zhc = pZhChars[idx];
+				//本宫自化
+				if (sZhStr.length>0)
+				{
+					pos = pXYCfg[pZhCfg[idx]](pObj);
+					if (idx>=2 && idx<=5)
+					{
+						renderStr = '<div class="dot bgfh" id="mZH'+idx+'" style="top:' + pos.y + 'px;left:' + pos.x + 'px;">'+sZhStr+'<span class="arrow">' + zhc + '</span></div>';
+					}
+					else
+					{
+						renderStr = '<div class="dot bgfh" id="mZH'+idx+'" style="top:' + pos.y + 'px;left:' + pos.x + 'px;"><span class="arrow">' + zhc + '</span>'+sZhStr+'</div>';
+					}
+					$(document.body).append(renderStr);
+					PZHFix($('#mZH'+idx),idx);
+				}
+
+				var dPlace = PlateState.GetSpaceByObjectId('p' + fixRange(idx+6,0,11))
+				for (var m=0,n=ggSHStars.length; m<n; m++ )
+				{
+					if (dPlace.HasStar(ggSHStars[m]))
+						sFHStr+=TGSHLevel[m];
+				}
+				//对宫飞化
+				if (sFHStr.length>0)
+				{
+					var pos = pXYCfg[pLineCfg[idx]](pObj);
+					if (idx==0 || (idx>=7 && idx<=11))
+					{
+						renderStr = '<div class="dot dgfh" id="mFH'+idx+'" style="top:' + pos.y + 'px;left:' + pos.x + 'px;">'+sFHStr+'<span class="arrow">' + fhc + '</span></div>';
+					}
+					else
+					{
+						renderStr = '<div class="dot dgfh" id="mFH'+idx+'" style="top:' + pos.y + 'px;left:' + pos.x + 'px;"><span class="arrow">' + fhc + '</span>'+sFHStr+'</div>';
+					}
+					$(document.body).append(renderStr);
+					PFHFix($('#mFH'+idx),idx);
+				}
+
+				for (var p=0,q=4; p<q ; p++ )
+				{
+					if (sPlace.HasStar(snshStars[p]))
+					{
+						sPlace.GetStar(snshStars[p]).SetSNSH(TGSHLevel[p]);
+					}
+				}
+
+				for (var m=0,n=4; m<n ; m++ )
+				{
+					if (sPlace.HasStar(bmshStars[m]))
+					{
+						sPlace.GetStar(bmshStars[m]).SetBMSH(TGSHLevel[m]);
+					}
+				}
+			}
+            //$('.pdir').css('opacity','0.1');
+            $('.pdir').css('visibility', 'hidden');
+        }
+
+        function GetGZSelect(sGZ) {
+            var opSelObj = new Array();
+            var naGZ = [], yaYF = [1864, 1924, 1984];
+            for (var i = 0, j = nayin60.length; i < j; i++) {
+                naGZ[0] = nayin60.substr(i, 2); naGZ[1] = nayin60.substr(i + 2, 2);
+                opSelObj[opSelObj.length] = '<option value="' + naGZ[0] + '"' + ((naGZ[0] == sGZ) ? ' selected="selected"' : '') + '>' + naGZ[0] + '(' + yaYF.join() + ')</option>';
+
+                yaYF[0] = yaYF[0] + 1, yaYF[1] = yaYF[1] + 1, yaYF[2] = yaYF[2] + 1;
+                opSelObj[opSelObj.length] = '<option value="' + naGZ[1] + '"' + ((naGZ[1] == sGZ) ? ' selected="selected"' : '') + '>' + naGZ[1] + '(' + yaYF.join() + ')</option>';
+                yaYF[0] = yaYF[0] + 1, yaYF[1] = yaYF[1] + 1, yaYF[2] = yaYF[2] + 1;
+                i += 6;
+            }
+            return opSelObj;
+        }
+
+        
+
+        jQuery(function () {
+            $('td.Space').click(function (e) {
+                e.preventDefault();
+                if (!PlateState.Rendered) return;
+
+                var pIdName = $(this)[0].id;
+                var show2SpaceLine = function (p1, p2, szArr) {
+                    //console.log(szArr);
+                    $(document.body).append('<div class="line" id="' + (p1.id + "_" + p2.id) + '">' + DrawLine(p1.x, p1.y, p2.x, p2.y, "red", 1, 0, p1.id + " " + p2.id, true) + '</div>');
+                }
+
+                var dzIdx = parseInt(pIdName.replace(/[^\d]+/, ''));
+                var dzName = dzNames.charAt(dzIdx);
+                var dzdgIdx = (dzIdx > 5) ? dzIdx - 6 : dzIdx + 6;
+                var dzdgName = dzNames.charAt(dzdgIdx);
+
+                var shName = dzName;
+                for (var i = 0, j = dzsh.length; i < j; i++) {
+                    if (dzsh[i].indexOf(dzName) != -1) {
+                        shName = dzsh[i];
+                        break;
+                    }
+                }
+                if (shName.length != 3)
+                    return;
+                //var startTime = (new Date()).getTime();
+                //基础宫
+                var basePos = PlateState.GetSpaceByObjectId(pIdName).GetPosition();
+                basePos = pXYCfg[pLineCfg[dzNames.indexOf(dzName)]](basePos);
+                //画对宫线
+                var dgPos = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(dzdgName)).GetPosition();
+                dgPos = pXYCfg[pLineCfg[dzNames.indexOf(dzdgName)]](dgPos);
+                //01 12 02
+                var shParty = shName.replace(dzName, '').split('');
+                var shpl = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(shParty[0])).GetPosition();
+                shpl = pXYCfg[pLineCfg[dzNames.indexOf(shParty[0])]](shpl);
+                var shp2 = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(shParty[1])).GetPosition();
+                shp2 = pXYCfg[pLineCfg[dzNames.indexOf(shParty[1])]](shp2);
+                var szgw = [basePos.id, shpl.id, shp2.id, dgPos.id];
+
+                $('div.line').remove();
+                show2SpaceLine(basePos, dgPos, szgw);
+                show2SpaceLine(basePos, shpl, szgw);
+                show2SpaceLine(basePos, shp2, szgw);
+                show2SpaceLine(shpl, shp2, szgw);
+                //console.log((new Date()).getTime()-startTime);
+                PlateState["SZGW"] = szgw;
+            });
+
+            //年龄段
+            $('.yfqj').click(function (e) {
+                e.stopPropagation();
+                //console.log(this);
+                if (PlateState["DXNLD"]) {
+                    $('#' + PlateState["DXNLD"]).removeClass('selBorder');
+                }
+                var jObj = $(this);
+                jObj.addClass('selBorder');
+                PlateState["DXNLD"] = jObj[0].id;
+            });
+
+            //盘干支
+            $('div.pgz').click(function (e) {
+                e.stopPropagation();
+            });
+
+			//隐藏中宫
+            $('#ycsjBtn').click(function (e) {
+                e.stopPropagation();
+                $('#cplCenter').toggle();
+            });
+
+			//宫干飞化
+			$('#btnShowGGSH').click(function (e) {
+                e.stopPropagation();
+				var jObjCol = $('.dgfh,.bgfh');
+				if (jObjCol.length)
+				{
+					jObjCol.toggle();
+					$('.pdir').css('visibility', $(jObjCol[0]).css('display')=='none'?'visible':'hidden');
+				}
+            });
+
+            $('#btnInputDate').click(function (e) {
+
+                $.modal('<iframe src="ui/baseInfo.html" height="260" width="310" style="border:0;background-color:transparent;" frameborder="0"></iframe>', {
+                    closeHTML: "",
+                    containerCss: { padding: 10, backgroundColor: "#000", borderColor: "#fff",
+                        height: 265, width: 315
+                    },
+                    opacity: 70, overlayCss: { backgroundColor: "#fff" },
+                    overlayClose: false
+                });
+                $('#simplemodal-container').corner();
+
+            });
+
+            $('#btnInputDate88').qtip(
+   {
+       content: {
+           text: $('#palDate').html()
+       },
+       button5: $('#palDateClose'),
+       content6: $('#palDate'),
+       bgiframe: true,
+       position: { target: $(document.body), corner: 'center' },
+       show: { when: 'click', solo: true }, hide: false,
+       style: {
+           width: { max: 550 }, padding: '14px', name: 'cream',
+           border: { width: 9, radius: 9, color: '#666666' }
+       },
+       api: {
+           beforeShow: function () {
+               $('#qtip-blanket').fadeIn(this.options.show.effect.length);
+           },
+           beforeHide: function () {
+               $('#qtip-blanket').fadeOut(this.options.hide.effect.length);
+           }
+       }
+   });
+
+            $('<div id="qtip-blanket">')
+      .css({
+          position: 'absolute', left: 0, width: '100%',
+          top: $(document).scrollTop(), height: $(document).height(),
+          opacity: 0.7, backgroundColor: 'black',
+          zIndex: 5000  // Make sure the zIndex is below 6000 to keep it below tooltips!
+      })
+      .appendTo(document.body).hide();
+
+        });
+        //-->
+    </script>
+</head>
+<body bgcolor="transparent">
+	<div id="shNote">
+		<div>
+			图例：生年<span class="sn">禄</span>&nbsp;<span class="sn">权</span>&nbsp;<span class="sn">科</span>&nbsp;<span
+				class="sn">忌</span>， 本命<span class="mg">禄</span>&nbsp;<span class="mg">权</span>&nbsp;<span
+					class="mg">科</span>&nbsp;<span class="mg">忌</span>。 (飞星紫微斗数在线排盘DHTML版 v1.0)
+		</div>
+		<div id="toolPanel">
+			<input class="tBtn" type="button" value="排盘/生日" id="btnInputDate" />
+			<input class="tBtn" type="button" value="神煞" id="btnShowSSStar" />
+			<input class="tBtn" type="button" value="宫干四化" id="btnShowGGSH" />
+			<input class="tBtn" type="button" value="隐藏中宫" id="ycsjBtn" />
+			<input class="tBtn" type="button" value="设置" id="btnShowConfig" />
+			<input class="tBtn" type="button" value="借盘" id="btnShowLQJP" />
+			<input class="tBtn" type="button" value="限流盘" id="btnShowXLP" />
+			<input class="tBtn" type="button" value="插件" id="btnShowPlugin" />
+			<input class="tBtn" type="button" value="命盘分析" id="btnShowAnalyze" />
+			<input class="tBtn" type="button" value="关于" id="btnShowAbout" />
+		</div>
+	</div>
+	
+	<div id="panel0" style="z-index:0;position:absolute;background-color:#fff;top:115px;left:60px;">
+    <table border="0" cellpadding="0" cellspacing="1" bgcolor="#03030F" id="tabPlace">
+        <tr>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            火 <span class="bf">东南</span> 巽<span title="风">&#x2634;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            火 <span class="bf">南</span> 离<span title="火">&#x2632;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            土 <span class="bf">西南</span> 西
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            金 <span class="bf">西南</span> 坤<span title="地">&#x2637;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="Space" id="p5">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps5">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz5">
+                                            &nbsp;巳</div>
+                                        <div class="vl pcs" id="pcs5">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw5">&nbsp;</span><br />
+                                        <span id="nld5" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj5" class="vl sj12">&nbsp;</span> <span id="pjq5" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs5" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p6">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps6">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz6">
+                                            &nbsp;午</div>
+                                        <div class="vl pcs" id="pcs6">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw6">&nbsp;</span><br />
+                                        <span id="nld6" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj6" class="vl sj12">&nbsp;</span> <span id="pjq6" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs6" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p7">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps7">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz7">
+                                            &nbsp;未</div>
+                                        <div class="vl pcs" id="pcs7">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw7">&nbsp;</span><br />
+                                        <span id="nld7" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj7" class="vl sj12">&nbsp;</span> <span id="pjq7" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs7" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p8">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps8">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz8">
+                                            &nbsp;申</div>
+                                        <div class="vl pcs" id="pcs8">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw8">&nbsp;</span><br />
+                                        <span id="nld8" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj8" class="vl sj12">&nbsp;</span> <span id="pjq8" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs8" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            土<br>
+                            <br>
+                            <span class="bf">东</span><br>
+                            <br>
+                            东<br>
+                            南
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="Space" id="p4">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps4">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz4">
+                                            &nbsp;辰</div>
+                                        <div class="vl pcs" id="pcs4">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw4">&nbsp;</span><br />
+                                        <span id="nld4" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj4" class="vl sj12">&nbsp;</span> <span id="pjq4" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs4" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td colspan="2" rowspan="2" align="left" valign="middle" bgcolor="#F2F8FF">
+				<div  id="cplCenter">
+               <table border="0" cellpadding="0" cellspacing="5" id="zwsj">
+                                 <tr>
+                                    <td>命主：<span class="red" id="mzxb">阴男</span> 生肖：<span class="red" id="mzsx">鸡</span></td>
+                                </tr>
+                                <tr>
+                                    <td>生年四化：<span class="red" id="snsh">&nbsp;</span></td>
+                                </tr>
+                                <tr>
+                                    <td>本命四化：<span class="red" id="bmsh">&nbsp;</span></td>
+                                </tr>
+                                <tr>
+                                    <td>五行局：<span id="wxj" class="red">五行局</span> </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="black" title="以阳历算阴历" id="calLuna">阳历</span>：<span class="red"
+                                            id="yaln">2011</span>年<span class="red" id="yaly">11</span>月<span class="red"
+                                                id="yalr">11</span>日</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" id="ylnf" value="2011" /><span class="black" title="以阴历算阳历"
+                                            id="calSolar">阴历</span>：<span class="red" id="ylgz">辛卯</span>年<span class="red"
+                                                id="ylyf">10</span>月<span class="red" id="ylrq">16</span>日<span class="red"
+                                                    id="ylsc">丑</span>时生</td>
+                                </tr>
+                            </table>
+				</div>
+		  </td>
+                <td class="Space" id="p9">
+                    <!--BEGIN-->
+                    <table border="0" width="100%" height="100%">
+                        <tr>
+                            <td valign="top" id="ps9">&nbsp;
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom">
+                                <table width="100%" border="0">
+                                    <tr>
+                                        <td width="25%" align="left">
+                                            <div class="vl pgz" id="pgz9">
+                                                &nbsp;酉</div>
+                                            <div class="vl pcs" id="pcs9">
+                                                &nbsp;</div>
+                                        </td>
+                                        <td width="40%" align="center">
+                                            <span id="gw9">&nbsp;</span><br />
+                                            <span id="nld9" class="yfqj">&nbsp;</span>
+                                        </td>
+                                        <td width="35%" align="right">
+                                            <span id="psj9" class="vl sj12">&nbsp;</span> <span id="pjq9" class="vl jq12">&nbsp;</span>
+                                            <span id="pbs9" class="vl bs12">&nbsp;</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--END-->
+                </td>
+                <td align="center" valign="middle" bgcolor="#FFFFFF">
+                    <table width="100%" height="100%" class="pdir">
+                        <tr>
+                            <td>
+                                金<br>
+                                <br>
+                                <span class="bf">西</span><br>
+                                <br>
+                                兑<br>
+                                <span title="泽">&#x2631;</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+        </tr>
+        <tr>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            木<br>
+                            <br>
+                            <span class="bf">东</span><br>
+                            <br>
+                            震<br>
+                            <span title="雷">&#x2633;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="Space" id="p3">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps3">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz3">
+                                            &nbsp;卯</div>
+                                        <div class="vl pcs" id="pcs3">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw3">&nbsp;</span><br />
+                                        <span id="nld3" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj3" class="vl sj12">&nbsp;</span> <span id="pjq3" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs3" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p10">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps10">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz10">
+                                            &nbsp;戌</div>
+                                        <div class="vl pcs" id="pcs10">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw10">&nbsp;</span><br />
+                                        <span id="nld10" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj10" class="vl sj12">&nbsp;</span> <span id="pjq10" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs10" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            土<br>
+                            <br>
+                            <span class="bf">西<br>
+                                <br>
+                                西<br>
+                                北</span><br>
+                            <br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td class="Space" id="p2">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps2">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz2">
+                                            &nbsp;寅</div>
+                                        <div class="vl pcs" id="pcs2">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw2">&nbsp;</span><br />
+                                        <span id="nld2" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj2" class="vl sj12">&nbsp;</span> <span id="pjq2" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs2" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p1">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps1">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz1">
+                                            &nbsp;丑</div>
+                                        <div class="vl pcs" id="pcs1">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw1">&nbsp;</span><br />
+                                        <span id="nld1" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj1" class="vl sj12">&nbsp;</span> <span id="pjq1" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs1" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p0">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps0">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz0">
+                                            &nbsp;子</div>
+                                        <div class="vl pcs" id="pcs0">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw0">&nbsp;</span><br />
+                                        <span id="nld0" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj0" class="vl sj12">&nbsp;</span> <span id="pjq0" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs0" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td class="Space" id="p11">
+                <!--BEGIN-->
+                <table border="0" width="100%" height="100%">
+                    <tr>
+                        <td valign="top" id="ps11">&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <table width="100%" border="0">
+                                <tr>
+                                    <td width="25%" align="left">
+                                        <div class="vl pgz" id="pgz11">
+                                            &nbsp;亥</div>
+                                        <div class="vl pcs" id="pcs11">
+                                            &nbsp;</div>
+                                    </td>
+                                    <td width="40%" align="center">
+                                        <span id="gw11">&nbsp;</span><br />
+                                        <span id="nld11" class="yfqj">&nbsp;</span>
+                                    </td>
+                                    <td width="35%" align="right">
+                                        <span id="psj11" class="vl sj12">&nbsp;</span> <span id="pjq11" class="vl jq12">&nbsp;</span>
+                                        <span id="pbs11" class="vl bs12">&nbsp;</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!--END-->
+            </td>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            木 <span class="bf">东北</span> 艮<span title="山">&#x2636;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            土 <span class="bf">北 东北</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            水 <span class="bf">北</span> 坎<span title="水">&#x2635;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="center" valign="middle" bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                            水 <span class="bf">西北</span> 乾<span title="天">&#x2630;</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td bgcolor="#FFFFFF">
+                <table width="100%" height="100%" class="pdir">
+                    <tr>
+                        <td>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+	</div>
+	
+	<div id="panel1" style="z-index:-1;position:absolute;background-color:#000;top:80px;left:20px;">
+	<table border="0" cellpadding="0" cellspacing="1" bgcolor="#03030F" id="xPlateTab">
+        <tr>
+            <td id="xp5" class="XSpace" align="left" valign="top">大限子女</td>
+            <td id="xp6" class="XSpace" align="center" valign="top">大限夫妻</td>
+            <td id="xp7" class="XSpace" align="center" valign="top">大限兄弟</td>
+            <td id="xp8" class="XSpace" align="right" valign="top">大限命宫</td>
+        </tr>
+        <tr>
+            <td class="XSpace" id="xp4" align="left" valign="middle">大<br/>限<br/>财<br/>帛</td>
+            <td colspan="2" rowspan="2">&nbsp;</td>
+            <td class="XSpace" id="xp9" align="right" valign="middle">大<br/>限<br/>父<br/>母</td>
+        </tr>
+        <tr>
+            <td class="XSpace" id="xp3" align="left" valign="middle">大<br/>限<br/>疾<br/>厄</td>
+            <td class="XSpace" id="xp10" align="right" valign="middle">大<br/>限<br/>福<br/>德</td>
+        </tr>
+        <tr>
+            <td class="XSpace" id="xp2" align="left" valign="bottom">大限迁移</td>
+            <td class="XSpace" id="xp1" align="center" valign="bottom">大限交友</td>
+            <td class="XSpace" id="xp0" align="center" valign="bottom">大限官禄</td>
+            <td class="XSpace" id="xp11" align="right" valign="bottom">大限田宅</td>
+        </tr>
+    </table>
+	</div>
+	
+</body>
+</html>

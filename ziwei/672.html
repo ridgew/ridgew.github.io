@@ -1,0 +1,136 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title> 梁若瑜飞星紫微斗数 - 十二宫672象义速查 </title>
+  <meta name="generator" content="editplus" />
+  <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <style type="text/css">
+	* {font-size:10.5pt;}
+  </style>
+  <script language="javascript" src="js/672.js"></script>
+  <script type="text/javascript">
+  <!--
+	function $(id){return document.getElementById(id);}
+
+	var sfzx4=["",//命三方
+		"〈註：田宅三方多得「祿、權」者，格局高則「興家旺宅」；格局差也可以自家「開店營利」、「安家活口」。田宅三方而多得「忌」者，只宜「保守而為」或「上班安穩」。〉",//田宅三方p67
+		"〈註：福德之「德」者，乃指後天之「德行」。以「交友」三方為德之「收藏宮」，故約可言：凡祿、忌入「交友」者，多「情、義」；祿、忌入「父母」者，重「禮、孝」；祿、忌入「子女」者，屬「慈、愛」。〉 〈註：凡命三方及生年之化令「交友三方」多見「忌」者，「少合夥」為妙。而交友三方的互化多忌於交友的自家三方─沖我田宅三方者，亦以少合夥為妙。兩式都屬可能合夥「時運不濟」或犯小人的「營私舞弊」。〉",//福德三方
+		""];//交友三方
+
+	function report()
+	{
+		var sObj = $('spIdx'),dObj = $('dpIdx'),shObj = $('shIdx')
+		var sStr = sObj.options[sObj.selectedIndex].innerHTML;
+		var dStr = dObj.options[dObj.selectedIndex].innerHTML;
+		var shStr = shObj.options[shObj.selectedIndex].innerHTML;
+		var strPrefix = sStr+shStr+dStr;
+		if (sStr == dStr)
+			strPrefix = sStr + '自化' + shStr.charAt(0);
+		if (shObj.value ==-1)
+			strPrefix = sStr + '四化入' + dStr;
+		$('rptPanel').innerHTML+= '<br/><br/><strong>' + strPrefix + '</strong>'+ rptSHData(parseInt(sObj.value),parseInt(dObj.value),parseInt(shObj.value))
+		.replace(/\d+\./gi,"<br/>$&")
+		.replace("〈註","<br/>〈註");
+	}
+
+	function exchange()
+	{
+		var sObj = $('spIdx'),dObj = $('dpIdx'),shObj = $('shIdx')
+		if ($('spIdx').value==-1) return;
+		var sIdxTemp = dObj.selectedIndex;
+		dObj.selectedIndex = sObj.selectedIndex-1;
+		sObj.selectedIndex = sIdxTemp+1;
+	}
+
+	function rptSHData(s,d,sh)
+	{
+		var tarDat = (s<0)? sn12x4 : f12x12x4[s];
+		if (!tarDat)
+		{
+			return "没有一维索引"+s+"数据!";
+		}
+		else
+		{
+			tarDat = tarDat[d];
+			if (!tarDat)
+			{
+				return "没有二维索引"+d+"数据!";
+			}
+			else
+			{
+				if (sh>=0)
+				{
+					return tarDat[sh];
+				}
+				else
+				{
+					var shArr="禄权科忌".split('');
+					var sResult = "";
+					for (var i=0,j=shArr.length; i<j ; i++ )
+					{
+						sResult += "<br/><br/><strong>" + shArr[i] + "：</strong>" + tarDat[i];
+					}
+					return sResult;
+				}
+			}
+		}
+	}
+  //-->
+  </script>
+ </head>
+
+ <body>
+  
+  <select id="spIdx" multiple size="6">
+	<option value="-1">生年</option>
+	<option value="0">命宫</option>
+	<option value="1">兄弟</option>
+	<option value="2">夫妻</option>
+	<option value="3">子女</option>
+	<option value="4">财帛</option>
+	<option value="5">疾厄</option>
+	<option value="6">迁移</option>
+	<option value="7">交友</option>
+	<option value="8">事业</option>
+	<option value="9">田宅</option>
+	<option value="10">福德</option>
+	<option value="11">父母</option>
+  </select>
+
+   <select id="shIdx" multiple size="6">
+	<option value="0">禄入</option>
+	<option value="1">权入</option>
+	<option value="2">科入</option>
+	<option value="3">忌入</option>
+	<option value="-1">四化</option>
+  </select>
+
+  <select id="dpIdx" multiple size="6">
+	<option value="0">命宫</option>
+	<option value="1">兄弟</option>
+	<option value="2">夫妻</option>
+	<option value="3">子女</option>
+	<option value="4">财帛</option>
+	<option value="5">疾厄</option>
+	<option value="6">迁移</option>
+	<option value="7">交友</option>
+	<option value="8">事业</option>
+	<option value="9">田宅</option>
+	<option value="10">福德</option>
+	<option value="11">父母</option>
+  </select>
+
+  <input type="button" value="输出"  id="btnRpt" onclick="javascript:report();" /> 
+  <input type="button" value="交换宫位"  id="btnRpt" onclick="javascript:exchange();" /> 
+  <input type="button" value="清除"  id="btnClear" onclick="javascript:$('rptPanel').innerHTML='';" />
+
+
+<div id="rptPanel">
+&nbsp;
+</div>
+
+ </body>
+</html>

@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>出生时间/命盘反推</title>
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+		<style type="text/css">			
+		body{font-size:12px;font-family:verdana,sans-serif;background-color:#000;margin:0;padding:0;border:0;overflow:hidden;}
+		td {color:#fff;}
+		.content{width:300px;background-color:#fff;margin:0 auto;padding:20px;}
+		h1{color:#221A69;font-weight:400;text-decoration:none;}
+		.tabbed_content{background-color:#000;width:300px;height:250px;}
+		.tabs{height:62px;position:relative;}
+		.tabs .moving_bg{background-color:#7F822A;background-image:url(../images/arrow_down_green.gif);position:absolute;width:105px;z-index:190;left:0;background-position:bottom left;background-repeat:no-repeat;padding:15px 15px 29px;}
+		.tabs .tab_item{display:block;float:left;width:105px;color:#fff;text-align:center;z-index:200;position:relative;cursor:pointer;padding:15px;}
+		.tabbed_content .slide_content{overflow:hidden;background-color:#000;position:relative;width:250px;padding:10px 0 10px 20px;}
+		.tabslider{width:5000px;}
+		.tabslider ul {float:left;width:210px;margin:0 40px 0 0;padding:0;}
+		.tabslider ul a{color:#fff;text-decoration:none;}
+		.tabslider ul a:hover{color:#aaa;}
+		.tabslider ul li{padding-bottom:7px;}
+		.click { cursor:pointer;}
+		.bRight { position:absolute;bottom:10px;right:10px;}
+		#msgBody { padding:10px;width:200px;height:50px;background-color:#333;color:#fff;}
+		</style>
+		<script type='text/javascript' src='../js/jquery.js'></script>
+		<script type="text/javascript" src="../js/jquery_corner.js"></script>
+		<script type="text/javascript" src="../js/jquery_simplemodal.js"></script>
+		<script src="../js/tabbedContent.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		<!--
+			function canCalcPlace(objDat){
+				if (parent==null || parent.PlateState == undefined)
+				{
+					showMsg("不支持此种方式的调用！");
+				}
+				else
+				{
+					return parent.PlateState.IsValid(objDat);
+				}
+			}
+
+			function calcPlace(objDat){
+				parent.PlateState.Calculate(objDat);
+			}
+
+			function showMsg(msg) {
+				$('#msgBody').html(msg + '<div class="bRight click simplemodal-close">关闭</div>').parent()
+						.modal({opacity:95,containerCss:{backgroundColor:"#fff", borderColor:"#000"},overlayCss:{backgroundColor:"#fff"},overlayClose:true});
+				//$('#simplemodal-container').corner();
+				$('#msgBody').corner();
+			}
+
+			$(document).ready(function() {
+				//$('#msgBody').corner();
+
+				var nowDate=new Date();
+				TabbedContent.init();
+
+				$('#inpYear').val(nowDate.getFullYear());
+				$('#selMonth').val((nowDate.getMonth()+1).toString());
+				//alert(nowDate.getDate());
+				$('#selDay').val((nowDate.getDate()).toString());
+
+				$('#btnCalcByDate').click(function(e){
+
+					var calCObj = {ByDate:true,DateInfo:{Sex:($('#rdoNan')[0].checked)?1:0,LiFa:($('#rdoYanli')[0].checked)?1:0,MonthRun:$('#cbxRun')[0].checked,
+						Year:parseInt($('#inpYear').val()),Month:parseInt($('#selMonth').val()),Day:parseInt($('#selDay').val()),SC:$('#ylscSel').val()}};
+
+					var calcResult = canCalcPlace(calCObj);
+					if (calcResult) {	
+						calcPlace(calCObj);
+						parent.$.modal.close();
+					}
+					else {
+						if (calcResult != undefined && calcResult !=false)
+							showMsg(calcResult);
+					}
+					//e.stopPropagation();
+					//e.preventDefault();
+				});
+
+				$('#btnCalcByCus').click(function(){
+					parent.$.modal.close();
+				});
+
+			});
+		//-->
+		</script>
+	</head>
+	<body scroll="no">
+		<div class='tabbed_content'>
+			<div class='tabs'>
+				<div class='moving_bg'>&nbsp;</div>
+				<span class='tab_item'>生时排盘</span>
+				<span class='tab_item'>命盘反推</span>
+			</div>
+			
+			<div class='slide_content'>
+				<div class='tabslider'>
+						<ul><li><div>
+								<table cellpadding="5px" width="250">
+										<tr>
+											<td colspan="2">性别<input type="radio" value="1" id="rdoNan" name="sex" checked /><label for="rdoNan">男</label>
+												<input type="radio" value="0" id="rdoNv" name="sex" /><label for="rdoNv">女</label>
+											</td>
+										</tr>
+										<tr>
+											<td><input type="radio" value="1" id="rdoYanli" name="lifa" checked /><label for="rdoYanli">阳历</label></td>
+											<td><input type="radio" value="0" id="rdoYinli" name="lifa" /><label for="rdoYinli">阴历</label>
+												<input type="checkbox" id="cbxRun"><label for="cbxRun">闰月</label>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<input type="text" size="4" id="inpYear">年 
+												<select id="selMonth">
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">4</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+											   </select>月 
+											   <select id="selDay">
+													<option value="1">1</option>
+													<option value="2">2</option>
+													<option value="3">4</option>
+													<option value="4">4</option>
+													<option value="5">5</option>
+													<option value="6">6</option>
+													<option value="7">7</option>
+													<option value="8">8</option>
+													<option value="9">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+													<option value="13">13</option>
+													<option value="14">14</option>
+													<option value="15">15</option>
+													<option value="16">16</option>
+													<option value="17">17</option>
+													<option value="18">18</option>
+													<option value="19">19</option>
+													<option value="20">20</option>
+													<option value="21">21</option>
+													<option value="22">22</option>
+													<option value="23">23</option>
+													<option value="24">24</option>
+													<option value="25">25</option>
+													<option value="26">26</option>
+													<option value="27">27</option>
+													<option value="28">28</option>
+													<option value="29">29</option>
+													<option value="30">30</option>
+													<option value="31">31</option>
+											   </select>日
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">时辰
+											<select id="ylscSel">
+												<option value="子">子时(23:00-0:59)</option>
+												<option value="丑">丑时(1:00-2:59)</option>
+												<option value="寅">寅时(3:00-4:59)</option>
+												<option value="卯">卯时(5:00-6:59)</option>
+												<option value="辰">辰时(7:00-8:59)</option>
+												<option value="巳">巳时(9:00-10:59)</option>
+												<option value="午">午时(11:00-12:59)</option>
+												<option value="未">未时(13:00-14:59)</option>
+												<option value="申">申时(15:00-16:59)</option>
+												<option value="酉">酉时(17:00-18:59)</option>
+												<option value="戌">戌时(19:00-20:59)</option>
+												<option value="亥">亥时(21:00-22:59)</option>
+											</select>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2" height="35" valign="bottom">
+												<input type="button" value="依据出生时间排盘" id="btnCalcByDate" />
+											</td>
+										</tr>
+									</table>	
+							</div></li>
+						</ul>
+						<ul>
+							<li>
+								<div>
+									<table width="250" cellpadding="5px" >
+										<tr>
+											<td><select id="selTG">
+												<option value="-">-</option>
+												<option value="甲">甲</option>
+												<option value="乙">乙</option>
+												<option value="丙">丙</option>
+												<option value="丁">丁</option>
+												<option value="戊">戊</option>
+												<option value="己">己</option>
+												<option value="庚">庚</option>
+												<option value="辛">辛</option>
+												<option value="壬">壬</option>
+												<option value="癸">癸</option>
+											</select>年生人 &nbsp; 生肖属<select id="selDZ">
+												<option value="-">-</option>
+												<option value="子">鼠</option>
+												<option value="丑">牛</option>
+												<option value="寅">虎</option>
+												<option value="卯">兔</option>
+												<option value="辰">龙</option>
+												<option value="巳">蛇</option>
+												<option value="午">马</option>
+												<option value="未">羊</option>
+												<option value="申">猴</option>
+												<option value="酉">鸡</option>
+												<option value="戌">狗</option>
+												<option value="亥">猪</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td>十四主星<select id="selZXDZ">
+													<option>紫微</option>
+													<option>天机</option>
+													<option>太阳</option>
+													<option>武曲</option>
+													<option>天同</option>
+													<option>破军</option>
+													<option>天府</option>
+													<option>太阴</option>
+													<option>贪狼</option>
+													<option>巨门</option>
+													<option>天相</option>
+													<option>天梁</option>
+													<option>七杀</option>
+													<option>廉贞</option>
+												</select>
+												在<select id="selZXDZ">
+												<option value="子">子</option>
+												<option value="丑">丑</option>
+												<option value="寅">寅</option>
+												<option value="卯">卯</option>
+												<option value="辰">辰</option>
+												<option value="巳">巳</option>
+												<option value="午">午</option>
+												<option value="未">未</option>
+												<option value="申">申</option>
+												<option value="酉">酉</option>
+												<option value="戌">戌</option>
+												<option value="亥">亥</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td><select id="selGWMC">
+												<option>本命</option>
+												<option>兄弟</option>
+												<option>夫妻</option>
+												<option>子女</option>
+												<option>财帛</option>
+												<option>疾厄</option>
+												<option>迁移</option>
+												<option>交友</option>
+												<option>事业</option>
+												<option>田宅</option>
+												<option>福德</option>
+												<option>父母</option>
+											</select>宫<select id="selGWDZ">
+												<option value="子">子</option>
+												<option value="丑">丑</option>
+												<option value="寅">寅</option>
+												<option value="卯">卯</option>
+												<option value="辰">辰</option>
+												<option value="巳">巳</option>
+												<option value="午">午</option>
+												<option value="未">未</option>
+												<option value="申">申</option>
+												<option value="酉">酉</option>
+												<option value="戌">戌</option>
+												<option value="亥">亥</option>
+											</select> &nbsp;&nbsp;宫干为<select id="selGWTG">
+												<option value="-">-</option>
+												<option value="甲">甲</option>
+												<option value="乙">乙</option>
+												<option value="丙">丙</option>
+												<option value="丁">丁</option>
+												<option value="戊">戊</option>
+												<option value="己">己</option>
+												<option value="庚">庚</option>
+												<option value="辛">辛</option>
+												<option value="壬">壬</option>
+												<option value="癸">癸</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td><br/><input type="button" value="依据可用条件排盘"  id="btnCalcByCus" /></td>
+										</tr>
+									</table>
+								</div>
+							</li>
+						</ul>
+				</div>
+				<br style='clear: both' />
+			</div>
+		</div>
+		<div id="msg" style="display:none"><div id="msgBody"></div></div>
+	</body>
+</html>

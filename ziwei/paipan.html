@@ -1,0 +1,1687 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title> 紫微斗数在线排盘DHTML版 </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="Ridge Wong">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+
+ <style type="text/css">
+	 body,td,th { font-size: 10.5pt; color: #0000FF; margin:0px;padding:0px; }
+	.bf {color: #000000}
+	.vl {layout-flow:"vertical-ideographic"; color:#000; width:14px; float:left; word-wrap:break-word;}
+	.jiaStar { color:red; }
+	.yiStar { color:#800080; }
+	.red { color:red; }
+	.black { color:black; }
+	.bmsfsz {background-color:#ff0000;color:yellow;padding:2px;}
+	.bmsg {background-color:yellow;color:#ff0000;padding:2px;} /*本命身宫*/
+	.dot {position:absolute;margin:0px;padding:0px;}
+	.sl { color:blue; }
+	.sn { color:#fff;background-color:green; }
+	.dxsh {color:#fff;background-color:#800000; }
+	.lnsh {color:#fff;background-color:#0000FF; }
+	.mg { color:purple;background-color:#fff;border:1px solid black;}
+	.note td,th { padding:2px; font-size:12px; color:#000; background-color:#F7F7BC; text-align:center }
+	.space {width:12px;height:12px;}
+	.Space { cursor:pointer; font-size:12px;width:140px;height:100px;background-color:#FFF; margin:0px;padding:0px;}
+	.Space td {font-size:12px;}
+	#ylgzSel, #ylscSel {font-size:12px;background-color:black;color:#fff;}
+	#zwsj td { font-size:12px; text-align:left; color:black; padding:1px;background-color:#F2F8FF;}
+	#bzsj td { font-size:12px; text-align:left; color:black; padding:1px;background-color:#F2F8FF;}
+	#calcSpace {border:0px;background-color:transparent;font-size:24px;cursor:pointer;}
+	.selBorder { border:1px solid red; color:red;}
+	.selNob { border:0px; color:blue; background-color:transparent;}
+	.inpNob { border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; background-color:transparent;}
+	.inpMini{ color:#fff; background-color:black;font-size:12px; width:15px; border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; }
+	.inpCh  { cursor:pointer; border-top:0px; border-left:0px; border-right:0px; border-bottom:1px dotted blue; background-color:transparent;}
+	#shNote { font-size:12px; text-align:left; padding:3px; background-color:#F7F7BC; }
+	.arrow {font-size:22px;font-weight:bold;}
+	.bgfh { color:red;font-size:12px; /*background-color:#F7F7BC; filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9;*/ }
+	.dgfh { color:#FF00FF;font-size:12px; /*background-color:#F7F7BC; filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9;*/ }
+	.pdir { background-color:#FFF; /*filter:alpha(opacity=85);-moz-opacity:0.85;opacity:0.85;*/ }
+	.todo {visibility:hidden;} /*待完成*/
+	.pcs  {visibility:visible;} /*十二长生*/
+	.yfqj {visibility:visible;} /*年份区间*/
+	.sj12 {visibility:visible;color:black;}
+	.bs12 {visibility:visible;}
+	.jq12 { visibility:visible; } /*hidden*/
+	#xjnl {visibility:hidden;}
+	#bmsh,#zwsz,#zwmz { visibility:visible; }
+	input {border:0px}
+ </style>
+
+ <script language="javascript" src="jquery-1.6.min.js"></script>
+ <!--<script language="javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>-->
+ <script type="text/javascript">
+ if (!console)
+ var console=console||{log:alert};
+ //U+262F（太极阴阳图）U+2630-U+2637（八卦：天泽火雷风水山地 乾兑离震巽坎艮坤）
+/************* 画直线 **************
+  x1,y1   起点所在的屏幕坐标（像素）
+  x2,y2   终点所在的屏幕坐标（像素）
+  color   颜色（字符串值）
+  size    大小（像素）
+  render   样式 0=实线 1=虚线 2=虚实线
+**********************************/
+function DrawLine(x1,y1,x2,y2,color,size,render,dotClass,returnHtml){
+
+	var drawDot =function(x,y,c,s,render) {
+		var renderStr = '<div class="' +("dot" + ((dotClass)?" " + dotClass:""))+ '" style="top:'+y+'px;left:'+x+'px;width:'+s+'px;height:'+s+'px;background-color:'+c+'"></div>';
+		if (render) return renderStr;
+		$(document.body).append(renderStr);
+	   };
+
+  var i, r=Math.floor(Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1)));
+  var theta=Math.atan((x2-x1)/(y2-y1));
+  if(((y2-y1)<0&&(x2-x1)>0)||((y2-y1)<0&&(x2-x1)<0))
+    theta=Math.PI+theta;
+  var dx=Math.sin(theta);//alert(dx)
+  var dy=Math.cos(theta);
+  var htmlArr = new Array();
+  for(i=0;i<r;i++)
+  {
+    switch(render)
+	{
+      case 0:
+        break;
+      case 1:
+        i+=size*2;
+        break;
+      case 2:
+        if(!(Math.floor(i/4/size)%2==0)) i+=size*2;
+        break;
+      default:
+        break;
+    }
+	if (returnHtml)
+		htmlArr[htmlArr.length] = drawDot(x1+i*dx, y1+i*dy, color, size, true);
+	else
+		drawDot(x1+i*dx, y1+i*dy, color, size);
+  }
+  if (returnHtml) return htmlArr.join('');
+}
+
+//阴阳历转换1936-2031
+ function CalConv(tDate,bYear,bMonth,bDay) {
+	
+	/* 闰年, 返回 0 平年, 1 闰年 */
+	var GetLeap=function (year) {
+		if (year % 400 == 0) return 1;
+		else if (year % 100 == 0) return 0;
+		else if (year % 4 == 0) return 1;
+		else return 0;
+	}
+
+	var LCData=function(d, i, w, k, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13) 
+	{
+		this.BaseDays = d; /* 1 月 1 日到正月初一的累计日 */
+		this.Intercalation = i; /* 闰月月份. 0==此年沒有闰月 */
+		this.BaseWeekday = w; /* 此年 1 月 1 日为星期减 1 */
+		this.BaseKanChih = k; /* 此年 1 月 1 日之干支序号减 1 */
+		this.MonthDays = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13]; /* 此农历年每月之大小, 0==小月(29日), 1==大月(30日) */
+	}
+
+    var yBegin = 1936,yEnd = 2031;
+    var LunarCal = [
+        new LCData(23, 3, 2, 17, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0), /* 1936 */
+        new LCData(41, 0, 4, 23, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1),
+        new LCData(30, 7, 5, 28, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1),
+        new LCData(49, 0, 6, 33, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(38, 0, 0, 38, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1), /* 1940 */
+        new LCData(26, 6, 2, 44, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(45, 0, 3, 49, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(35, 0, 4, 54, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(24, 4, 5, 59, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1), /* 1944 */
+        new LCData(43, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1),
+        new LCData(32, 0, 1, 10, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1),
+        new LCData(21, 2, 2, 15, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(40, 0, 3, 20, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1), /* 1948 */
+        new LCData(28, 7, 5, 26, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(47, 0, 6, 31, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(36, 0, 0, 36, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(26, 5, 1, 41, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1), /* 1952 */
+        new LCData(44, 0, 3, 47, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(33, 0, 4, 52, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0),
+        new LCData(23, 3, 5, 57, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1),
+        new LCData(42, 0, 6, 2, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1), /* 1956 */
+        new LCData(30, 8, 1, 8, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(48, 0, 2, 13, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(38, 0, 3, 18, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(27, 6, 4, 23, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0), /* 1960 */
+        new LCData(45, 0, 6, 29, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0),
+        new LCData(35, 0, 0, 34, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(24, 4, 1, 39, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(43, 0, 2, 44, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0), /* 1964 */
+        new LCData(32, 0, 4, 50, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(20, 3, 5, 55, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0),
+        new LCData(39, 0, 6, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(29, 7, 0, 5, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1), /* 1968 */
+        new LCData(47, 0, 2, 11, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(36, 0, 3, 16, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0),
+        new LCData(26, 5, 4, 21, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1),
+        new LCData(45, 0, 5, 26, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1), /* 1972 */
+        new LCData(33, 0, 0, 32, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1),
+        new LCData(22, 4, 1, 37, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(41, 0, 2, 42, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1),
+        new LCData(30, 8, 3, 47, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1), /* 1976 */
+        new LCData(48, 0, 5, 53, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1),
+        new LCData(37, 0, 6, 58, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(27, 6, 0, 3, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0),
+        new LCData(46, 0, 1, 8, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0), /* 1980 */
+        new LCData(35, 0, 3, 14, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1),
+        new LCData(24, 4, 4, 19, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1),
+        new LCData(43, 0, 5, 24, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1),
+        new LCData(32, 10, 6, 29, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1), /* 1984 */
+        new LCData(50, 0, 1, 35, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(39, 0, 2, 40, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1),
+        new LCData(28, 6, 3, 45, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0),
+        new LCData(47, 0, 4, 50, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1), /* 1988 */
+        new LCData(36, 0, 6, 56, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0),
+        new LCData(26, 5, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1),
+        new LCData(45, 0, 1, 6, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(34, 0, 2, 11, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0), /* 1992 */
+        new LCData(22, 3, 4, 17, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(40, 0, 5, 22, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(30, 8, 6, 27, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1),
+        new LCData(49, 0, 0, 32, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1), /* 1996 */
+        new LCData(37, 0, 2, 38, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(27, 5, 3, 43, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(46, 0, 4, 48, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1), /* 1999 */
+        new LCData(35, 0, 5, 53, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1), /* 2000 */
+        new LCData(23, 4, 0, 59, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(42, 0, 1, 4, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(31, 0, 2, 9, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(21, 2, 3, 14, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1), /* 2004 */
+        new LCData(39, 0, 5, 20, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(28, 7, 6, 25, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1),
+        new LCData(48, 0, 0, 30, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1),
+        new LCData(37, 0, 1, 35, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1), /* 2008 */
+        new LCData(25, 5, 3, 41, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(44, 0, 4, 46, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(33, 0, 5, 51, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(22, 4, 6, 56, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0), /* 2012 */
+        new LCData(40, 0, 1, 2, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(30, 9, 2, 7, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(49, 0, 3, 12, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1),
+        new LCData(38, 0, 4, 17, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0), /* 2016 */
+        new LCData(27, 6, 6, 23, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1),
+        new LCData(46, 0, 0, 28, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0),
+        new LCData(35, 0, 1, 33, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0),
+        new LCData(24, 4, 2, 38, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1), /* 2020 */
+        new LCData(42, 0, 4, 44, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(31, 0, 5, 49, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(21, 2, 6, 54, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(40, 0, 0, 59, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1), /* 2024 */
+        new LCData(28, 6, 2, 5, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(47, 0, 3, 10, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1),
+        new LCData(36, 0, 4, 15, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(25, 5, 5, 20, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0), /* 2028 */
+        new LCData(43, 0, 0, 26, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1),
+        new LCData(32, 0, 1, 31, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0),
+        new LCData(22, 3, 2, 36, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0)];
+
+    /* 西曆年每月之日數 */
+    var SolarCal = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    /* 西曆年每月之累積日數, 平年與閏年 */
+    var SolarDays = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365, 396,
+        0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397];
+
+	var tarObj={};
+    if (tDate == 0) { //阳历到阴历
+        if (bYear <= yBegin || bYear > yEnd) 
+			return alert("请输入1936-2031有效年份");
+        stDate = bMonth - 1;
+        if (stDate < 0 || stDate > 11) return alert('请输入有效月份');
+        leap = GetLeap(bYear);
+        if (stDate == 1) 
+			d = leap + 28;
+        else 
+			d = SolarCal[stDate];
+
+        if (bDay < 1 || bDay > d) return 3;
+        y = bYear - yBegin;
+        acc = SolarDays[leap * 14 + stDate] + bDay;
+        kc = acc + LunarCal[y].BaseKanChih;
+        if (acc <= LunarCal[y].BaseDays) {
+            y--;
+            tarObj["Year"] = bYear - 1;
+            leap = GetLeap(tarObj["Year"]);
+            stDate += 12;
+            acc = SolarDays[leap * 14 + stDate] + bDay;
+        } else tarObj["Year"] = bYear;
+        l1 = LunarCal[y].BaseDays;
+        for (i = 0; i < 13; i++) {
+            l2 = l1 + LunarCal[y].MonthDays[i] + 29;
+            if (acc <= l2) break;
+            l1 = l2;
+        }
+        tarObj["Month"] = i + 1;
+        tarObj["Day"] = acc - l1;
+        itDate = LunarCal[y].Intercalation;
+        if (itDate != 0 && tarObj["Month"] > itDate) {
+            tarObj["Month"]--;
+            if (tarObj["Month"] == itDate) tarObj["Month"] = -itDate;
+        }
+        if (tarObj["Month"] > 12) tarObj["Month"] -= 12;
+    } 
+	else /* 阴历转阳历 */
+    {
+        if (bYear < yBegin || bYear >= yEnd) return alert("请输入1936-2031有效年份");
+        y = bYear - yBegin;
+        itDate = LunarCal[y].Intercalation;
+        ltDate = bMonth;
+        if (ltDate < 0) {
+            if (ltDate != -itDate) return alert('请输入有效月份');
+        } else if (ltDate < 1 || ltDate > 12) return alert('请输入有效月份');
+
+        if (itDate != 0) {
+            if (ltDate > itDate) ltDate++;
+            else if (ltDate == -itDate) ltDate = itDate + 1;
+        }
+        ltDate--;
+        if (bDay > LunarCal[y].MonthDays[ltDate] + 29) return alert("农历日期不正确");
+        acc = 0;
+        for (i = 0; i < ltDate; i++) {
+            acc += LunarCal[y].MonthDays[i] + 29;
+        }
+        acc += LunarCal[y].BaseDays + bDay;
+        leap = GetLeap(bYear);
+        for (i = 13; i >= 0; i--) {
+            if (acc > SolarDays[leap * 14 + i]) break;
+        }
+        tarObj["Day"] = acc - SolarDays[leap * 14 + i];
+        if (i <= 11) {
+            tarObj["Year"] = bYear;
+            tarObj["Month"] = i + 1;
+        } else {
+            tarObj["Year"] = bYear + 1;
+            tarObj["Month"] = i - 11;
+        }
+        leap = GetLeap(tarObj["Year"]);
+        y = tarObj["Year"] - yBegin;
+        acc = SolarDays[leap * 14 + tarObj["Month"] - 1] + tarObj["Day"];
+        weekday = (acc + LunarCal[y].BaseWeekday) % 7;
+        kc = acc + LunarCal[y].BaseKanChih;
+    }
+	return tarObj;
+}
+
+var dzNames = "子丑寅卯辰巳午未申酉戌亥", tgNames = "甲乙丙丁戊己庚辛壬癸", YinYang="♂♀男女乾坤";
+var dzsh="申子辰 巳酉丑 寅午戌 亥卯未".split(' ');
+var nayin60 = "甲子乙丑海中金丙寅丁卯炉中火戊辰己巳大林木庚午辛未路旁土壬申癸酉剑锋金甲戌乙亥山头火丙子丁丑漳下水戊寅己卯城头土庚辰辛巳白腊金壬午癸未杨柳木甲申乙酉泉中水丙戌丁亥屋上土戊子己丑霹雳火庚寅辛卯松柏木壬辰癸巳长流水甲午乙未砂石金丙申丁酉山下火戊戌己亥平地木庚子辛丑壁上土壬寅癸卯金薄金甲辰乙巳覆灯火丙午丁未天河水戊申已酉大驿土庚戌辛亥钗环金壬子癸丑桑柘木甲寅乙卯大溪水丙辰丁巳沙中土戊午己未天上火庚申辛酉石榴木壬戌癸亥大海水";
+var Space12 = ["*命宫","兄弟","夫妻","子女","*财帛","疾厄","*迁移","交友","*官禄","田宅","福德","父母"];
+var shareCfg = ["一六共宗", "二七同道", "三八为朋", "四九作友", "五十同途", "十一一同宗", "十二二同位"];
+
+	function fixRange(val,min,max)
+	{
+		var range=max-min+1;
+		while (val<min) {val+=range;}
+		while (val>max) {val-=range;}
+		return val;
+	}
+
+//排盘步骤
+	//1.定十二宫干 -- 生年天干
+	function draw12GZ(ng)
+	{
+		var wuHuDunDat = ["甲己", "丙", "乙庚", "戊", "丙辛", "庚", "丁壬", "壬", "戊癸", "甲"];
+		var gIdx = (tgNames.indexOf(ng)+1)%5;
+		var p2Char = gIdx == 0 ? wuHuDunDat[wuHuDunDat.length-1] : wuHuDunDat[gIdx*2-1];
+			gIdx = tgNames.indexOf(p2Char);
+		var tIdx = 0;
+		for (var i=0,j=12; i<j ; i++ )
+		{
+			tIdx = (i<2) ? (gIdx+i) : (gIdx+i-2);
+			if (tIdx>9) tIdx = tIdx%10;
+
+			var pObj = PlateState.GetSpaceByIndex(i);
+			if (pObj)
+			{
+				pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+			}
+			else
+			{
+				var pObj = new SingleSpace('p'+i,i);
+				pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+				PlateState.StoreSpace(i,pObj);
+			}
+			
+		}
+	}
+
+	//2.定命身宫 -- 生年月份、时辰 顺月->顺时身|逆时命
+	//3.自命宫逆布紫微宫位
+	function draw12GW(yue,shi,yz)
+	{
+		var pIdxStart = fixRange(2+parseInt(yue)-1, 0, 11);
+		var pMIdx = fixRange(pIdxStart-parseInt(shi), 0, 11);//命宫索引
+		var yzIdx = dzNames.indexOf(yz);
+		var tIdx = fixRange(pMIdx+yzIdx,0,11);
+		PlateState.GetSpaceByIndex(tIdx).StoreStar(false, "天(才)");//命宫顺行年支
+		PlateState["MGGZ"] = $('#pgz'+pMIdx).html(); //存储命宫干支
+		PlateState["MGIndex"] = pMIdx; //存储命宫索引
+		$('#mgdz').html(PlateState["MGGZ"].substr(1,1));
+
+		//安命主、身主
+		var mzStars = ["贪狼","巨门","禄存","文曲","廉贞","武曲","破军","武曲","廉贞","文曲","禄存","巨门"];
+		$('#zwmz').html(mzStars[dzNames.indexOf(PlateState["MGGZ"].substr(1,1))]);
+		var szStars = ["火星","天相","天梁","天同","文昌","天机"];
+		$('#zwsz').html(szStars[yzIdx%6]);
+		//安子年斗君
+		$('#zddz').html(dzNames.charAt(fixRange(0-yue+1+shi,0,11)));
+
+		var gwName = "*";
+		for (var i=0,j=Space12.length; i<j ; i++ )
+		{
+			gwName = Space12[i];
+			if (gwName.charAt(0)=="*")
+			{
+				$('#gw' + pMIdx).removeClass("bmsfsz bmsg").addClass("bmsfsz").html(gwName.substr(1).replace("命","★命"));
+			}
+			else
+			{
+				$('#gw' + pMIdx).removeClass("bmsfsz bmsg").html(gwName);
+			}
+			if (Space12[i]=='疾厄')
+				PlateState.GetSpaceByIndex(pMIdx).StoreStar(false, "天(使)");
+			if (Space12[i]=='交友')
+				PlateState.GetSpaceByIndex(pMIdx).StoreStar(false, "天(殇)");
+			pMIdx=fixRange(pMIdx-1,0,11);
+		}
+
+		var pSIdx=fixRange(pIdxStart + parseInt(shi),0,11);//身宫索引
+		tIdx = fixRange(pSIdx+yzIdx,0,11);
+		PlateState.GetSpaceByIndex(tIdx).StoreStar(false, "天(寿)");//身宫顺行年支
+		var sgObj = $('#gw'+pSIdx), sgName=sgObj.html();
+		sgObj.addClass("bmsg").html( ((sgName.charAt(0)=='★')?'':'☆') + sgName.substr(0, sgName.length-1) + '身');
+		$('#sgdz').html($('#pgz'+pSIdx).html().substr(1,1));
+
+	}
+
+	//取干支(六十)纳音
+	function getGZNaYin(gz)
+	{
+		var dzIdx = dzNames.indexOf(gz.substr(1,1));
+		var gzIdx = nayin60.indexOf(gz);
+		if (dzIdx%2==0) gzIdx+=2;
+		return nayin60.substr(gzIdx+2,3);
+	}
+
+	//4.定五行局
+	function draw5XJ(mggz)
+	{
+		var chwxName = "二三四五六", wuxingName = "水木金土火", wxjN="23456";
+		var nayinName = getGZNaYin(mggz);
+		var wx = nayinName.substr(2,1);
+		$('#wxj').attr('title',mggz + nayinName).html(wx + chwxName.charAt(wuxingName.indexOf(wx)) + '局');
+		return parseInt(wxjN.charAt(wuxingName.indexOf(wx)));
+	}
+
+	//起大限布年龄段
+	function drawSpaceNld(xb,yy,wxj,mIdx)
+	{
+		//1阳 男 0阴 女
+		var offSet = (xb^yy==0)?1:-1;
+		var cIdx=mIdx,begin=0,end=0,step=0;
+		do
+		{
+			begin=wxj+step;
+			end=begin+9;
+			$('#nld'+cIdx).html(begin + '-' + end);
+			cIdx=fixRange(cIdx+offSet,0,11);
+			step+=10;
+		}
+		while(cIdx!=mIdx);
+	}
+
+	//5.安紫微星 6.安紫微系诸星
+	//7.安天府星 8.安天府系诸星
+	function drawZWTFStar(yd,wxj)
+	{
+		var tMS = yd%wxj;
+		var tAdd = (tMS== 0) ? 0 : (wxj-tMS)
+		var tSS = (yd+tAdd)/wxj;
+		if (tAdd>0) tSS = (tAdd%2 ==0) ? (tSS+tAdd) : (tSS-tAdd);
+		var tpIdx=fixRange(1 + tSS,0,11); //紫微所在宫位索引
+
+		var idx = 0;
+		var ziweiXX = ["(紫)微","天(机)","","太(阳)","(武)曲","天(同)","","","(廉)贞"];//逆行
+		for (var i=0,j=ziweiXX.length; i<j; i++)
+		{
+			if (ziweiXX[i].length<1) continue;
+			idx=fixRange(tpIdx-i,0,11);
+			PlateState.GetSpaceByIndex(idx).StoreStar(true,ziweiXX[i]);
+		}
+
+		var s1=2,s2=8;//寅申同宫2|8
+		var offSet = 0;
+		if (tpIdx!=s1 || tpIdx != s2)
+		{
+			offSet=fixRange(tpIdx-s1,0,11);
+		}
+		var fIdx=fixRange(s1-offSet,0,11);
+		var tianfuXX = ["天(府)","太(阴)","(贪)狼","(巨)门","天(相)","天(梁)","七(杀)","","","","(破)军"];//顺行
+		for (var m=0,n=tianfuXX.length; m<n; m++)
+		{
+			if (tianfuXX[m].length<1) continue;
+			idx=fixRange(fIdx+m,0,11);
+			PlateState.GetSpaceByIndex(idx).StoreStar(true,tianfuXX[m]);
+		}
+	}
+
+	//9.安时系诸星、日系恩光天贵
+	function drawShizhi(sz,yz,rq)
+	{
+		var sOffSet = dzNames.indexOf(sz);
+		var idx= (dzNames.indexOf(yz))%4; //年支三合
+		var allStars = ["文(昌)","文(曲)","地(空)","地(劫)","(火)星","(铃)星","*台辅","*封诰"];
+		var linkStars = ["(恩)光","天(贵)"];//退后一步
+		var offSets = [['戌',-1],['辰',1],['亥',-1],['亥',1],['寅卯丑酉'.charAt(idx),1],['戌戌卯戌'.charAt(idx),1],['午',1],['寅',1]];
+		var tIdx = -1;
+		var star='';
+		for(var i=0,j=allStars.length;i<j;i++)
+		{
+			tIdx = dzNames.indexOf(offSets[i][0]);
+			if (sOffSet>0)
+				tIdx += sOffSet*offSets[i][1];
+			star=allStars[i];
+			if (star.charAt(0)=='*') star = star.substr(1);
+			tIdx = fixRange(tIdx,0,11);
+			PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0)!='*', star);
+			if (i<linkStars.length)
+			{
+				PlateState.GetSpaceByIndex(fixRange(tIdx+rq-2,0,11)).StoreStar(false, linkStars[i]);
+			}
+		}
+	}
+
+	//10.安月系诸星、日系三台八座
+	function drawYueStar(yue,rq)
+	{
+		var yzName=dzNames.charAt(fixRange(yue+2-1,0,11));
+		var idx= (dzNames.indexOf(yzName))%4; //月支三合
+		var allStars = ["*(左)辅","*(右)弼","天(刑)","天(姚)","月马","(解)神","天(巫)","阴煞"];
+		var linkStars = ["三(台)","八(座)"], lnkOffSet=[1,-1];
+		var xIdx = ((yue%2==0)?(yue/2):(yue+1)/2)-1;
+		var sIdx = yue%6;
+		var offSets = [['辰',1],['戌',-1],['酉',1],['丑',1],['寅亥申巳'.charAt(idx),0],['申戌子寅辰午'.charAt(xIdx),0],['寅亥巳申'.charAt(idx),0],['寅子戌申午辰'.charAt(sIdx-1),0]];
+
+		for(var i=0,j=allStars.length;i<j;i++)
+		{
+			tIdx = dzNames.indexOf(offSets[i][0]);
+			if (offSets[i][1]!=0)
+				tIdx += (yue-1)*offSets[i][1];
+			star=allStars[i];
+			if (star.charAt(0)=='*') star = star.substr(1);
+			tIdx = fixRange(tIdx,0,11);
+			PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0)=='*', star);
+			if (i<linkStars.length)
+			{
+				PlateState.GetSpaceByIndex(fixRange(tIdx+((rq-1)*lnkOffSet[i]),0,11)).StoreStar(false, linkStars[i]);
+			}
+		}
+	}
+
+	//12.13.安年干系诸星、安生年博士十二星
+	function drawLCYTBSX(ng,xb,yy)
+	{
+		var ngIdx = tgNames.indexOf(ng);
+		var idx=[2,3,5,6,5,6,8,9,11,0];
+		var bs12=["博士","力士","青龙","小耗","将军","奏书","飞廉","喜神","病符","大耗","伏兵","官府"];
+		idx = idx[ngIdx]
+		PlateState.GetSpaceByIndex(fixRange(idx-1,0,11)).StoreStar(true, '(陀)罗');
+		PlateState.GetSpaceByIndex(idx).StoreStar(true, '(禄)存');
+		PlateState.GetSpaceByIndex(fixRange(idx+1,0,11)).StoreStar(true, '擎(羊)');
+		for (var i=0,j=bs12.length; i<j; i++)
+		{
+			$('#pbs'+idx).html(bs12[i]);
+			idx=fixRange(idx+1,0,11);
+		}
+
+		var allStars = ["*天(魁)","*天(钺)","天(官)","天(福)"];
+		var dzgwArr = ["丑子亥亥丑子丑午卯卯","未申酉酉未申未寅巳巳","未辰巳寅卯酉亥酉戌午","酉申子亥卯寅午巳午巳"];
+		for (var i=0,j=allStars.length; i<j; i++)
+		{
+			star=allStars[i];
+			if (star.charAt(0)=='*') star = star.substr(1);
+			idx=dzNames.indexOf(dzgwArr[i].charAt(ngIdx));
+			PlateState.GetSpaceByIndex(idx).StoreStar(allStars[i].charAt(0)=='*', star);
+		}
+	}
+	//14.安年支系诸星
+	function drawNZStar(yz)
+	{
+		var sOffSet = dzNames.indexOf(yz);
+		var idx=sOffSet%4; //年支三合
+		var allStars = ["命马","天(哭)","天(虚)","(龙)池","(凤)阁","红(鸾):天(喜)","(孤)辰","(寡)宿","蜚廉","破碎","天空"];
+		var offSets = [['寅亥申巳'.charAt(idx),0],['午',-1],['午',1],['辰',1],['戌',-1],['卯',-1]
+			,['寅寅巳巳巳申申申亥亥亥寅'.charAt(sOffSet),0]	//孤辰
+			,['戌戌丑丑丑辰辰辰未未未戌'.charAt(sOffSet),0]	//寡宿
+			,['申酉戌巳午未寅卯辰亥子丑'.charAt(sOffSet),0]	//蜚廉
+			,['巳丑酉'.charAt(sOffSet%3),0]	//破碎
+			,[dzNames.charAt(fixRange(sOffSet+1,0,11)),0]	//天空
+			];
+		for(var i=0,j=offSets.length/*allStars.length*/;i<j;i++)
+		{
+			tIdx = dzNames.indexOf(offSets[i][0]);
+			if (offSets[i][1]!=0)
+				tIdx += sOffSet*offSets[i][1];
+			star=allStars[i];
+			tIdx = fixRange(tIdx,0,11);
+			if (star.indexOf(':')!=-1)
+			{
+				var pStars = star.split(':');
+				PlateState.GetSpaceByIndex(tIdx).StoreStar(false, pStars[0]);
+				PlateState.GetSpaceByIndex(fixRange(tIdx+6,0,11)).StoreStar(false, pStars[1]);
+			}
+			else
+			{
+				PlateState.GetSpaceByIndex(tIdx).StoreStar(star=='命马', star);
+			}
+		}
+	}
+	//15.安五行局长生十二星
+	function draw5XCS(xb,yy,wxj)
+	{
+		//1阳 男 0阴 女
+		var offSet = (xb^yy==0)?1:-1;
+		var cs12 = ["长生","沐浴","冠带","临官","帝旺","衰","病","死","墓","绝","胎","养"];
+		var csIdxs = [-1,-1,8,11,5,8,3];
+		var idx= csIdxs[wxj];
+		for (var i=0,j=cs12.length; i<j; i++)
+		{
+			$('#pcs'+idx).html(cs12[i].length==2?cs12[i]:'&nbsp;'+cs12[i]);
+			idx=fixRange(idx+offSet,0,11);
+		}
+	}
+	//16.安六十甲子旬中空亡
+	//17.安截路空亡
+	//21.诸星庙旺利陷、亮度
+
+	//庙旺利陷配置
+	var MWLXLevel = ["庙","旺","得","利","平","闲","陷"];
+	var MWLXConfig=[["机府阴相梁破禄解劫","武同贪巨杀","昌曲","","紫廉刑姚","","阳羊火铃殇空"],//子
+					["紫武府阴贪相杀曲昌羊陀哭虚鸾喜","梁破","火铃","廉","","阳同巨","机姚劫刑使空"],//丑
+					["廉府巨相梁杀禄火铃马刑解官福鸾喜","紫阳阴","机武破","同","贪曲姚","","昌陀空劫"],//寅
+					["阳巨梁禄刑解姚哭虚鸾喜","紫机杀曲","府","武贪昌火铃","同廉","","阴相破阳殇使空劫"],//卯
+					["武府贪梁杀羊陀解劫鸾喜","阳破","紫相昌曲","机廉","同刑姚","","阴巨火铃空殇使"],//辰
+					["同昌曲禄空官福","紫阳巨","府相火铃","","机武破杀刑姚","","廉阴贪梁陀"],//巳
+					["紫机相梁破禄火铃空解劫","阳武府贪巨杀","","","廉刑姚","阴","同昌曲殇"],//午
+					["紫武府贪杀羊陀","梁破曲","阳相","廉昌火铃","刑姚","同阴巨","机刑殇空姚劫"],//未
+					["廉巨相杀禄官福马哭虚空","紫同","机阳武府破昌曲","阴","贪","","梁陀火铃劫"],//申
+					["巨昌曲杀禄空刑姚","紫机府阴杀","梁火铃","贪武","阳同廉姚","阴","相破使劫"],//酉
+					["武府贪梁杀羊陀解姚劫鸾喜","阴破","紫相","机廉","同","阳","巨昌曲使空"],//戌
+					["同阴禄姚鸾喜","紫巨曲","府相","昌火铃","机武杀破马刑劫","","阳廉贪梁陀空"]//亥
+	];
+	var TGSHLevel=["禄","权","科","忌"];
+	var TGSHConfig=["廉破武阳","机梁紫阴","同机昌廉","阴同机巨","贪阴右机","武贪梁曲","阳武阴同","巨阳曲昌","梁紫左武","破巨阴贪"];
+
+
+	//23.起小限
+	//---排流年星曜
+	//1.安流年干系流星
+	//2.安流年支系流星
+	//3.安流年岁前星
+	function drawNZSQX(nz)
+	{
+		var sj12 = ["岁建","晦气","丧门","贯索","官符","小耗","大耗","龙德","白虎","天德","吊客","病符"];
+		var idx= dzNames.indexOf(nz);
+		for (var i=0,j=sj12.length; i<j; i++)
+		{
+			$('#psj'+idx).html(sj12[i]);
+			idx=fixRange(idx+1,0,11);
+		}
+	}
+	//4.安流年将前星
+	function drawNZJQX(nz)
+	{
+		var jq12 = ["将星","攀鞍","岁驿","息神","华盖","劫煞","灾煞","天煞","指背","咸池","月煞","亡神"];
+		var idx= (dzNames.indexOf(nz))%4;
+		var offSet = [0,9,6,3];//子酉午卯
+		idx = offSet[idx];
+		for (var i=0,j=jq12.length; i<j; i++)
+		{
+			$('#pjq'+idx).html(jq12[i]);
+			idx=fixRange(idx+1,0,11);
+		}
+	}
+	//6.安流年斗君
+
+//左上(0) 中上(1) 右上(2) 右中(3) 右下(4) 中下(5) 左下(6) 左中(7)
+	var pLineCfg = [1,1,2,3,3,4,5,5,6,7,7,0];
+//对宫飞化自化 ↖↑↗→↘↓↙←
+	var pZhCfg = [5,5,6,7,7,0,1,1,2,3,3,4]; //宫干自化箭头方向
+	var pFhChars = ["↖","↗","↗","↗","↘","↘","↘","↙","↙","↙","↖","↖"];
+	var pZhChars = ["↓","↓","↙","←","←","↖","↑","↑","↗","→","→","↘"];
+	var pXYCfg = [
+		function(p){return { x:p.left,y:p.top,id:p.id};},							//左上(0)
+		function(p){return { x:p.left + (p.width/2),y:p.top,id:p.id};},				//中上(1)
+		function(p){return { x:p.left + p.width,y:p.top,id:p.id};},					//右上(2)
+		function(p){return { x:p.left + p.width,y:p.top + (p.height/2),id:p.id};},	//右中(3)
+		function(p){return { x:p.left + p.width,y:p.top + p.height,id:p.id};},		//右下(4)
+		function(p){return { x:p.left + (p.width/2),y:p.top + p.height,id:p.id};},	//中下(5)
+		function(p){return { x:p.left,y:p.top + p.height,id:p.id};},				//左下(6)
+		function(p){return { x:p.left,y:p.top + (p.width/2),id:p.id};}				//左中(7)
+	];
+
+//显示对宫飞化及自化
+function DrawSpaceSH()
+{
+	var pid=0;
+	var pObj = PlateState.GetSpaceByObjectId('p'+pid).GetPosition();
+	var fhc = pFhChars[pid], zhc = pZhChars[pid];
+
+	//对宫飞化
+	var pos = pXYCfg[pLineCfg[pid]](pObj);
+	var renderStr = '<div class="dot dgfh" style="top:'+pos.y+'px;left:'+pos.x+'px;"><span class="arrow">'+fhc+'</span>禄</div>';
+	$(document.body).append(renderStr);
+
+	//本宫自化
+	pos = pXYCfg[pZhCfg[pid]](pObj);
+	renderStr = '<div class="dot bgfh" style="top:'+pos.y+'px;left:'+pos.x+'px;"><span class="arrow">'+zhc+'</span>权</div>';
+	$(document.body).append(renderStr);
+
+	//$('.pdir').css('opacity','0.4');
+	$('.pdir').css('visibility','hidden');
+}
+
+function GetGZSelect(sGZ)
+{
+	var opSelObj = new Array();
+	var naGZ = [], yaYF=[1864,1924,1984];
+	for (var i=0,j=nayin60.length; i<j ; i++ )
+	{
+		naGZ[0] = nayin60.substr(i,2);naGZ[1] = nayin60.substr(i+2,2);
+		opSelObj[opSelObj.length] = '<option value="'+ naGZ[0] + '"'+ ((naGZ[0]==sGZ)?' selected="selected"':'') +'>' + naGZ[0]+'('+ yaYF.join() +')</option>';
+
+		yaYF[0] = yaYF[0]+1, yaYF[1]=yaYF[1]+1, yaYF[2]=yaYF[2]+1;
+		opSelObj[opSelObj.length] = '<option value="'+ naGZ[1]  + '"'+  ((naGZ[1]==sGZ)?' selected="selected"':'') +'>' + naGZ[1]+'('+ yaYF.join() +')</option>';
+		yaYF[0] = yaYF[0]+1, yaYF[1]=yaYF[1]+1, yaYF[2]=yaYF[2]+1;
+		i+=6;
+	}
+	return opSelObj;
+}
+
+//命盘状态
+var PlateState = {
+	Rendered:false,
+	GetSpaceByIndex:function(idx){return PlateState['Space'+idx];},
+	GetSpaceByObjectId:function(id){
+		return PlateState['Space'+parseInt(id.replace(/[^\d]/g,''))];
+	},
+	StoreSpace:function(idx,obj){PlateState['Space'+idx]=obj;},
+	LightSpace:function(ng){	//设置庙旺利陷、生年四化
+		var snshStars = TGSHConfig[tgNames.indexOf(ng)].split('');
+		for (var i=0,j=12; i<j ; i++)
+		{
+			var cSpace = this.GetSpaceByIndex(i);
+			var lConfig = MWLXConfig[i];
+			var lsArr=[];
+			for (var lv=0;lv<MWLXLevel.length;lv++)
+			{
+				if (lConfig[lv].length>0)
+				{
+					lsArr = lConfig[lv].split('');
+					for (var m=0,n=lsArr.length; m<n ; m++)
+					{
+						if (cSpace.HasStar(lsArr[m]))
+						{
+							cSpace.GetStar(lsArr[m]).SetLight(MWLXLevel[lv]);
+							//console.log(i + ':' + MWLXLevel[lv] + ' ' + lsArr[m]);
+						}
+					}
+					//console.log(i + ':' + MWLXLevel[lv] + ' ' + lConfig[lv]);
+				}
+			}
+			for (var p=0,q=4; p<q ; p++ )
+			{
+				if (cSpace.HasStar(snshStars[p]))
+				{
+					cSpace.GetStar(snshStars[p]).SetSNSH(TGSHLevel[p]);
+				}
+			}
+			//console.log('宫内驻星:' + cSpace.GetStarCount());
+		}
+		//console.log(snshStars);
+	},
+	Empty:function(){ //清除原始数据
+		for (var i=0;i<12;i++)
+		{
+			var space=PlateState.GetSpaceByIndex(i);
+			if (space) space.ClearStar();
+		}
+		//清除飞化显示
+		$('.dgfh,.bgfh').remove();
+	}
+};
+
+function Hashtable()
+{
+    var _hash= new Object();
+    this.add=function(key,value){
+		if(typeof(key)!="undefined"){
+			if(this.contains(key)==false){
+				_hash[key]=typeof(value)=="undefined"?null:value;
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+      }
+    this.remove=function(key){delete _hash[key];}
+    this.count=function(){var i=0;for(var k in _hash){i++;} return i;}
+    this.items=function(key){return _hash[key];}
+    this.contains=function(key){ return typeof(_hash[key])!="undefined";}
+    this.clear = function(){for(var k in _hash){delete _hash[k];}}
+}
+
+
+//单个星
+var SingleStar = function(isJiaStar,starName)
+{
+	var that=this;
+	this.Name = starName;
+	this.Level = (isJiaStar)?1:2;
+
+	var _light = '',_absName = starName;
+
+	var sIdx = starName.indexOf('(');
+	var eIdx = starName.indexOf(')');
+	if (sIdx!=-1 && eIdx !=-1)
+	{
+		this.Name = starName.replace('(','').replace(')','');
+		_absName = starName.substr(sIdx+1,1);
+	}
+
+	//设置亮度
+	this.SetLight=function(lv){
+		_light = lv;
+		var cObj = $('#'+that.GetStarKey());
+		cObj.parent().append('<span class="sl">'+lv+'</span>');
+	};
+
+	//设置生年四化
+	this.SetSNSH=function(sh){
+		var cObj = $('#'+that.GetStarKey());
+		cObj.parent().append('<span class="sn">'+sh+'</span>');
+	};
+
+	//获取简称
+	this.GetAbsName=function(){ return _absName; };
+
+	var _sKey = null;
+	this.GetStarKey=function(){
+		if (_sKey) return _sKey;
+		var len = _absName.length;
+		if (len>1)
+		{
+			var i=1;
+			var item=_absName.charCodeAt(0);
+			while(i<len)
+			{
+				item = item ^ _absName.charCodeAt(i);
+				i++;
+			}
+			_sKey='s_'+ len + '_'+item;
+		}
+		else
+		{
+			_sKey='s_'+_absName.charCodeAt(0);
+		}
+		return _sKey;
+	};
+};
+
+
+//单个宫位对象
+var SingleSpace = function(pid, idx)
+{	
+	var that=this;
+	var sgz,objId=pid;
+	var allStars = new Hashtable();
+
+	this.Index = idx;
+	this.GetGZ=function(){return sgz;};
+	this.GetObjectId=function(){return objId;};
+
+	//保存干支
+	this.StoreGZ=function(gz){
+		sgz = gz;
+		$('#pgz'+that.Index).html(gz);
+	};
+
+	this.HasStar=function(sKey) { return allStars.contains(sKey); };
+	this.GetStar=function(sKey){ return allStars.items(sKey);};
+
+	this.GetStarCount=function(){
+		return allStars.count();
+	};
+
+	//存储宫位内星星
+	this.StoreStar = function(isJiaStar,starName)
+	{
+		var sObj = new SingleStar(isJiaStar,starName);
+		var sKey = sObj.GetAbsName();
+		if (!allStars.contains(sKey))
+			allStars.add(sKey,sObj);
+		var jObj = $('#ps'+that.Index);
+		var sid = sObj.GetStarKey();
+		if (isJiaStar)
+		{
+			var cObj = jObj.find('span.yiStar').first();
+			if (cObj.length)
+			{
+				$('<span class="vl"><span class="jiaStar" id="'+sid+'">'+ sObj.Name +'</span></span>').insertBefore(cObj.parent());
+			}
+			else
+			{
+				jObj.append('<span class="vl"><span class="jiaStar" id="'+sid+'">'+ sObj.Name +'</span></span>');
+			}
+		}
+		else
+		{	
+			jObj.append('<span class="vl"><span class="yiStar" id="'+sid+'">'+ sObj.Name +'</span></span>');
+		}
+
+		if (sKey=='左' || sKey =='右')
+			sObj.SetLight('庙');
+	};
+
+	//清除全部星星
+	this.ClearStar = function()
+	{
+		allStars.clear();
+		$('#ps'+that.Index).html('');
+	};
+
+	//获取宫位定位
+	this.GetPosition=function()
+	{
+		var pObj = $('#p'+ that.Index);
+		var pOffset = pObj.offset();
+		return {id:pid, left:pOffset.left, top:pOffset.top, width:pObj.width(), height:pObj.height()};
+	};
+
+
+}
+
+jQuery(function($) {
+
+	$('#calcSpace').click(function(e){
+
+		var ylGZName=$('#ylgz').html();
+		var ynTG = ylGZName.substr(0,1); //天干
+		$('#bmsh').html(TGSHConfig[tgNames.indexOf(ynTG)]); //生年四化
+		var ynDZ = ylGZName.substr(1,1);
+		var cssc = $('#ylsc').html();//出生时辰
+		var csyf = parseInt($('#ylyf').html());//出生月份
+		var csrq = parseInt($('#ylrq').html());//出生日期
+
+		PlateState.Empty();
+		draw12GZ(ynTG); //依天干算出宫位干支
+		draw12GW(csyf, dzNames.indexOf(cssc), ynDZ); //依命身年支安天才天寿
+
+		var wxj = draw5XJ(PlateState["MGGZ"]);
+		var xb = 1-YinYang.indexOf($('#qkxb').html())%2;
+		var yy = 1-tgNames.indexOf(ynTG)%2;
+		drawSpaceNld(xb,yy,wxj,parseInt(PlateState["MGIndex"]));
+		drawZWTFStar(csrq, wxj);
+		drawLCYTBSX(ynTG,xb,yy);//禄存12博士
+		drawNZStar(ynDZ);//年支星系
+		drawShizhi(cssc,ynDZ,csrq); //时支星系
+		drawYueStar(csyf,csrq);//月系
+
+		draw5XCS(xb,yy,wxj);//12长生
+		drawNZSQX(ynDZ);//12岁建
+		drawNZJQX(ynDZ);//12将前
+
+		PlateState.LightSpace(ynTG); //庙旺利陷
+
+		DrawSpaceSH();
+		PlateState.Rendered = true;
+		//$('#cplCenter').hide();
+		//$('#p'+PlateState["MGIndex"]).click(); //显示三方四正线
+		//$('#zwsj').hide();
+		//$('#bzsj').hide();
+	});
+
+//选择阴历干支
+	$('#ylgz').click(function(e) {
+		if (!$('#ylgzSel').length)
+		{
+			var opSelObj = GetGZSelect($(this).html());
+			var pOffset = $(this).offset();
+			$(document.body).append('<select id="ylgzSel" style="position:absolute;top:'+pOffset.top+'px;left:'+pOffset.left+'px;">'+ opSelObj.join('')+'</select>');
+			if ($('#ylgzSel').length)
+			{
+				$($('#ylgzSel')[0]).change(function(){ 
+					$('#ylgz').html(this.value);
+					var ylyf=this.options[this.selectedIndex].text.match(/,(\d+),/)[1];
+					$('#ylnf').val(ylyf);
+					$('#yaln').html(ylyf);
+					$('#ylgzSel').remove();
+				});
+				$('#ylgzSel').blur(function(){$('#ylgzSel').remove();});
+			}
+		}
+		e.stopPropagation();
+	});
+
+	function miniInput(jObj,id,tid)
+	{
+		if (!$('#'+id).length)
+		{
+			var pOffset = jObj.offset();
+			$(document.body).append('<input id="'+id+'" class="inpMini" style="position:absolute;top:'+pOffset.top+'px;left:'+pOffset.left+'px;" value="'+jObj.html()+'"></input>');
+			if ($('#'+id).length)
+			{
+				$('#'+id).css('width',($('#'+tid).html().length)/2*15);
+				$($('#'+id)[0]).blur(function(){ if(this.value.length){$('#'+tid).html(this.value); $('#'+id).remove();}});
+				$('#'+id).select();
+			}
+		}
+	}
+
+//选择阴历月份、阴历日期
+	$('#ylyf,#ylrq').click(function(e) {
+		miniInput($(this),'ylyfInput',$(this)[0].id)
+		e.stopPropagation();
+	});
+
+//填写阳历日期
+	$('#yaln,#yaly,#yalr,#yals').click(function(e) {
+		miniInput($(this),'yarqInput',$(this)[0].id)
+		e.stopPropagation();
+	});
+
+//选择阴历时辰
+	$('#ylsc').click(function(e) {
+		if (!$('#ylscSel').length)
+		{
+			var pOffset = $(this).offset();
+			var opArr = new Array();
+			var curVal = $(this).html();
+			var sArr = [23,':00','-',0,':59'];
+			for (var i=0,j=dzNames.length; i<j ; i++ )
+			{
+				if (i==1) sArr = [1,':00','-', 2,':59'];
+				opArr[opArr.length] = '<option value="'+ dzNames.charAt(i) + '"'+ ((dzNames.charAt(i)==curVal)?' selected="selected"':'') +'>' +dzNames.charAt(i)+'时('+ sArr.join('') +')</option>';
+				sArr[0]+=2, sArr[3]+=2;
+			}
+			$(document.body).append('<select id="ylscSel" style="position:absolute;top:'+pOffset.top+'px;left:'+pOffset.left+'px;">'+opArr.join('')+'</select>');
+			if ($('#ylscSel').length)
+			{
+				$($('#ylscSel')[0]).change(function(){ $('#ylsc').html(this.value); $('#ylscSel').remove();});
+				$('#ylscSel').blur(function(){$('#ylscSel').remove();});
+			}
+		}
+		e.stopPropagation();
+	});
+
+	$('#qkxb').click(function(){
+		var old = $(this).html();
+		var chg = function(){$(this).html((old=='乾')?'坤':'乾');}
+		$('#qkxb').toggle('slow', chg).toggle('fast', chg);
+	});
+
+
+	$('td.Space').click(function(e) {
+		e.preventDefault();
+		if (!PlateState.Rendered) return;
+
+		var pIdName = $(this)[0].id;
+		var show2SpaceLine=function(p1,p2,szArr) { 
+			//console.log(szArr);
+			$(document.body).append('<div class="line" id="'+(p1.id + "_" + p2.id)+'">' + DrawLine(p1.x, p1.y, p2.x, p2.y, "red",1,0, p1.id + " " + p2.id, true) + '</div>');
+		}
+
+		var dzIdx = parseInt(pIdName.replace(/[^\d]+/,''));
+		var dzName = dzNames.charAt(dzIdx);
+		var dzdgIdx = (dzIdx>5)? dzIdx-6 : dzIdx+6;
+		var dzdgName = dzNames.charAt(dzdgIdx);
+
+		var shName = dzName;
+		for(var i=0,j=dzsh.length;i<j;i++)
+		{
+			if (dzsh[i].indexOf(dzName) !=-1)
+			{
+				shName = dzsh[i];
+				break;
+			}
+		}
+		if (shName.length!=3)
+			return;
+		//var startTime = (new Date()).getTime();
+		//基础宫
+		var basePos = PlateState.GetSpaceByObjectId(pIdName).GetPosition();
+			basePos = pXYCfg[pLineCfg[dzNames.indexOf(dzName)]](basePos);
+		//画对宫线
+		var dgPos = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(dzdgName)).GetPosition();
+		    dgPos = pXYCfg[pLineCfg[dzNames.indexOf(dzdgName)]](dgPos);
+		//01 12 02
+		var shParty = shName.replace(dzName,'').split('');
+		var shpl = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(shParty[0])).GetPosition();
+		    shpl =pXYCfg[pLineCfg[dzNames.indexOf(shParty[0])]](shpl);
+		var shp2 = PlateState.GetSpaceByObjectId('p' + dzNames.indexOf(shParty[1])).GetPosition();
+		    shp2 =pXYCfg[pLineCfg[dzNames.indexOf(shParty[1])]](shp2);
+		var szgw = [basePos.id, shpl.id, shp2.id, dgPos.id];
+
+		$('div.line').remove();
+		show2SpaceLine(basePos,dgPos,szgw);
+		show2SpaceLine(basePos,shpl,szgw);
+		show2SpaceLine(basePos,shp2,szgw);
+		show2SpaceLine(shpl,shp2,szgw);
+		//console.log((new Date()).getTime()-startTime);
+		PlateState["SZGW"]=szgw;
+	});
+
+	//年龄段
+	$('.yfqj').click(function(e){
+		e.stopPropagation();
+		//console.log(this);
+		if (PlateState["DXNLD"])
+		{
+			$('#'+PlateState["DXNLD"]).removeClass('selBorder');
+		}
+		var jObj = $(this);
+		jObj.addClass('selBorder');
+		PlateState["DXNLD"] = jObj[0].id;
+	});
+
+	//盘干支
+	$('div.pgz').click(function(e){
+		e.stopPropagation();
+	});
+
+	//通过阳历计算农历
+	$('#calLuna').click(function(e){
+		var tObj = CalConv(0,parseInt($('#yaln').html()),parseInt($('#yaly').html()),parseInt($('#yalr').html()));
+		$('#ylgz').html(tgNames.charAt(fixRange(tObj.Year-1984,0,9)%10) + dzNames.charAt(fixRange(tObj.Year-1984,0,11)%12));
+		$('#ylyf').html(tObj.Month);
+		$('#ylrq').html(tObj.Day);
+		$('#ylnf').val(tObj.Year);
+		//yals
+		e.stopPropagation();
+	});
+
+	//通过农历计算阳历
+	$('#calSolar').click(function(e){
+		//ylsc ylnf
+		var tObj = CalConv(1,parseInt($('#ylnf').val()),parseInt($('#ylyf').html()),parseInt($('#ylrq').html()));
+		$('#yaln').val(tObj.Year);
+		$('#yaly').html(tObj.Month);
+		$('#yalr').html(tObj.Day);
+		e.stopPropagation();
+	});
+
+	$('#ycsjBtn').click(function(e) {
+		e.stopPropagation();
+		$('#cplCenter').toggle();
+	});
+
+});
+ //-->
+ </script>
+ </head>
+
+ <body>
+
+ <br/>
+
+<table border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#03030F">
+   <tr>
+     <td bgcolor="#FFFFFF">
+			<input type="button" value="交换命盘时间信息" id="ycsjBtn" />
+	 </td>
+   </tr>
+</table>
+
+ <br/>
+
+ <table border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#03030F">
+   <tr>
+     <td bgcolor="#FFFFFF" colspan="6">
+		<div id="shNote">图例：生年<span class="sn">禄</span>&nbsp;<span class="sn">权</span>&nbsp;<span class="sn">科</span>&nbsp;<span class="sn">忌</span>，
+本命<span class="mg">禄</span>&nbsp;<span class="mg">权</span>&nbsp;<span class="mg">科</span>&nbsp;<span class="mg">忌</span>，
+大限<span class="dxsh">禄</span>&nbsp;<span class="dxsh">权</span>&nbsp;<span class="dxsh">科</span>&nbsp;<span class="dxsh">忌</span>，
+流年<span class="lnsh">禄</span>&nbsp;<span class="lnsh">权</span>&nbsp;<span class="lnsh">科</span>&nbsp;<span class="lnsh">忌</span>。
+
+</div>
+     </td>
+   </tr>
+  <tr>
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+     <td align="center" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>火 <span class="bf">东南</span> 巽<span title="风">&#x2634;</span></td></tr></table></td>
+     <td align="center" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>火 <span class="bf">南</span> 离<span title="火">&#x2632;</span></td></tr></table></td>
+
+     <td align="center" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>土 <span class="bf">西南</span> 西 </td></tr></table></td>
+     <td align="center" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>金 <span class="bf">西南</span> 坤<span title="地">&#x2637;</span></td></tr></table></td>
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+   </tr>
+   <tr>
+
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+<td class="Space" id="p5">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps5">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz5">&nbsp;巳</div>
+
+<div class="vl pcs" id="pcs5">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw5">&nbsp;</span><br/><span id="nld5" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj5" class="vl sj12">&nbsp;</span>
+<span id="pjq5" class="vl jq12">&nbsp;</span>
+<span id="pbs5" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+
+</td>
+     
+<td class="Space" id="p6">
+
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps6">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz6">&nbsp;午</div>
+
+<div class="vl pcs" id="pcs6">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw6">&nbsp;</span><br/><span id="nld6" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj6" class="vl sj12">&nbsp;</span>
+<span id="pjq6" class="vl jq12">&nbsp;</span>
+<span id="pbs6" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+
+<td class="Space" id="p7">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps7">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz7">&nbsp;未</div>
+<div class="vl pcs" id="pcs7">&nbsp;</div>
+
+</td>
+
+<td width="40%" align="center"><span id="gw7">&nbsp;</span><br/><span id="nld7" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj7" class="vl sj12">&nbsp;</span>
+<span id="pjq7" class="vl jq12">&nbsp;</span>
+<span id="pbs7" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+
+     <td class="Space" id="p8">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps8">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz8">&nbsp;申</div>
+<div class="vl pcs" id="pcs8">&nbsp;</div>
+
+</td>
+
+<td width="40%" align="center"><span id="gw8">&nbsp;</span><br/><span id="nld8" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj8" class="vl sj12">&nbsp;</span>
+<span id="pjq8" class="vl jq12">&nbsp;</span>
+<span id="pbs8" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+
+   </tr>
+
+   <tr>
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>土<br>
+     <br><span class="bf">东</span><br><br>东<br>南</td></tr></table></td>
+
+<td class="Space" id="p4">
+
+<!--BEGIN-->
+
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps4">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz4">&nbsp;辰</div>
+<div class="vl pcs" id="pcs4">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw4">&nbsp;</span><br/><span id="nld4" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj4" class="vl sj12">&nbsp;</span>
+<span id="pjq4" class="vl jq12">&nbsp;</span>
+<span id="pbs4" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+
+</td>
+
+     <td colspan="2" rowspan="2" align="left" valign="top" bgcolor="#F2F8FF">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%" id="cplCenter">
+<tr><td>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%" id="zwsj">
+<tr>
+<td>命四化[<span class="red" id="bmsh">&nbsp;</span>] <span class="todo">年龄<font color="blue" id="xjnl">&nbsp;</font>岁</span></td>
+<td><font color="purple">命宫在<span id="mgdz">&nbsp;</span></font></td></tr>
+<tr><td>盘类：<span id="mplx">天盘</span> <span class="inpCh" id="wxj">五行局</span> 子斗在<span id="zddz">&nbsp;</span></td><td><font color="purple">身宫在<span id="sgdz">&nbsp;</span></font></td></tr>
+
+<tr><td><span class="inpCh black" title="以阳历算阴历" id="calLuna">阳历</span>：<span class="inpCh red" id="yaln">2011</span>年<span class="inpCh red" id="yaly">11</span>月<span class="inpCh red" id="yalr">11</span>日<span class="inpCh red" id="yals">02</span>时生</td><td><font color="#008000">命主<span id="zwmz">&nbsp;</span></font></td></tr>
+<tr><td><input type="hidden" id="ylnf" value="2011" /><span class="inpCh black" title="以阴历算阳历" id="calSolar">阴历</span>：<span class="inpCh red" id="ylgz">辛卯</span>年<span class="inpCh red" id="ylyf">10</span>月<span class="inpCh red" id="ylrq">16</span>日<span class="inpCh red" id="ylsc">丑</span>时生 </td>
+
+<td><font color="#008000">身主<span id="zwsz">&nbsp;</span></font></td></tr>
+</table>
+
+</td></tr>
+<tr><td>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" id="bzsj">
+<tr><td align="center" width="20"><input type="button" id="calcSpace" value="&#x262F;"/><br/><span class="inpCh red" id="qkxb">乾</span>造：</td>
+<td valign="top">
+<font color="#009999">石榴木</font><br/>
+<font color="#0080FF">劫财</font><br/>
+<font color="#FF0000">辛<br/>酉</font><br/>
+
+辛<font color="#0080FF">劫财</font>
+</td>
+
+<td valign="top">
+
+<font color="#009999">平地木</font><br/>
+<font color="#0080FF">正印</font><br/>
+<font color="#ff0000">己<br/>亥</font><br/>
+壬<font color="#0080FF">食神</font><br/>
+
+甲<font color="#0080FF">偏财</font>
+
+</td>
+
+<td valign="top">
+
+<font color="#009999">壁上土</font><br/>
+<font color="#0080FF">日主</font><br/>
+<font color="#ff0000">庚<br/>子</font><br/>
+癸<font color="#0080FF">伤官</font>
+
+
+</td>
+
+<td valign="top">
+
+<font color="#009999">涧下水</font><br/>
+<font color="#0080FF">正官</font><br/>
+<font color="#ff0000">丁<br/>丑</font><br/>
+癸<font color="#0080FF">伤官</font><br/>
+辛<font color="#0080FF">劫财</font><br/>
+
+己<font color="#0080FF">正印</font>
+</td>
+</tr>
+<tr><td colspan="5">
+大运[4月换运]:
+</td></tr>
+<tr><td colspan="5" style="text-align:center">
+
+<div style="color:red">戊戌 丁酉 丙申 乙未 甲午 癸巳 壬辰 辛卯</div>
+<div style="color:#0080FF">枭神 正官 七杀 正财 偏财 伤官 食神 劫财</div>
+<div style="color:#000">1985 1995 2005 2015 2025 2035 2045 2055</div>
+
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<td class="Space" id="p9">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps9">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz9">&nbsp;酉</div>
+<div class="vl pcs" id="pcs9">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw9">&nbsp;</span><br/><span id="nld9" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj9" class="vl sj12">&nbsp;</span>
+<span id="pjq9" class="vl jq12">&nbsp;</span>
+<span id="pbs9" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+
+</table>
+<!--END-->
+
+</td>
+
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>金<br>
+     <br> <span class="bf">西</span><br><br>兑<br><span title="泽">&#x2631;</span></td></tr></table></td>
+   </tr>
+   <tr>
+
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>木<br>
+     <br><span class="bf">东</span><br> <br>震<br><span title="雷">&#x2633;</span></td></tr></table></td>
+
+     <td class="Space" id="p3">
+
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps3">
+&nbsp;</td></tr>
+
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz3">&nbsp;卯</div>
+<div class="vl pcs" id="pcs3">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw3">&nbsp;</span><br/><span id="nld3" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj3" class="vl sj12">&nbsp;</span>
+<span id="pjq3" class="vl jq12">&nbsp;</span>
+
+<span id="pbs3" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+
+	 </td>
+
+     <td class="Space" id="p10">
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps10">
+
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz10">&nbsp;戌</div>
+<div class="vl pcs" id="pcs10">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw10">&nbsp;</span><br/><span id="nld10" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj10" class="vl sj12">&nbsp;</span>
+
+<span id="pjq10" class="vl jq12">&nbsp;</span>
+<span id="pbs10" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+	 </td>
+
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>土<br>
+     <br><span class="bf">西<br><br>西<br>北</span><br><br></td></tr></table></td>
+
+   </tr>
+   <tr>
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+
+<td class="Space" id="p2">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps2">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz2">&nbsp;寅</div>
+<div class="vl pcs" id="pcs2">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw2">&nbsp;</span><br/><span id="nld2" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj2" class="vl sj12">&nbsp;</span>
+<span id="pjq2" class="vl jq12">&nbsp;</span>
+<span id="pbs2" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+
+<td class="Space" id="p1">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps1">
+&nbsp;</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz1">&nbsp;丑</div>
+<div class="vl pcs" id="pcs1">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw1">&nbsp;</span><br/><span id="nld1" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj1" class="vl sj12">&nbsp;</span>
+<span id="pjq1" class="vl jq12">&nbsp;</span>
+<span id="pbs1" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+
+</table>
+<!--END-->
+
+
+</td>
+
+<td class="Space" id="p0">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps0">
+&nbsp;
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz0">&nbsp;子</div>
+<div class="vl pcs" id="pcs0">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw0">&nbsp;</span><br/><span id="nld0" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj0" class="vl sj12">&nbsp;</span>
+<span id="pjq0" class="vl jq12">&nbsp;</span>
+<span id="pbs0" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+
+<td class="Space" id="p11">
+
+<!--BEGIN-->
+<table border="0" width="100%" height="100%">
+<tr><td valign="top" id="ps11">
+&nbsp;
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td valign="bottom">
+
+
+<table width="100%" border="0">
+<tr>
+<td width="25%" align="left">
+<div class="vl pgz" id="pgz11">&nbsp;亥</div>
+<div class="vl pcs" id="pcs11">&nbsp;</div>
+</td>
+
+<td width="40%" align="center"><span id="gw11">&nbsp;</span><br/><span id="nld11" class="yfqj">&nbsp;</span></td>
+
+<td width="35%" align="right">
+<span id="psj11" class="vl sj12">&nbsp;</span>
+<span id="pjq11" class="vl jq12">&nbsp;</span>
+<span id="pbs11" class="vl bs12">&nbsp;</span>
+</td></tr>
+</table>
+
+</td></tr>
+</table>
+<!--END-->
+
+</td>
+
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+   </tr>
+   <tr>
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>木 <span class="bf">东北</span> 艮<span title="山">&#x2636;</span></td></tr></table></td>
+
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>土 <span class="bf">北 东北</span></td></tr></table></td>
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>水 <span class="bf">北</span> 坎<span title="水">&#x2635;</span> </td></tr></table></td>
+     <td align="center" valign="middle" bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td>水 <span class="bf">西北</span> 乾<span title="天">&#x2630;</span> </td></tr></table></td>
+
+     <td bgcolor="#FFFFFF"><table width="100%" height="100%" class="pdir"><tr><td></td></tr></table></td>
+   </tr>
+ </table>
+  
+ </body>
+</html>
