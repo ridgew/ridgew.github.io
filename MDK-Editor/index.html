@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<title>MDK-Editor</title>
+	
+	<!-- JSLint -->
+	<script src="Tools/fulljslint.js" type="text/javascript"></script>
+	
+	<!-- Editor -->
+	<script src="Parsers.js" type="text/javascript"></script>
+
+	<script src="Utilites.js" type="text/javascript"></script>
+	<script src="Initializer.js" type="text/javascript"></script>
+	<script src="Editor.js" type="text/javascript"></script>
+	<script src="Curser.js" type="text/javascript"></script>
+	<script src="Selection.js" type="text/javascript"></script>
+	<script src="Keyhandler.js" type="text/javascript"></script>
+
+	<script src="UndoRedo.js" type="text/javascript"></script>
+	<script src="CopyPaste.js" type="text/javascript"></script>
+	<script src="Intellisense.js" type="text/javascript"></script>
+	<script src="Definitions.js" type="text/javascript"></script>
+	<script src="ContextMenu.js" type="text/javascript"></script>
+	
+	<!-- Stylesheets -->
+
+	<link href="Default.css" rel="stylesheet" type="text/css" />
+	<link href="style3.css"  rel="stylesheet" type="text/css" id="Theme" />
+</head>
+<body>
+	<h1>MDK-Editor &copy; 2008 (v2.10)</h1>
+	<h1 class="shadow">MDK-Editor &copy; 2008</h1>
+	
+	<div id="editor">
+
+		<div id="contentContainer">
+			<div id="contentContatiner">
+				<div id="secondary"></div>
+				<div id="content"></div>
+				<div id="errors"></div>
+			</div>
+			
+			<div id="cursorContainer">
+				<div id="curser">&nbsp;</div>
+				<div id="pre1">&nbsp;</div>
+
+				<div id="pre2">&nbsp;</div>
+				<div id="post1">&nbsp;</div>
+				<div id="post2">&nbsp;</div>
+				<div id="xmlStart">&nbsp;</div>
+				<div id="xmlFinish">&nbsp;</div>
+			</div>
+		</div>
+		
+		<div id="linenumbers"></div>
+		<div id="scrollbarX"></div>
+
+		<div id="scrollbarX_bg"></div>
+		<div id="editorinfo"></div>
+		<div id="scrollbarY"></div>
+		<div id="ContextMenu"></div>
+		<div id="Intellisense"></div>
+		<div id="errorexplain"></div>
+	</div>
+	
+	<pre id="writeroot"></pre>
+	<select id="languageSelector" onchange="changeLanguage(this)">
+
+		<option value="none"> - Language - </option>
+		<option value="Javascript">Javascript</option>
+		<option value="XML">XML</option>
+		<option value="HTML">HTML (test)</option>
+		<option value="CSS">CSS</option>
+		<option value="Text">Text</option>
+
+	</select>
+	<select id="styleselector" onchange="changeStyle(this)">
+		<option value="none"> - Themes - </option>
+		<option value="style1.css">White</option>
+		<option value="style2.css">Black</option>
+		<option value="style3.css">Chalkboard</option>
+
+		<option value="style4.css">Neutral (VS)</option>
+		<option value="style5.css">Dreamweaver</option>
+	</select>
+	<button onclick="maximized=!maximized; resizeEditor(); this.blur();"
+			id="SizeChanger" >Change Size</button>
+	<input onchange="lock_vert=(this.checked); resizeEditor(); this.blur();" 
+		   type="checkbox"  id="LockVertical" />
+	<label id="lbl1" for="LockVertical">Lock Vertical</label>
+	
+	<textarea cols="1" rows="1" id="clipboard"></textarea>
+
+</body>
+</html>

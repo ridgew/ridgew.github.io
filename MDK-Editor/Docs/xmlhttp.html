@@ -1,0 +1,75 @@
+http://blog.mdk-photo.com/post/The-most-versatile-httpRequest-function.aspx
+
+Very often when you hand-code your AJAX, you'll need a good httpRequest function, which is easy to use/call and integrate.
+
+here is my version:
+function LoadURL(action,url,postbody,delegateReturn, isXML)
+{
+    var xmlhttp = false;
+
+    try {    xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (e) {
+    try {    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } catch (E) {    xmlhttp = false; } }
+    
+    if (!xmlhttp && typeof(XMLHttpRequest) != 'undefined') {
+    try {            xmlhttp = new XMLHttpRequest();
+    } catch (e) {    xmlhttp = false;    }
+    }
+    if (!xmlhttp && window.createRequest) {
+    try {            xmlhttp = window.createRequest();
+    } catch (e) {    xmlhttp = false;    }
+    }
+
+    if ( xmlhttp )
+    {
+        xmlhttp.onreadystatechange = function(){
+            if (xmlhttp.readyState==4){
+                if (xmlhttp.status==200){
+                    if(delegateReturn != null)
+                    {
+                        if(isXML){    delegateReturn( xmlhttp.responseXML );}
+                        else{        delegateReturn( xmlhttp.responseText );}
+                    }
+                }else{
+                    alert("Error: " + xmlhttp.status + "\n\nURL: "+URL);
+                }
+            }
+        };
+        try{
+            xmlhttp.open(action,url, true);
+            xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;");
+            xmlhttp.send(postbody);
+        }catch(e){
+            alert("xmlhttp error: \n" + e.message);
+        }
+    }else{
+        alert("Your browser does not support XMLHTTP.");
+    }
+}
+
+The parameters you'll need to pass:
+
+action: "POST" or "GET"
+
+url: The URL, which when using GET, holds the Querystring, and when POST'ing only the adress for the page you need to access
+
+postbody: The Querystring of values, used in "POST - use encodeUriComponent() to encode the string, before sending it.
+
+delegateReturn: The function pointer, for the function which will recieve the returned data, Null if you only want to send.
+
+isXML: A boolean which tell the function, if the return value, is XML kind or Text kind. (you could ofcause re-write the function, to send the whole xmlhttp object to the return function)
+
+- Its extremely easy to use:
+
+function myReturnFunction(htmlDoc)
+{
+    doSomethingWithHTML( htmlDoc );
+}
+
+//Get data
+LoadURL("GET", "page.php?query=value", null, myReturnFunction, false);
+
+//Send data
+var Data = "data=" + encodeUriComponent("This could be a complex string");
+LoadURL("POST", "page.php", Data, null, false);
