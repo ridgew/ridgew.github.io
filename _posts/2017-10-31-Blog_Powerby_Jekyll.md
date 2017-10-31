@@ -85,6 +85,6 @@ Installed ruby-2.4.2 to /root/.rbenv/versions/2.4.2
 
 ### 5、Git提交
 
-    使用你最喜爱的git工具提交吧，我使用的是windows下面的TortoiseGit,易用得很。（100%可能是因为使用过TortoiseSVN的缘故。
+    使用你最喜爱的git工具提交吧，我使用的是windows下面的TortoiseGit,易用得很。（100%可能是因为使用过TortoiseSVN的缘故）
 
 >* git pull
