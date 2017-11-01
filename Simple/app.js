@@ -90,7 +90,7 @@ function asyncWriteFile(source, target, err, finish) {
         error: function(e) {err(e);}
     });
 }
-function checkpass(user, pass, cbsuccess, cberror) {
+function checkpass(user, pass, repositoryName, cbsuccess, cberror) {
     var github = new Github({
         username: user,
         password: pass,
@@ -102,27 +102,29 @@ function checkpass(user, pass, cbsuccess, cberror) {
         if (!cberror(err)) {
             global.github = github;
             global.user = user;
-            repo = github.getRepo(user, user+".github.io");
+            global.repository = repositoryName.replace(/\$/,user);
+            repo = github.getRepo(user, global.repository);
             cbsuccess();
         }
     });
 }
+
 $(document).ready(function() {
+
     var Logins = Spine.Controller.sub({
         el: $("#login"),
         elements: {
             "form": "form",
             "#loginuser": "user",
             "#loginpass": "pass",
-            "#loginerror": "err",
+            "#repositoryName": "repository",
+            "#loginerror": "err"
         },
-        events: {
-            "submit form": "check",
-        },
+        events: {"submit form": "check",},
         check: function(e) {
             $("#loading").show();
             e.preventDefault();
-            checkpass(this.user.val(), this.pass.val(),
+            checkpass(this.user.val(), this.pass.val(), this.repository.val(),
                       function(){Spine.Route.navigate("/main");},
                       curry(errShow, this.err));
         },
@@ -133,6 +135,7 @@ $(document).ready(function() {
             this.err.hide();
         }
     });
+
     var Mains = Spine.Controller.sub({
         el: $("#main"),
         elements: {
@@ -162,6 +165,7 @@ $(document).ready(function() {
             this.err.hide();
         }
     });
+
     var Posts = Spine.Controller.sub({
         el: $("#posts"),
         init: function(param) {
@@ -196,6 +200,7 @@ $(document).ready(function() {
                     gconfig = config;
                     var posts = config.posts;
                     var pages = config.pages;
+
                     for (var i = 0; i < posts.length; ++i) {
                         posts[i].num = i;
                         posts[i].type = "post";
@@ -207,6 +212,7 @@ $(document).ready(function() {
                             $("#postDelete").attr("href", "#/posts/deletepost/"+i);
                         }
                     }
+
                     for (var i = 0; i < pages.length; ++i) {
                         pages[i].num = i;
                         pages[i].type = "page";
@@ -218,6 +224,7 @@ $(document).ready(function() {
                             $("#postDelete").attr("href", "#/posts/deletepage/"+i);
                         }
                     }
+
                     var itemTemplate = Hogan.compile($("#postsItem").html());
                     var postsItemHtml = itemTemplate.render({items: posts});
                     var pagesItemHtml = itemTemplate.render({items: pages});
@@ -234,36 +241,56 @@ $(document).ready(function() {
                         }
                         $("#postdate").val((new Date()).yyyymmdd());
                     }
+
                     if (now != null) {
                         $("#posttitle").val(now.title);
                         $("#postpath").val(now.path);
                         $("#postdate").val(now.date);
                         $("#posttags").val(now.tags);
+
                         if (now.path.slice(0, 5) != "http:" && now.path.slice(0, 6) != "https:") {
                             $("#loading").show();
                             repo.read("master", now.path, function(err, data) {
                                 $("#loading").hide();
+                                var blnSetHtml = false;
                                 var content = data.match(contentpattern)[1];
                                 var md = data.match(mdpattern)[1];
-                                $("#editmd").val(md);
-                                $("#edithtml").html(content);
+                                if (content)
+                                   $("#edithtml").html(content);
+                                if (md) {
+                                    blnSetHtml = true;
+                                    $("#editmd").val(md);
+                                }
+                                if (!blnSetHtml)
+                                   $("#editmd").val(data);
                             });
                         }
+
                     }
                 });
             }
         }
     });
+
     var SimpleApp = Spine.Controller.sub({
         el: $("body"),
         init: function() {
             this.logins = new Logins();
             this.mains = new Mains();
             this.posts = new Posts();
+
             $("#postDelete").click(function(){return confirm("Are you sure you want to delete?");});
             this.routes({
-                "": function() {this.logins.init();this.logins.active();},
-                "/main": function() {this.mains.init();this.mains.active();},
+                "": function() {
+                    this.logins.init();
+                    this.logins.active();
+                },
+
+                "/main": function() {
+                    this.mains.init();
+                    this.mains.active();
+                },
+
                 "/posts/:type/:num": function(param) {
                     var type = param.type;
                     var num = Math.floor(param.num);
@@ -305,6 +332,7 @@ $(document).ready(function() {
                         temp.posts.active();
                     }
                 },
+
                 "/posts/:type": function(param) {
                     var type = param.type;
                     var temp = this;
@@ -367,13 +395,41 @@ $(document).ready(function() {
                         temp.posts.active();
                     }
                 },
-                "/posts": function() {this.posts.init();this.posts.active();}
+
+                "/posts": function() {
+                    if (repo == null)
+                    {
+                        Spine.Route.navigate("");
+                    }
+                    else {
+                        this.posts.init();
+                        this.posts.active();
+                    }
+                }
             });
+
             this.manager = new Spine.Manager(this.logins, this.mains, this.posts);
             Spine.Route.setup();
+
         }
     });
+
     new SimpleApp();
+
+    $("#btnSwitchEditor").click(function(){
+        var dObj = $('#postContSidebar')[0];
+        if (dObj.style.display == 'none')
+        {
+            dObj.style.display = 'block';
+            $('#postContainer')[0].style.width=null;
+        }
+        else
+        {
+            dObj.style.display = 'none';
+            $('#postContainer')[0].style.width='100%';
+        }
+    });
+
     $("#editmd").on("keyup", function() {
         mdupdate();
     });
@@ -425,4 +481,6 @@ $(document).ready(function() {
             reader.readAsArrayBuffer(tmp);
         }
     });
+
+
 });
