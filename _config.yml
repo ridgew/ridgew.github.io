@@ -10,7 +10,7 @@ url: "http://www.qinjun.wang"
 
 # Comment
 comment:
-    disqus: AsaTrader
+    # disqus: AsaTrader
     uyan: 2147797  # 有言id,登录友言官网申请
 
 # Social
