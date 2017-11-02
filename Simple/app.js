@@ -253,16 +253,19 @@ $(document).ready(function() {
                             repo.read("master", now.path, function(err, data) {
                                 $("#loading").hide();
                                 var blnSetHtml = false;
-                                var content = data.match(contentpattern)[1];
-                                var md = data.match(mdpattern)[1];
-                                if (content)
-                                   $("#edithtml").html(content);
-                                if (md) {
-                                    blnSetHtml = true;
-                                    $("#editmd").val(md);
+                                if ($('#mdOnlyPost')[0].checked == false) {
+                                    var content = data.match(contentpattern)[1];
+                                    var md = data.match(mdpattern)[1];
+                                    if (content)
+                                       $("#edithtml").html(content);
+                                    if (md) {
+                                        blnSetHtml = true;
+                                        $("#editmd").val(md);
+                                    }
                                 }
                                 if (!blnSetHtml)
-                                   $("#editmd").val(data);
+                                   $("#editmd").val(data); 
+                                mdupdate();
                             });
                         }
 
@@ -338,14 +341,20 @@ $(document).ready(function() {
                     var temp = this;
                     if (type.slice(0, 4) == "save") {
                         $("#loading").show();
+
+                        var template, posts;
                         if (type == "savepost") {
-                            var template = "template/post.html";
-                            var posts = gconfig.posts;
+                            template = "template/post.html";
+                            posts = gconfig.posts;
                         }
                         if (type == "savepage") {
-                            var template = "template/page.html";
-                            var posts = gconfig.pages;
+                            template = "template/page.html";
+                            posts = gconfig.pages;
                         }
+
+                        if ($('#mdOnlyPost')[0].checked)
+                            template = "template/md.html";
+
                         var now = {"title": $("#posttitle").val(),
                                    "date": $("#postdate").val(),
                                    "tags": $("#posttags").val(),
@@ -358,16 +367,34 @@ $(document).ready(function() {
                             posts[mark] = now;
                         else
                             posts.unshift(now);
-                        var content = $("#edithtml").html().replace(/\$/mg, "$$$$");
-                        var md = $("#editmd").val().replace(/\$/mg, "$$$$");
-                        $.ajax({
-                            url: template, 
-                            type: "GET",
+
+                        $.ajax({url: template,  type: "GET",
                             success: function(data) {
                                 $("#saveerror").hide();
-                                data = data.replace(contentpattern, "<!-- content -->\n"+content+"\n<!-- content end -->\n");
-                                data = data.replace("//path//", now.path);
-                                data = data.replace(mdpattern, "<!-- markdown -->\n"+md+"\n<!-- markdown end -->\n");
+
+                                if ($('#mdOnlyPost')[0].checked == false)
+                                {
+                                    var content = $("#edithtml").html().replace(/\$/mg, "$$$$");
+                                    var md = $("#editmd").val().replace(/\$/mg, "$$$$");
+
+                                    data = data.replace(contentpattern, "<!-- content -->\n"+content+"\n<!-- content end -->\n");
+                                    data = data.replace("//path//", now.path);
+                                    data = data.replace(mdpattern, "<!-- markdown -->\n"+md+"\n<!-- markdown end -->\n");
+                                }
+                                else
+                                {
+                                    var mdText = $("#editmd").val();
+                                    if (mdText.indexOf('layout: post') == -1) {
+                                        data = data.replace("$title", now.title);
+                                        data = data.replace("$date", now.date);
+                                        data = data.replace("$tag", now.tags);
+                                        data = data + mdText;
+                                    }
+                                    else {
+                                        data = mdText;
+                                    }
+                                }
+
                                 if (now.path.slice(0, 5) != "http:" && now.path.slice(0, 6) != "https:") {
                                     repo.write("master", now.path, data, "save", function(err) {
                                         repo.write("master", "main.json", JSON.stringify(gconfig), "save", function(err) {
@@ -386,8 +413,13 @@ $(document).ready(function() {
                                         }
                                     });
                                 }
+
                             },
-                            error: function(e) {err(e);}
+                            error: function(e) {
+                                errShow($("saveerror", e));
+                                if (typeof err != undefined)
+                                        err(e);
+                            }
                         });
                     }
                     else {
@@ -463,10 +495,10 @@ $(document).ready(function() {
                 var l = content.length;
                 var head = content.substring(0, cursor);
                 var tail = content.substring(cursor, l);
-                var url = " ![](http://"+global.user+".github.io/img/"+name+")";
+                var url = " ![](http://"+global.user+".github.io/images/"+name+")";
                 $("#editmd").val(head+"<span class=\"loading\">upload image now!</span>"+tail);
                 mdupdate();
-                repo.write("master", "img/"+name, data, "upload image",
+                repo.write("master", "images/"+name, data, "upload image",
                            function(e) {
                                if (typeof err != "undefined" && err != null) {
                                    console.log(err);
