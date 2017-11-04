@@ -383,6 +383,12 @@ $(document).ready(function() {
                                 }
                                 else
                                 {
+                                    data = '---\
+                                    layout: post\
+                                    title: $title\
+                                    date: $date\
+                                    tag: $tag\
+                                    ---';
                                     var mdText = $("#editmd").val();
                                     if (mdText.indexOf('layout: post') == -1) {
                                         data = data.replace("$title", now.title);

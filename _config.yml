@@ -42,7 +42,7 @@ ga:
 # 《--------------- 下面的信息可以自行选择是否修改 ------------------------》
 
 
-permalink: /:year/:month/:title/
+permalink: /:year/:month/:title.html
 # Format
 highlighter: rouge
 
@@ -65,6 +65,6 @@ nav:
 # Pagination
 gems: [jekyll-paginate,jekyll-sitemap]
 paginate: 20
-paginate_path: "page/:num/"
+paginate_path: "page/:num.html"
 
 
