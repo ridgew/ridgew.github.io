@@ -5,7 +5,7 @@ date: 2017-10-31
 tag: blog
 ---
 
-　　看着曾经简陋的[blog](/simple.html),连我自己都看不下去，于是花了点心思在github上检索了个模版框架，支持github pages发布的，于是发现潘柏信的个人博客[https://github.com/leopardpan/leopardpan.github.io](https://github.com/leopardpan/leopardpan.github.io/)。只要在github上弄过blog的都有过深刻的经历，这次部署blog的过程绝不亚于调试一个困难难找的bug过程。
+　　看着曾经简陋的[blog](/Simple.html),连我自己都看不下去，于是花了点心思在github上检索了个模版框架，支持github pages发布的，于是发现潘柏信的个人博客[https://github.com/leopardpan/leopardpan.github.io](https://github.com/leopardpan/leopardpan.github.io/)。只要在github上弄过blog的都有过深刻的经历，这次部署blog的过程绝不亚于调试一个困难难找的bug过程。
 
 
 ### 部署博客文章及结构文件
