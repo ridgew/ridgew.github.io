@@ -1,10 +1,19 @@
----                                    layout: post                                    title: 使用WinDBG调试转储文件(DMP)                                    date: 2018-06-14                                    tag: windbg dmp                                    ---DMP文件生成
+---
+layout: post
+title: 使用WinDBG调试转储文件(DMP)  
+date: 2018-6-14
+tag: windbg dmp
+---
 
-1.直接在任务管理器的进程中右键创建“小型转储文件”
+
+#DMP文件生成
+
+##1.直接在任务管理器的进程中右键创建“小型转储文件”
  ![](/images/dmp_create_from_process.png)
 
-2.使用DbgHelp.dll接口生成
+##2.使用DbgHelp.dll接口生成
 <code>
+'''C#
 [Flags]
 public enum MiniDumpType
 {
