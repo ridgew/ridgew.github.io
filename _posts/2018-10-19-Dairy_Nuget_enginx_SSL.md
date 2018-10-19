@@ -1,6 +1,6 @@
 ---
 layout: post
-title:使用手机端的github发布开发日记
+title: 使用手机端的github发布开发日记
 date: 2018-10-19
 tag: nuget nginx ssl
 ---
