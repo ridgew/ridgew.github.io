@@ -1,0 +1,895 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<META NAME="AUTHOR" CONTENT="Ridge Wang">
+<META NAME="COPYRIGHT" CONTENT="Copyright (c) 2012 - 2012, Ridge Wang All rights reserved.">
+<META NAME="KEYWORDS" CONTENT="紫微斗数,排盘,四化,飞星">
+<META NAME="DESCRIPTION" CONTENT="紫微斗数四化专用排盘网页版">
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<title>18飛星排盘-手机专用版Ver1.0.2013.810 (1936-2031)</title>
+<style type="text/css">
+<!--
+* { font-family:"宋体";font-size:12px; }
+.inb { border-collapse: collapse; } 
+.inb2 { } 
+.zi { padding:0;margin:0; line-height:16px; font-size:12px; border-collapse: collapse; } 
+.outer { border-top: 1px solid black; border-bottom:1px solid black; border-left:1px solid black; border-right:1px solid black; text-align:left; } 
+.inner { border-collapse: collapse; text-align:center; } 
+.up { border-top: 1px solid black; border-right:  1px solid black; } 
+.g { color: blue; } 
+.a0 { color: white; background-color:purple; border-top: 1px solid black; border-right:  1px solid black; } 
+.n0 { background-color:#faeec4; border-top:1px solid black; border-right:1px solid black; } 
+.a1 { color: white; background-color: green; } 
+.n1 { background-color:#faeec4; } 
+.a2 { color: white; background-color: brown; } 
+.n2 { background-color:#faeec4; }
+tr,td { margin:0px; padding:0px; }
+#mpInput {display:block;}
+#mpSum {display:block;}
+#inpYear { width:30px;height:14px; }
+#selMonth,#selDay { width:20px;height:14px;  }
+#btnCalcByDate,#btnCloseCalc { cursor:pointer;border:1px solid black; padding:2px; }
+#calcSpace { font-size:12px; cursor:pointer;}
+#ylscSel { width:50px; height:14px; }
+.selBorder { color:red;}
+.vl {layout-flow:"vertical-ideographic"; color:#000; width:14px; float:left; word-wrap:break-word;}
+.star { font-weight:800; }
+.sn { color:green;font-weight:800;  }
+-->
+</style>
+<script type="text/javascript">
+	window.$=window.jquip=function(){function U(a,b){var c;for(var e=0,g=V.length;e<g;e++)if(V[e].apply(this,arguments))return this;return a?bD(a)?(h?a():f.push(a),this):bE(a)?this.make(a):a.nodeType||bG(a)?this.make([a]):a=="body"&&!b&&d.body?(this.context=a.context,this[0]=d.body,this.length=1,this.selector=a,this):a.selector!==undefined?(this.context=a.context,this.selector=a.selector,this.make(a)):(a=bB(a)&&a.charAt(0)==="<"?(c=s.exec(a))?(a=[d.createElement(c[1])])&&bI(b)?_.fn.attr.call(a,b)&&a:a:bM(a).childNodes:bi(a,b),this.make(a)):this}function _(a,b){return new U(a,b)}function ba(a){return!a||!a.parentNode||a.parentNode.nodeType==11}function bb(a,b,c){b=b||0;if(bD(b))return bv(a,function(a,d){return!!b.call(a,d,a)===c});if(b.nodeType)return bv(a,function(a){return a===b===c});if(bB(b)){var d=b.charAt(0)==":"&&_.Expr[b.substring(1)];return bv(a,function(a){return d?d(a):a.parentNode&&bq(bi(b,a.parentNode),a)>=0})}return bv(a,function(a){return bq(b,a)>=0===c})}function bc(a,b,c){var d=_.data(a,"_J");return typeof c=="undefined"?d&&Y[d]&&Y[d][b]:(d||_.data(a,"_J",d=++Y.id),(Y[d]||(Y[d]={}))[b]=c)}function bd(a){if(!Z[a]){var b=_("<"+a+">").appendTo(d.body),c=_.css&&_.css(b[0],"display")||b[0].style.display;b.remove(),Z[a]=c}return Z[a]}function be(a,b){a.length=b&&b.length||0;if(a.length==0)return a;for(var c=0,d=b.length;c<d;c++)a[c]=b[c];return a}function bf(a,b){var b=" "+b+" ";for(var c=0,d=a.length;c<d;c++)if(bg(a[c],b))return!0;return!1}function bg(a,b){return a.nodeType===1&&(" "+a.className+" ").replace(n," ").indexOf(b)>-1}function bh(a,b,c){b=b||d,c=c||[],b.nodeType==1&&a(b)&&c.push(b);var e=b.childNodes;for(var f=0,g=e.length;f<g;f++){var h=e[f];h.nodeType==1&&bh(a,h,c)}return c}function bi(a,b,c){if(a&&bB(a)){b instanceof _&&(b=b[0]),b=b||d,c=c||_.query;var e=a.charAt(0),f=a.substring(1),g=I.test(f),h;try{return g?O.call(c(a,b)):g?O.call(c(a,b)):e=="#"?(h=d.getElementById(f))?[h]:J:bL(e=="."?b.getElementsByClassName?b.getElementsByClassName(f):c(a,b):b.getElementsByTagName(a))}catch(i){bl(i)}}return a.nodeType==1||a.nodeType==9?[a]:J}function bk(a,b,c){var f=d.head||d.getElementsByTagName("head")[0]||e,g=d.createElement("script"),h;c&&(g.async="async"),g.onreadystatechange=function(){if(!(h=g.readyState)||h=="loaded"||h=="complete")g.onload=g.onreadystatechange=null,f&&g.parentNode&&f.removeChild(g),g=undefined,b&&b()},g.onload=b,g.src=a,f.insertBefore(g,f.firstChild)}function bl(b){a.console&&a.console.warn(arguments)}function bm(a,b,c){if(a==null)return;if(R&&a.forEach===R)a.forEach(b,c);else if(a.length===+a.length){for(var d=0,e=a.length;d<e;d++)if(d in a&&b.call(c,a[d],d,a)===K)return}else for(var f in a)if(N.call(a,f)&&b.call(c,a[f],f,a)===K)return}function bn(a,b){return a&&a.nodeName==="INPUT"&&a.type==="text"&&b==="value"?a.value:a?a.getAttribute(b)||(b in a?a[b]:undefined):null}function bp(a,b){var c=[],d,e,f,g,h;for(d=0,f=bo.length;d<f;d++)if(h=bo[d].exec(a))break;if(d<bo.length)for(e=0;g=b[e];e++)(d==0&&h[1]==g.id||d==1&&bz(h[1],g.tagName)||d==2&&bg(g,h[1])||d==3&&h[2]==bn(g,h[1]))&&c.push(g);else bl(a+" not supported");return c}function bq(a,b){if(a==null)return-1;var c,d;if(T&&a.indexOf===T)return a.indexOf(b);for(c=0,d=a.length;c<d;c++)if(a[c]===b)return c;return-1}function br(a,b,c){var d=[];return a==null?d:S&&a.filter===S?a.filter(b,c):(bm(a,function(a,e,f){b.call(c,a,e,f)&&(d[d.length]=a)}),d)}function bs(a,b,c){var d=[],e=a[b];while(e&&e.nodeType!==9&&(c===undefined||e.nodeType!==1||!_(e).is(c)))e.nodeType===1&&d.push(e),e=e[b];return d}function bt(a,b,c){b=b||1;var d=0;for(;a;a=a[c])if(a.nodeType===1&&++d===b)break;return a}function bu(a,b){var c=[];for(;a;a=a.nextSibling)a.nodeType===1&&a!==b&&c.push(a);return c}function bv(a,b,c){var d=[],e;c=!!c;for(var f=0,g=a.length;f<g;f++)e=!!b(a[f],f),c!==e&&d.push(a[f]);return d}function bw(a,b,c){var d,e,f=[],g=0,h=a.length,i=a instanceof _||typeof h=="number"&&(h>0&&a[0]&&a[h-1]||h===0||bE(a));if(i)for(;g<h;g++)d=b(a[g],g,c),d!=null&&(f[f.length]=d);else for(e in a)d=b(a[e],e,c),d!=null&&(f[f.length]=d);return f.concat.apply([],f)}function bx(a,b,c){if(!a)return{};if(b&&c)return a.setAttribute(b,c),null;var d={};return bm(by(a),function(a,b){if(b.indexOf("data-")!==0||!a)return;d[b.substr("data-".length)]=a}),bB(b)?d[b]:d}function by(a){var b={};for(var c=0,d=a.attributes,e=d.length;c<e;c++)b[d.item(c).nodeName]=d.item(c).nodeValue;return b}function bz(a,b){return!a||!b?a==b:a.toLowerCase()===b.toLowerCase()}function bA(a){return a==null?String(a):E[D.call(a)]||"object"}function bB(a){return typeof a=="string"}function bC(a){return typeof a=="object"}function bD(a){return typeof a=="function"||bA(a)==="function"}function bE(a){return bA(a)==="array"}function bF(a){return!bB(a)&&typeof a.length=="number"}function bG(a){return a&&typeof a=="object"&&"setInterval"in a}function bH(a){return a==null||!p.test(a)||isNaN(a)}function bI(a){if(!a||bA(a)!=="object"||a.nodeType||bG(a))return!1;try{if(a.constructor&&!N.call(a,"constructor")&&!N.call(a.constructor.prototype,"isPrototypeOf"))return!1}catch(b){return!1}var c;for(c in a);return c===undefined||N.call(a,c)}function bJ(a,b){var c=a.length,d=0;if(typeof b.length=="number")for(var e=b.length;d<e;d++)a[c++]=b[d];else while(b[d]!==undefined)a[c++]=b[d++];return a.length=c,a}function bK(){var a,b,c,d,e,f,g=arguments,h=g[0]||{},i=1,j=g.length,k=!1;typeof h=="boolean"&&(k=h,h=g[1]||{},i=2),typeof h!="object"&&!bD(h)&&(h={}),j===i&&(h=this,--i);for(;i<j;i++)if((a=g[i])!=null)for(b in a){c=h[b],d=a[b];if(h===d)continue;k&&d&&(bI(d)||(e=bE(d)))?(e?(e=!1,f=c&&bE(c)?c:[]):f=c&&bI(c)?c:{},h[b]=bK(k,f,d)):d!==undefined&&(h[b]=d)}return h}function bL(a,b){var c=b||[];if(a!=null){var d=bA(a);a.length==null||d=="string"||d=="function"||d==="regexp"||bG(a)?P.call(c,a):bJ(c,a)}return c}function bM(a,b,c){b=b||d||b.ownerDocument||b[0]&&b[0].ownerDocument||d,c=c||b.createDocumentFragment();if(bF(a))return bO(a,b,c)&&c;var e=bN(a);while(e.firstChild)c.appendChild(e.firstChild);return c}function bN(a,b){var c=(b||d).createElement("div"),e=(m.exec(a)||["",""])[1].toLowerCase(),f=H[e]||H._default,g=f[0];c.innerHTML=f[1]+a+f[2];while(g--)c=c.lastChild;return c}function bO(a,b,c){var d=[],e,f;for(e=0;(f=a[e])!=null;e++)bB(f)&&(f=bN(f,b)),f.nodeType?d.push(f):d=bJ(d,f);if(c)for(e=0;e<d.length;e++)d[e].nodeType&&c.appendChild(d[e]);return d}function bQ(a){if(B){F=G,a.sort(B);if(F)for(var b=1;b<a.length;b++)a[b]===a[b-1]&&a.splice(b--,1)}return a}function bR(){if(!d.body)return null;var a=d.createElement("div");d.body.appendChild(a),a.style.width="20px",a.style.padding="10px";var b=a.offsetWidth;return d.body.removeChild(a),b==40}function bS(a,b){g.push({url:a,cb:b})}function bT(){bm(f,function(a){a()}),h=!0}var a=window,b="http://cdnjs.cloudflare.com/ajax/libs/sizzle/1.4.4/sizzle.min.js",c=function(){return a.Sizzle||a.qwery},d=document,e=d.documentElement,f=[],g=[],h,i=/Until$/,j=/,/,k=/^(?:parents|prevUntil|prevAll)/,m=/<([\w:]+)/,n=/[\n\t\r]/g,o=/\s+/,p=/\d/,q=/\S/,r=/\r\n/g,s=/^<(\w+)\s*\/?>(?:<\/\1>)?$/,t=/\r?\n/g,u=/^(?:select|textarea)/i,v=/^(?:color|date|datetime|datetime-local|email|hidden|month|number|password|range|search|tel|text|time|url|week)$/i,w=String.prototype.trim,x,y=/^\s+/,z=/\s+$/,A,B,C={children:!0,contents:!0,next:!0,prev:!0},D=Object.prototype.toString,E={},F=!1,G=!0,H={option:[1,"<select multiple='multiple'>","</select>"],legend:[1,"<fieldset>","</fieldset>"],thead:[1,"<table>","</table>"],tr:[2,"<table><tbody>","</tbody></table>"],td:[3,"<table><tbody><tr>","</tr></tbody></table>"],col:[2,"<table><tbody></tbody><colgroup>","</colgroup></table>"],area:[1,"<map>","</map>"],_default:[0,"",""]},I=/[,\s.#\[>+]/,J=[],K={},L=Array.prototype,M=Object.prototype,N=M.hasOwnProperty,O=L.slice,P=L.push,Q=L.indexOf,R=L.forEach,S=L.filter,T=L.indexOf;q.test(" ")&&(y=/^[\s\xA0]+/,z=/[\s\xA0]+$/);var V=[],W={},X=0,Y={_id:0},Z={},$;$=U.prototype=_.prototype=_.fn={constructor:_,selector:"",length:0,dm:function(a,b,c){var d=a[0],e,f,g,h,i;if(d&&this[0]){if(!(f=d.nodeType===3&&d)){e=d&&d.parentNode,f=e&&e.nodeType===11&&e.childNodes.length===this.length?e:bM(d),g=f.firstChild,f.childNodes.length===1&&(f=g);if(!g)return this}for(i=0,h=this.length;i<h;i++)c.call(this[i],f)}return this},ps:function(a,b,c){var d=this.constructor();return bE(a)?P.apply(d,a):bJ(d,a),d.prevObject=this,d.context=this.context,b==="find"?d.selector=this.selector+(this.selector?" ":"")+c:b&&(d.selector=this.selector+"."+b+"("+c+")"),d}},$.make=function(a){return be(this,a),this},$.toArray=function(){return O.call(this,0)},$.get=function(a){return a==null?this.toArray():a<0?this[this.length+a]:this[a]},$.add=function(a,b){var c=typeof a=="string"?_(a,b):bL(a&&a.nodeType?[a]:a),d=bJ(this.get(),c);return this.ps(ba(c[0])||ba(d[0])?d:bQ(d))},$.each=function(a){if(!bD(a))return this;for(var b=0,c=this.length;b<c;b++)a.call(this[b],b,this[b]);return this},$.attr=function(a,b){var c=this[0];return bB(a)&&b===undefined?bn(c,a):this.each(function(c){var d=this.nodeType;if(d!==3&&d!==8&&d!==2)if(bC(a))for(var e in a)b===null?this.removeAttribute(a):this.setAttribute(e,a[e]);else this.setAttribute(a,bD(b)?b.call(this,c,this.getAttribute(a)):b)})},$.removeAttr=function(a){return this.each(function(){this.removeAttribute(a)})},$.data=function(a,b){return bx(this[0],a,b)},$.append=function(){return this.dm(arguments,!0,function(a){this.nodeType===1&&this.appendChild(a)})},$.prepend=function(){return this.dm(arguments,!0,function(a){this.nodeType===1&&this.insertBefore(a,this.firstChild)})},$.before=function(){return this.dm(arguments,!1,function(a){this.parentNode.insertBefore(a,this)})},$.after=function(){return this[0]&&this[0].parentNode?this.dm(arguments,!1,function(a){this.parentNode.insertBefore(a,this.nextSibling)}):this},$.hide=function(){return this.each(function(){bc(this,"display",this.style.display),this.style.display="none"})},$.show=function(){return this.each(function(){this.style.display=bc(this,"display")||bd(this.tagName)})},$.toggle=function(){return this.each(function(){this.style.display=_.Expr.hidden(this)?bc(this,"display")||bd(this.tagName):(bc(this,"display",this.style.display),"none")})},$.eq=function(a){return a===-1?this.slice(a):this.slice(a,+a+1)},$.first=function(){return this.eq(0)},$.last=function(){return this.eq(-1)},$.slice=function(){return this.ps(O.apply(this,arguments),"slice",O.call(arguments).join(","))},$.map=function(a){return this.ps(bw(this,function(b,c){return a.call(b,c,b)}))},$.find=function(a){var b=this,c,d;if(!bB(a))return _(a).filter(function(){for(c=0,d=b.length;c<d;c++)if(A(b[c],this))return!0});var e=this.ps("","find",a),f,g,h;for(c=0,d=this.length;c<d;c++){f=e.length,bJ(e,_(a,this[c]));if(c==0)for(g=f;g<e.length;g++)for(h=0;h<f;h++)if(e[h]===e[g]){e.splice(g--,1);break}}return e},$.not=function(a){return this.ps(bb(this,a,!1),"not",a)},$.filter=function(a){return this.ps(bb(this,a,!0),"filter",a)},$.indexOf=function(a){return bq(this,a)},$.is=function(a){return this.length>0&&_(this[0]).filter(a).length>0},$.remove=function(){for(var a=0,b;(b=this[a])!=null;a++)b.parentNode&&b.parentNode.removeChild(b);return this},$.closest=function(a,b){var c=[],d;for(d=0,l=this.length;d<l;d++){cur=this[d];while(cur){if(bp(a,[cur]).length>0){c.push(cur);break}cur=cur.parentNode;if(!cur||!cur.ownerDocument||cur===b||cur.nodeType===11)break}}return c=c.length>1?bQ(c):c,this.ps(c,"closest",a)},$.val=function(a){return a==null?this[0]&&this[0].value||"":this.each(function(){this.value=a})},$.html=function(a){return a==null?this[0]&&this[0].innerHTML||"":this.each(function(){this.innerHTML=a})},$.text=function(a){var b=this[0],c;return typeof a=="undefined"?b&&(c=b.nodeType)?c===1||c===9?typeof b.textContent=="string"?b.textContent:b.innerText.replace(r,""):c===3||c===4?b.nodeValue:null:null:this.empty().append((b&&b.ownerDocument||d).createTextNode(a))},$.empty=function(){for(var a=0,b;(b=this[a])!=null;a++)while(b.firstChild)b.removeChild(b.firstChild);return this},$.addClass=function(a){var b,c,d,e,f,g,h;if(bD(a))return this.each(function(b){_(this).addClass(a.call(this,b,this.className))});if(a&&bB(a)){b=a.split(o);for(c=0,d=this.length;c<d;c++){e=this[c];if(e&&e.nodeType===1)if(!e.className&&b.length===1)e.className=a;else{f=" "+e.className+" ";for(g=0,h=b.length;g<h;g++)~f.indexOf(" "+b[g]+" ")||(f+=b[g]+" ");e.className=x(f)}}}return this},$.removeClass=function(a){var b,c,d,e,f,g,h;if(bD(a))return this.each(function(b){_(this).removeClass(a.call(this,b,this.className))});if(a&&bB(a)||a===undefined){b=(a||"").split(o);for(c=0,d=this.length;c<d;c++){e=this[c];if(e.nodeType===1&&e.className)if(a){f=(" "+e.className+" ").replace(n," ");for(g=0,h=b.length;g<h;g++)f=f.replace(" "+b[g]+" "," ");e.className=x(f)}else e.className=""}}return this},$.hasClass=function(a){return bf(this,a)},$.fadeIn=function(){this.each(function(){_(this).show()})},$.fadeOut=function(){this.each(function(){_(this).hide()})},$.serializeArray=function(){return this.map(function(){return this.elements?bL(this.elements):this}).filter(function(){return this.name&&!this.disabled&&(this.checked||u.test(this.nodeName)||v.test(this.type))}).map(function(a,b){var c=_(this).val();return c==null||bE(c)?bw(c,function(a){return{name:b.name,value:a.replace(t,"\r\n")}}):{name:b.name,value:c.replace(t,"\r\n")}}).get()},_.Expr={hidden:function(a){return a.offsetWidth===0||a.offsetHeight==0||(_.css&&_.css(a,"display")||a.style.display)==="none"},visible:function(a){return!_.Expr.hidden(a)}},_.hasClass=bf,_.walk=bh,_.$$=bi,_.setQuery=function(a){_.query=function(b,c){return bi(b,c,a||function(a,b){return b.querySelectorAll(a)})}};var bj=c();_.setQuery(bj||function(a,b){return d.querySelectorAll?bL((b||d).querySelectorAll(a)):[]}),_.loadScript=bk,_.each=function(a,b,c){var d,e=0,f=a.length,g=f===undefined||bD(a);if(c){if(g){for(d in a)if(b.apply(a[d],c)===!1)break}else for(;e<f;)if(b.apply(a[e++],c)===!1)break}else if(g){for(d in a)if(b.call(a[d],d,a[d])===!1)break}else for(;e<f;)if(b.call(a[e],e,a[e++])===!1)break;return a},_._each=bm;var bo=[/#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/,/^((?:[\w\u00c0-\uFFFF\*\-]|\\.)+)/,/\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/,/\[\s*((?:[\w\u00c0-\uFFFF\-]|\\.)+)\s*(?:(\S?=)\s*(?:(['"])(.*?)\3|(#?(?:[\w\u00c0-\uFFFF\-]|\\.)*)|)|)\s*\]/];_.filter=bp,_._indexOf=bq,_._defaults=function(a){return bm(O.call(arguments,1),function(b){for(var c in b)a[c]==null&&(a[c]=b[c])}),a},_._filter=br,_.proxy=function(a,b){if(typeof b=="string"){var c=a[b];b=a,a=c}if(bD(a)){var d=O.call(arguments,2),e=function(){return a.apply(b,d.concat(O.call(arguments)))};return e.guid=a.guid=a.guid||e.guid||X++,e}},_.dir=bs,_.nth=bt,_.sibling=bu,_.grep=bv,_.map=bw,_.data=bx,_.attrs=by,_.eqSI=bz,_.trim=x=w?function(a){return a==null?"":w.call(a)}:function(a){return a==null?"":a.toString().replace(y,"").replace(z,"")},_.indexOf=_.inArray=function(a,b){if(!b)return-1;if(Q)return Q.call(b,a);for(var c=0,d=b.length;c<d;c++)if(b[c]===a)return c;return-1},bm("Boolean Number String Function Array Date RegExp Object".split(" "),function(a){return E["[object "+a+"]"]=a.toLowerCase(),this}),_.type=bA,_.isFunction=bD,_.isArray=Array.isArray||bE,_.isWindow=bG,_.isNaN=bH,_.merge=bJ,_.extend=_.fn.extend=bK,_.makeArray=bL,_.htmlFrag=bM;var bP=function(a,b,c){if(a===b)return c;var d=a.nextSibling;while(d){if(d===b)return-1;d=d.nextSibling}return 1};return A=_.contains=e.contains?function(a,b){return a!==b&&(a.contains?a.contains(b):!0)}:function(){return!1},B=e.compareDocumentPosition?(A=function(a,b){return!!(a.compareDocumentPosition(b)&16)})&&function(a,b){return a===b?(F=!0,0):!a.compareDocumentPosition||!b.compareDocumentPosition?a.compareDocumentPosition?-1:1:a.compareDocumentPosition(b)&4?-1:1}:function(a,b){if(a===b)return F=!0,0;if(a.sourceIndex&&b.sourceIndex)return a.sourceIndex-b.sourceIndex;var c,d,e=[],f=[],g=a.parentNode,h=b.parentNode,i=g;if(g===h)return bP(a,b);if(!g)return-1;if(!h)return 1;while(i)e.unshift(i),i=i.parentNode;i=h;while(i)f.unshift(i),i=i.parentNode;c=e.length,d=f.length;for(var j=0;j<c&&j<d;j++)if(e[j]!==f[j])return bP(e[j],f[j]);return j===c?bP(a,f[j],-1):bP(e[j],b,1)},_.unique=bQ,bm({parent:function(a){var b=a.parentNode;return b&&b.nodeType!==11?b:null},parents:function(a){return bs(a,"parentNode")},parentsUntil:function(a,b,c){return bs(a,"parentNode",c)},next:function(a){return bt(a,2,"nextSibling")},prev:function(a){return bt(a,2,"previousSibling")},nextAll:function(a){return bs(a,"nextSibling")},prevAll:function(a){return bs(a,"previousSibling")},nextUntil:function(a,b,c){return bs(a,"nextSibling",c)},prevUntil:function(a,b,c){return bs(a,"previousSibling",c)},siblings:function(a){return bu(a.parentNode.firstChild,a)},children:function(a){return bu(a.firstChild)},contents:function(a){return a.nodeName==="iframe"?a.contentDocument||a.contentWindow["document "]:bL(a.childNodes)}},function(a,b){_.fn[b]=function(c,d){var e=bw(this,a,c),f=O.call(arguments);return i.test(b)||(d=c),typeof d=="string"&&(e=bp(d,e)),e=this.length>1&&!C[b]?bQ(e):e,(this.length>1||j.test(d))&&k.test(b)&&(e=e.reverse()),this.ps(e,b,f.join(","))}}),bm({appendTo:"append",prependTo:"prepend",insertBefore:"before",insertAfter:"after"},function(a,b){_.fn[b]=function(c){var d=[],e=_(c),f,g,h,i=this.length===1&&this[0].parentNode;if(i&&i.nodeType===11&&i.childNodes.length===1&&e.length===1)return e[a](this[0]),this;for(f=0,h=e.length;f<h;f++)g=(f>0?this.clone(!0):this).get(),_(e[f])[a](g),d=d.concat(g);return this.ps(d,b,e.selector)}}),function(){var a=document.createElement("div");a.style.display="none",a.innerHTML="   <link/><table></table><a href='/a' style='color:red;float:left;opacity:.55;'>a</a><input type='checkbox'/>";var b=a.getElementsByTagName("a")[0];_.support={boxModel:null,opacity:/^0.55$/.test(b.style.opacity),cssFloat:!!b.style.cssFloat};var c=/(webkit)[ \/]([\w.]+)/,d=/(opera)(?:.*version)?[ \/]([\w.]+)/,e=/(msie) ([\w.]+)/,f=/(mozilla)(?:.*? rv:([\w.]+))?/,g=navigator.userAgent.toLowerCase(),h=c.exec(g)||d.exec(g)||e.exec(g)||g.indexOf("compatible")<0&&f.exec(g)||[],i;i=_.browser={version:h[2]||"0"},i[h[1]||""]=!0}(),_.scriptsLoaded=function(a){bD(a)&&f.push(a)},_.loadAsync=bS,!bj&&!d.querySelectorAll&&bS(b,function(){_.setQuery(c())}),_.init=!1,_.onload=function(){if(!_.init)try{_.support.boxModel=bR();var a=0;bm(g,function(b){a++,bk(b.url,function(){try{b.cb&&b.cb()}catch(c){}--a||bT()})}),_.init=!0,a||bT()}catch(b){bl(b)}},d.body&&!_.init&&setTimeout(_.onload,1),_.hook=function(a){V.push(a)},_.plug=function(a,b){var c=bB(a)?a:a.name;b=bD(a)?a:b;if(!bD(b))throw"Plugin fn required";c&&b&&(W[c]=b),b(_)},_}();$.plug("events",function(a){function e(a){return a._jquid||(a._jquid=d++)}function f(a,b,c){a.addEventListener?a.addEventListener(b,c,!1):(a["e"+b+c]=c,a[b+c]=function(){a["e"+b+c](window.event)},a.attachEvent("on"+b,a[b+c]))}function g(a,b,c){a.removeEventListener?a.removeEventListener(b,c,!1):(a.detachEvent("on"+b,a[b+c]),a[b+c]=null)}function h(a){var b=(""+a).split(".");return{e:b[0],ns:b.slice(1).sort().join(" ")}}function i(a){return new RegExp("(?:^| )"+a.replace(" "," .* ?")+"(?: |$)")}function j(b,d,f,g){d=h(d);if(d.ns)var j=i(d.ns);return a._filter(c[e(b)]||[],function(a){return a&&(!d.e||a.e==d.e)&&(!d.ns||j.test(a.ns))&&(!f||a.fn==f)&&(!g||a.sel==g)})}function k(b,d,g,i,j){var k=e(b),l=c[k]||(c[k]=[]);a._each(d.split(/\s/),function(c){var d=a.extend(h(c),{fn:g,sel:i,del:j,i:l.length});l.push(d),f(b,d.e,j||g)}),b=null}function l(b,d,f,h){var i=e(b);a._each((d||"").split(/\s/),function(d){a._each(j(b,d,f,h),function(a){delete c[i][a.i],g(b,a.e,a.del||a.fn)})})}function n(b){var c=a.extend({originalEvent:b},b);return a._each(m,function(a){c[a]=function(){return b[a].apply(b,arguments)}}),c}var b=document,c={},d=1;a.bind=f,a.unbind=g;var m=["preventDefault","stopImmediatePropagation","stopPropagation"],o=a.fn;a._each("blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error".split(" "),function(a){o[a]=function(b,c){return arguments.length>0?this.bind(a,b,c):this.trigger(a)}}),o.bind=function(a,b){return this.each(function(){k(this,a,b)})},o.unbind=function(a,b){return this.each(function(){l(this,a,b)})},o.one=function(a,b){return this.each(function(){var c=this;k(this,a,function(){b(),l(c,a,arguments.callee)})})},o.delegate=function(b,c,d){return this.each(function(e,f){k(f,c,d,b,function(c){var e=c.target,g=a.$$(b,f);while(e&&g.indexOf(e)<0)e=e.parentNode;e&&e!==f&&e!==document&&d.call(e,a.extend(n(c||window.event),{currentTarget:e,liveFired:f}))})})},o.undelegate=function(a,b,c){return this.each(function(){l(this,b,c,a)})},o.live=function(c,d){return a(b.body).delegate(this.selector,c,d),this},o.die=function(c,d){return a(b.body).undelegate(this.selector,c,d),this},o.trigger=function(a){return this.each(function(){if(!(a!="click"&&a!="blur"&&a!="focus"||!this[a]))return this[a]();if(b.createEvent){var c=b.createEvent("Events");this.dispatchEvent(c,c.initEvent(a,!0,!0))}else if(this.fireEvent)try{a!=="ready"&&this.fireEvent("on"+a)}catch(c){}})},a.init||a(window).bind("load",a.onload)});
+
+function Hashtable()
+{
+    var _hash= new Object();
+    this.add=function(key,value){
+		if(typeof(key)!="undefined"){
+			if(this.contains(key)==false){
+				_hash[key]=typeof(value)=="undefined"?null:value;
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+      }
+    this.remove=function(key){delete _hash[key];}
+    this.count=function(){var i=0;for(var k in _hash){i++;} return i;}
+    this.items=function(key){return _hash[key];}
+    this.contains=function(key){ return typeof(_hash[key])!="undefined";}
+    this.clear = function(){for(var k in _hash){delete _hash[k];}}
+}
+
+function fixRange(val,min,max)
+{
+	var range=max-min+1;
+	while (val<min) {val+=range;}
+	while (val>max) {val-=range;}
+	return val;
+}
+
+var dzNames = "子丑寅卯辰巳午未申酉戌亥", tgNames = "甲乙丙丁戊己庚辛壬癸", YinYang="10♂♀男女乾坤";
+var nayin60 = "甲子乙丑海中金丙寅丁卯炉中火戊辰己巳大林木庚午辛未路旁土壬申癸酉剑锋金甲戌乙亥山头火丙子丁丑漳下水戊寅己卯城头土庚辰辛巳白腊金壬午癸未杨柳木甲申乙酉泉中水丙戌丁亥屋上土戊子己丑霹雳火庚寅辛卯松柏木壬辰癸巳长流水甲午乙未砂石金丙申丁酉山下火戊戌己亥平地木庚子辛丑壁上土壬寅癸卯金薄金甲辰乙巳覆灯火丙午丁未天河水戊申己酉大驿土庚戌辛亥钗环金壬子癸丑桑柘木甲寅乙卯大溪水丙辰丁巳沙中土戊午己未天上火庚申辛酉石榴木壬戌癸亥大海水";
+var Space12 = ["命","兄","夫","子","財","疾","遷","友","官","田","福","父"];
+var TGSHLevel = ["A", "B", "C", "D"];
+var TGSHConfig = ["廉破武阳", "机梁紫阴", "同机昌廉", "阴同机巨", "贪阴右机", "武贪梁曲", "阳武阴同", "巨阳曲昌", "梁紫左武", "破巨阴贪"];
+
+function GetYinLiGZ(y) {
+	while (y > 1984) { y -= 60; }
+	if (y < 0) y += 1; //无公元0年
+	while (y < 1924) { y += 60; }
+	y = y - 1900;
+	return tgNames.charAt((y - 24) % 10) + dzNames.charAt((y - 24) % 12);
+}
+
+//取干支(六十)纳音
+function getGZNaYin(gz) {
+	var dzIdx = dzNames.indexOf(gz.substr(1, 1));
+	var gzIdx = nayin60.indexOf(gz);
+	if (dzIdx % 2 == 0) gzIdx += 2;
+	return nayin60.substr(gzIdx + 2, 3);
+}
+
+
+ //阴阳历转换1936-2031
+ function CalConv(tDate,bYear,bMonth,bDay) {
+	
+	/* 闰年, 返回 0 平年, 1 闰年 */
+	var GetLeap=function (year) {
+		if (year % 400 == 0) return 1;
+		else if (year % 100 == 0) return 0;
+		else if (year % 4 == 0) return 1;
+		else return 0;
+	}
+
+	var LCData=function(d, i, w, k, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13) 
+	{
+		this.BaseDays = d; /*1月1日到正月初一的累计日*/
+		this.Intercalation = i; /*闰月月份. 0==此年沒有闰月*/
+		this.BaseWeekday = w; /* 此年1月1日为星期减 1 */
+		this.BaseKanChih = k; /* 此年1月1日之干支序号减 1 */
+		this.MonthDays = [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13]; /* 此农历年每月之大小, 0==小月(29日), 1==大月(30日) */
+	}
+
+    var yBegin = 1936,yEnd = 2031;
+    var LunarCal = [
+        new LCData(23, 3, 2, 17, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0), /* 1936 */
+        new LCData(41, 0, 4, 23, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1),
+        new LCData(30, 7, 5, 28, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1),
+        new LCData(49, 0, 6, 33, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(38, 0, 0, 38, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1), /* 1940 */
+        new LCData(26, 6, 2, 44, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(45, 0, 3, 49, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(35, 0, 4, 54, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(24, 4, 5, 59, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1), /* 1944 */
+        new LCData(43, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1),
+        new LCData(32, 0, 1, 10, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1),
+        new LCData(21, 2, 2, 15, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(40, 0, 3, 20, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1), /* 1948 */
+        new LCData(28, 7, 5, 26, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(47, 0, 6, 31, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(36, 0, 0, 36, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(26, 5, 1, 41, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1), /* 1952 */
+        new LCData(44, 0, 3, 47, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(33, 0, 4, 52, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0),
+        new LCData(23, 3, 5, 57, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1),
+        new LCData(42, 0, 6, 2, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1), /* 1956 */
+        new LCData(30, 8, 1, 8, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(48, 0, 2, 13, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(38, 0, 3, 18, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(27, 6, 4, 23, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0), /* 1960 */
+        new LCData(45, 0, 6, 29, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0),
+        new LCData(35, 0, 0, 34, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(24, 4, 1, 39, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(43, 0, 2, 44, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0), /* 1964 */
+        new LCData(32, 0, 4, 50, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(20, 3, 5, 55, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0),
+        new LCData(39, 0, 6, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(29, 7, 0, 5, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1), /* 1968 */
+        new LCData(47, 0, 2, 11, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(36, 0, 3, 16, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0),
+        new LCData(26, 5, 4, 21, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1),
+        new LCData(45, 0, 5, 26, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1), /* 1972 */
+        new LCData(33, 0, 0, 32, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1),
+        new LCData(22, 4, 1, 37, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(41, 0, 2, 42, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1),
+        new LCData(30, 8, 3, 47, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1), /* 1976 */
+        new LCData(48, 0, 5, 53, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1),
+        new LCData(37, 0, 6, 58, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(27, 6, 0, 3, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0),
+        new LCData(46, 0, 1, 8, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0), /* 1980 */
+        new LCData(35, 0, 3, 14, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1),
+        new LCData(24, 4, 4, 19, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1),
+        new LCData(43, 0, 5, 24, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1),
+        new LCData(32, 10, 6, 29, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1), /* 1984 */
+        new LCData(50, 0, 1, 35, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(39, 0, 2, 40, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1),
+        new LCData(28, 6, 3, 45, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0),
+        new LCData(47, 0, 4, 50, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1), /* 1988 */
+        new LCData(36, 0, 6, 56, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0), /*1989*/
+        new LCData(26, 5, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1),
+        new LCData(45, 0, 1, 6, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(34, 0, 2, 11, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0), /* 1992 */
+        new LCData(22, 3, 4, 17, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(40, 0, 5, 22, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(30, 8, 6, 27, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1),
+        new LCData(49, 0, 0, 32, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1), /* 1996 */
+        new LCData(37, 0, 2, 38, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(27, 5, 3, 43, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1),
+        new LCData(46, 0, 4, 48, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1), /* 1999 */
+        new LCData(35, 0, 5, 53, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1), /* 2000 */
+        new LCData(23, 4, 0, 59, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(42, 0, 1, 4, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(31, 0, 2, 9, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0),
+        new LCData(21, 2, 3, 14, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1), /* 2004 */
+        new LCData(39, 0, 5, 20, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(28, 7, 6, 25, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1),
+        new LCData(48, 0, 0, 30, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1),
+        new LCData(37, 0, 1, 35, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1), /* 2008 */
+        new LCData(25, 5, 3, 41, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(44, 0, 4, 46, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1),
+        new LCData(33, 0, 5, 51, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1),
+        new LCData(22, 4, 6, 56, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0), /* 2012 */
+        new LCData(40, 0, 1, 2, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(30, 9, 2, 7, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(49, 0, 3, 12, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1),
+        new LCData(38, 0, 4, 17, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0), /* 2016 */
+        new LCData(27, 6, 6, 23, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1),
+        new LCData(46, 0, 0, 28, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0),
+        new LCData(35, 0, 1, 33, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0),
+        new LCData(24, 4, 2, 38, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1), /* 2020 */
+        new LCData(42, 0, 4, 44, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1),
+        new LCData(31, 0, 5, 49, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0),
+        new LCData(21, 2, 6, 54, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1),
+        new LCData(40, 0, 0, 59, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1), /* 2024 */
+        new LCData(28, 6, 2, 5, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0),
+        new LCData(47, 0, 3, 10, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1),
+        new LCData(36, 0, 4, 15, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1),
+        new LCData(25, 5, 5, 20, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0), /* 2028 */
+        new LCData(43, 0, 0, 26, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1),
+        new LCData(32, 0, 1, 31, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0),
+        new LCData(22, 3, 2, 36, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0)];
+
+    /* 西曆年每月之日數 */
+    var SolarCal = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    /* 西曆年每月之累積日數, 平年與閏年 */
+    var SolarDays = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365, 396,
+        0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397];
+
+	var tarObj={};
+    if (tDate == 0) { //阳历到阴历
+        if (bYear < yBegin || bYear > yEnd) 
+			return alert("请输入"+yBegin+"-"+yEnd+"有效年份");
+        stDate = bMonth - 1;
+        if (stDate < 0 || stDate > 11) return alert('请输入有效月份');
+        leap = GetLeap(bYear);
+        if (stDate == 1) 
+			d = leap + 28;
+        else 
+			d = SolarCal[stDate];
+
+        if (bDay < 1 || bDay > d) return 3;
+        y = bYear - yBegin;
+        acc = SolarDays[leap * 14 + stDate] + bDay;
+        kc = acc + LunarCal[y].BaseKanChih;
+		tarObj["KCIndex"]=kc;
+        if (acc <= LunarCal[y].BaseDays) {
+            y--;
+            tarObj["Year"] = bYear - 1;
+            leap = GetLeap(tarObj["Year"]);
+            stDate += 12;
+            acc = SolarDays[leap * 14 + stDate] + bDay;
+        } else tarObj["Year"] = bYear;
+        l1 = LunarCal[y].BaseDays;
+        for (i = 0; i < 13; i++) {
+            l2 = l1 + LunarCal[y].MonthDays[i] + 29;
+            if (acc <= l2) break;
+            l1 = l2;
+        }
+        tarObj["Month"] = i + 1;
+        tarObj["Day"] = acc - l1;
+        itDate = LunarCal[y].Intercalation;
+        if (itDate != 0 && tarObj["Month"] > itDate) {
+            tarObj["Month"]--;
+            if (tarObj["Month"] == itDate) tarObj["Month"] = -itDate;
+        }
+        if (tarObj["Month"] > 12) tarObj["Month"] -= 12;
+    } 
+	else /* 阴历转阳历 */
+    {
+        if (bYear < yBegin || bYear >= yEnd) return alert("请输入"+yBegin+"-"+yEnd+"有效年份");
+        y = bYear - yBegin;
+        itDate = LunarCal[y].Intercalation;
+        ltDate = bMonth;
+        if (ltDate < 0) {
+            if (ltDate != -itDate) return alert('请输入有效月份');
+        } else if (ltDate < 1 || ltDate > 12) return alert('请输入有效月份');
+
+        if (itDate != 0) {
+            if (ltDate > itDate) ltDate++;
+            else if (ltDate == -itDate) ltDate = itDate + 1;
+        }
+        ltDate--;
+        if (bDay > LunarCal[y].MonthDays[ltDate] + 29) return alert("农历日期不正确");
+        acc = 0;
+        for (i = 0; i < ltDate; i++) {
+            acc += LunarCal[y].MonthDays[i] + 29;
+        }
+        acc += LunarCal[y].BaseDays + bDay;
+        leap = GetLeap(bYear);
+        for (i = 13; i >= 0; i--) {
+            if (acc > SolarDays[leap * 14 + i]) break;
+        }
+        tarObj["Day"] = acc - SolarDays[leap * 14 + i];
+        if (i <= 11) {
+            tarObj["Year"] = bYear;
+            tarObj["Month"] = i + 1;
+        } else {
+            tarObj["Year"] = bYear + 1;
+            tarObj["Month"] = i - 11;
+        }
+        leap = GetLeap(tarObj["Year"]);
+        y = tarObj["Year"] - yBegin;
+        acc = SolarDays[leap * 14 + tarObj["Month"] - 1] + tarObj["Day"];
+        weekday = (acc + LunarCal[y].BaseWeekday) % 7;
+        kc = acc + LunarCal[y].BaseKanChih;
+		tarObj["KCIndex"]=kc;
+    }
+	return tarObj;
+}
+
+//单个星
+var SingleStar = function(isJiaStar,starName)
+{
+	var that=this;
+	this.Name = starName;
+	this.Level = (isJiaStar)?1:2;
+
+	var _light = '',_absName = starName;
+
+	var sIdx = starName.indexOf('(');
+	var eIdx = starName.indexOf(')');
+	if (sIdx!=-1 && eIdx !=-1)
+	{
+		this.Name = starName.replace('(','').replace(')','');
+		_absName = starName.substr(sIdx+1,1);
+	}
+	//设置生年四化
+	this.SetSNSH=function(sh){
+		var cObj = $('#'+that.GetStarKey());
+		cObj.parent().append('<span class="sn">'+sh+'</span>');
+	};
+
+	//获取简称
+	this.GetAbsName=function(){ return _absName; };
+
+	var _sKey = null;
+	this.GetStarKey=function(){
+		if (_sKey) return _sKey;
+		var len = _absName.length;
+		if (len>1)
+		{
+			var i=1;
+			var item=_absName.charCodeAt(0);
+			while(i<len)
+			{
+				item = item ^ _absName.charCodeAt(i);
+				i++;
+			}
+			_sKey='s_'+ len + '_'+item;
+		}
+		else
+		{
+			_sKey='s_'+_absName.charCodeAt(0);
+		}
+		return _sKey;
+	};
+};
+
+
+//单个宫位对象
+var SingleSpace = function(pid, idx)
+{	
+	var that=this;
+	var sgz,objId=pid;
+	var allStars = new Hashtable();
+
+	this.Index = idx;
+	this.GetGZ=function(){return sgz;};
+	this.GetObjectId=function(){return objId;};
+
+	//保存干支
+	this.StoreGZ=function(gz){
+		sgz = gz;
+		$('#std'+that.Index).find('td.pgz').html(gz.substr(0,1));
+	};
+
+	this.HasStar=function(sKey) { return allStars.contains(sKey); };
+	this.GetStar=function(sKey){ return allStars.items(sKey);};
+
+	this.GetStarCount=function(){
+		return allStars.count();
+	};
+
+	//存储宫位内星星
+	this.StoreStar = function(isJiaStar,starName)
+	{
+		var sObj = new SingleStar(isJiaStar,starName);
+		var sKey = sObj.GetAbsName();
+		if (!allStars.contains(sKey))
+			allStars.add(sKey,sObj);
+		var jObj = $('#ps'+that.Index);
+		var sid = sObj.GetStarKey();
+		jObj.append('<span class="vl"><span class="star" id="'+sid+'">'+ sKey +'</span></span>');
+	};
+
+	//清除全部星星
+	this.ClearStar = function()
+	{
+		allStars.clear();
+		$('#ps'+that.Index).html('');
+	};
+}
+
+ //1.定十二宫干 -- 生年天干
+function draw12GZ(ng) {
+	var wuHuDunDat = ["甲己", "丙", "乙庚", "戊", "丙辛", "庚", "丁壬", "壬", "戊癸", "甲"];
+	var gIdx = (tgNames.indexOf(ng) + 1) % 5;
+	var p2Char = gIdx == 0 ? wuHuDunDat[wuHuDunDat.length - 1] : wuHuDunDat[gIdx * 2 - 1];
+	gIdx = tgNames.indexOf(p2Char);
+	var tIdx = 0;
+	for (var i = 0, j = 12; i < j; i++) {
+		tIdx = (i < 2) ? (gIdx + i) : (gIdx + i - 2);
+		if (tIdx > 9) tIdx = tIdx % 10;
+
+		var pObj = PlateState.GetSpaceByIndex(i);
+		if (pObj) {
+			pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+		}
+		else {
+			var pObj = new SingleSpace('p' + i, i);
+			pObj.StoreGZ(tgNames.charAt(tIdx) + dzNames.charAt(i));
+			PlateState.StoreSpace(i, pObj);
+		}
+
+	}
+}
+
+ //2.定命身宫 -- 生年月份、时辰 顺月->顺时身|逆时命
+//3.自命宫逆布紫微宫位
+function draw12GW(yue, shi, yz) {
+	var pIdxStart = fixRange(2+parseInt(yue)-1, 0, 11);
+	var pMIdx = fixRange(pIdxStart-parseInt(shi), 0, 11); //命宫索引
+	PlateState["MGGZ"] = $('#std' + pMIdx).find('td.pgz').html() + dzNames[pMIdx]; //存储命宫干支
+	PlateState["MGIndex"] = pMIdx; //存储命宫索引
+	var gwName = "*";
+	var pSIdx = fixRange(pMIdx+(parseInt(shi)*2), 0, 11); //身宫索引
+	for (var i = 0, j = Space12.length; i < j; i++) {
+		gwName = Space12[i];
+		$('#std' + pMIdx).find('td.gwm').html((pSIdx==pMIdx)? "<font color=red>"+gwName+"</font>" : gwName);
+		pMIdx = fixRange(pMIdx - 1, 0, 11);
+	}
+}
+
+ //4.定五行局
+function draw5XJ(mggz) {
+	var chwxName = "二三四五六", wuxingName = "水木金土火", wxjN = "23456";
+	var nayinName = getGZNaYin(mggz);
+	var wx = nayinName.substr(2, 1);
+	return parseInt(wxjN.charAt(wuxingName.indexOf(wx)));
+}
+
+//起大限布年龄段
+function drawSpaceNld(xb, yy, wxj, mIdx) {
+	//1阳 男 0阴 女
+	var tYear = new Date().getFullYear();
+	var bYear = PlateState.BindDataObject.DateInfo.Year;
+	var nAge = tYear-bYear+1;
+	var offSet = (xb ^ yy == 0) ? 1 : -1;
+	var cIdx = mIdx, begin = 0, end = 0, step = 0;
+	do {
+		begin = wxj + step;
+		end = begin + 9;
+		$('#nld' + cIdx).html(begin);
+		if (nAge>=begin && nAge<=end) {$('#nld' + cIdx).addClass('selBorder'); } else { $('#nld' + cIdx).removeClass('selBorder'); }
+		cIdx = fixRange(cIdx + offSet, 0, 11);
+		step += 10;
+	}
+	while (cIdx != mIdx);
+}
+
+//5.安紫微星 6.安紫微系诸星
+//7.安天府星 8.安天府系诸星
+function drawZWTFStar(yd, wxj) {
+	var tMS = yd % wxj;
+	var tAdd = (tMS == 0) ? 0 : (wxj - tMS)
+	var tSS = (yd + tAdd) / wxj;
+	if (tAdd > 0) tSS = (tAdd % 2 == 0) ? (tSS + tAdd) : (tSS - tAdd);
+	var tpIdx = fixRange(1 + tSS, 0, 11); //紫微所在宫位索引
+
+	var idx = 0;
+	var ziweiXX = ["(紫)微", "天(机)", "", "太(阳)", "(武)曲", "天(同)", "", "", "(廉)贞"]; //逆行
+	for (var i = 0, j = ziweiXX.length; i < j; i++) {
+		if (ziweiXX[i].length < 1) continue;
+		idx = fixRange(tpIdx - i, 0, 11);
+		PlateState.GetSpaceByIndex(idx).StoreStar(true, ziweiXX[i]);
+	}
+
+	var s1 = 2, s2 = 8; //寅申同宫2|8
+	var offSet = 0;
+	if (tpIdx != s1 || tpIdx != s2) {
+		offSet = fixRange(tpIdx - s1, 0, 11);
+	}
+	var fIdx = fixRange(s1 - offSet, 0, 11);
+	var tianfuXX = ["天(府)", "太(阴)", "(贪)狼", "(巨)门", "天(相)", "天(梁)", "七(杀)", "", "", "", "(破)军"]; //顺行
+	for (var m = 0, n = tianfuXX.length; m < n; m++) {
+		if (tianfuXX[m].length < 1) continue;
+		idx = fixRange(fIdx + m, 0, 11);
+		PlateState.GetSpaceByIndex(idx).StoreStar(true, tianfuXX[m]);
+	}
+}
+
+//9.安时系诸星、日系恩光天贵
+function drawShizhi(sz, yz, rq) {
+	var sOffSet = dzNames.indexOf(sz);
+	var idx = (dzNames.indexOf(yz)) % 4; //年支三合
+	var allStars = ["文(昌)", "文(曲)", "地(空)", "地(劫)", "(火)星", "(铃)星"];
+	var offSets = [['戌', -1], ['辰', 1], ['亥', -1], ['亥', 1], ['寅卯丑酉'.charAt(idx), 1], ['戌戌卯戌'.charAt(idx), 1]];
+	var tIdx = -1;
+	var star = '';
+	for (var i = 0, j = allStars.length; i < j; i++) {
+		tIdx = dzNames.indexOf(offSets[i][0]);
+		if (sOffSet > 0)
+			tIdx += sOffSet * offSets[i][1];
+		star = allStars[i];
+		if (star.charAt(0) == '*') star = star.substr(1);
+		tIdx = fixRange(tIdx, 0, 11);
+		PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0) != '*', star);
+	}
+}
+
+//10.安月系诸星、日系三台八座
+function drawYueStar(yue, rq) {
+	var yzName = dzNames.charAt(fixRange(yue + 2 - 1, 0, 11));
+	var idx = (dzNames.indexOf(yzName)) % 4; //月支三合
+	var allStars = ["*(左)辅", "*(右)弼", "天(刑)", "天(姚)", "月(马)"];
+	var xIdx = ((yue % 2 == 0) ? (yue / 2) : (yue + 1) / 2) - 1;
+	var sIdx = yue % 6;
+	var offSets = [['辰', 1], ['戌', -1], ['酉', 1], ['丑', 1], ['寅亥申巳'.charAt(idx), 0]];
+	for (var i = 0, j = allStars.length; i < j; i++) {
+		tIdx = dzNames.indexOf(offSets[i][0]);
+		if (offSets[i][1] != 0)
+			tIdx += (yue - 1) * offSets[i][1];
+		star = allStars[i];
+		if (star.charAt(0) == '*') star = star.substr(1);
+		tIdx = fixRange(tIdx, 0, 11);
+		PlateState.GetSpaceByIndex(tIdx).StoreStar(allStars[i].charAt(0) == '*', star);
+	}
+}
+
+//12.13.安年干系诸星、安生年博士十二星
+function drawLCYTBSX(ng, xb, yy) {
+	var ngIdx = tgNames.indexOf(ng);
+	var idx = [2, 3, 5, 6, 5, 6, 8, 9, 11, 0];
+	idx = idx[ngIdx]
+	PlateState.GetSpaceByIndex(fixRange(idx - 1, 0, 11)).StoreStar(true, '(陀)罗');
+	PlateState.GetSpaceByIndex(idx).StoreStar(true, '(禄)存');
+	PlateState.GetSpaceByIndex(fixRange(idx + 1, 0, 11)).StoreStar(true, '擎(羊)');
+	var allStars = ["*天(魁)", "*天(钺)"];
+	var dzgwArr = ["丑子亥亥丑子丑午卯卯", "未申酉酉未申未寅巳巳"];
+	for (var i = 0, j = allStars.length; i < j; i++) {
+		star = allStars[i];
+		if (star.charAt(0) == '*') star = star.substr(1);
+		idx = dzNames.indexOf(dzgwArr[i].charAt(ngIdx));
+		PlateState.GetSpaceByIndex(idx).StoreStar(allStars[i].charAt(0) == '*', star);
+	}
+}
+
+//14.安年支系诸星
+function drawNZStar(yz) {
+	var sOffSet = dzNames.indexOf(yz);
+	var idx = sOffSet % 4; //年支三合
+	var allStars = ["命(馬)", "红(鸾):天(喜)",];
+	var offSets = [['寅亥申巳'.charAt(idx), 0], ['卯', -1]];
+	for (var i = 0, j = offSets.length/*allStars.length*/; i < j; i++) {
+		tIdx = dzNames.indexOf(offSets[i][0]);
+		if (offSets[i][1] != 0)
+			tIdx += sOffSet * offSets[i][1];
+		star = allStars[i];
+		tIdx = fixRange(tIdx, 0, 11);
+		if (star.indexOf(':') != -1) {
+			var pStars = star.split(':');
+			PlateState.GetSpaceByIndex(tIdx).StoreStar(false, pStars[0]);
+			PlateState.GetSpaceByIndex(fixRange(tIdx + 6, 0, 11)).StoreStar(false, pStars[1]);
+		}
+		else {
+			PlateState.GetSpaceByIndex(tIdx).StoreStar(star == '命(馬)', star);
+		}
+	}
+}
+
+var pFhChars = ["↖", "↗", "↗", "↗", "↘", "↘", "↘", "↙", "↙", "↙", "↖", "↖"];
+var pZhChars = ["↓", "↓", "↙", "←", "←", "↖", "↑", "↑", "↗", "→", "→", "↘"];
+//显示对宫飞化及自化
+function DrawSpaceSH(snshStars, bmshStars) {
+	for (var idx=0; idx<12 ; idx++)
+	{
+		var sPlace = PlateState.GetSpaceByObjectId('p' + idx)
+		var ggIdx = tgNames.indexOf(sPlace.GetGZ().charAt(0));
+		var ggSHStars = TGSHConfig[ggIdx].split('');
+		var sZhStr='',sFHStr='',renderStr='';
+		for (var i=0,j=ggSHStars.length; i<j; i++ )
+		{
+			if (sPlace.HasStar(ggSHStars[i]))
+				sZhStr+=TGSHLevel[i];
+		}
+		var fhc = pFhChars[idx], zhc = pZhChars[idx];
+		//本宫自化
+		if (sZhStr.length>0) {
+			if (idx==3 || idx==4) {
+			   $('#shlc'+idx).html(sZhStr + zhc);
+			} 
+			else {
+			  $('#shlc'+idx).html(zhc + sZhStr);
+			}
+		}
+		else {
+			$('#shlc'+idx).html('');
+		}
+
+		var dPlace = PlateState.GetSpaceByObjectId('p' + fixRange(idx+6,0,11))
+		for (var m=0,n=ggSHStars.length; m<n; m++ )
+		{
+			if (dPlace.HasStar(ggSHStars[m]))
+				sFHStr+=TGSHLevel[m];
+		}
+		//对宫飞化
+		if (sFHStr.length>0) {
+			$('#shxx'+idx).html(fhc + sFHStr);
+		} else {
+			$('#shxx'+idx).html('');
+		}
+
+		for (var p=0,q=4; p<q ; p++ )
+		{
+			if (sPlace.HasStar(snshStars[p]))
+			{
+				sPlace.GetStar(snshStars[p]).SetSNSH(TGSHLevel[p]);
+			}
+		}
+	}
+}
+
+//命盘状态
+var PlateState = {
+	Rendered: false,
+	GetSpaceByIndex: function (idx) { return PlateState['Space' + idx]; },
+	GetSpaceByObjectId: function (id) {
+		return PlateState['Space' + parseInt(id.replace(/[^\d]/g, ''))];
+	},
+	Calculate: function (pInfo) {//依据条件排盘
+		this.BindDataObject = pInfo;
+		var ymd = {Year: pInfo.DateInfo.Year, Month:pInfo.DateInfo.Month, Day: pInfo.DateInfo.Day };
+		if (pInfo.DateInfo.MonthRun) { ymd.Month=0-ymd.Month; } //闰月问题
+		var ylObjDate = (pInfo.DateInfo.LiFa==1)? {Year:ymd.Year,Month:ymd.Month,Day:ymd.Day} : CalConv(pInfo.DateInfo.LiFa, ymd.Year, ymd.Month, ymd.Day);
+		if (ylObjDate == undefined) return;
+		var ylGZName = GetYinLiGZ(ymd.Year);
+		$('#ylgz').html(ylGZName + "女男".charAt(pInfo.DateInfo.Sex));
+		var ynTG = ylGZName.substr(0, 1); //天干
+		var ynDZ = ylGZName.substr(1, 1);
+		var cssc = pInfo.DateInfo.SC; //出生时辰Month
+		var csyf = Math.abs(parseInt(ylObjDate.Month)); //出生月份
+		var csrq = ylObjDate.Day; //出生日期
+
+		PlateState.Empty();
+		draw12GZ(ynTG); //依天干算出宫位干支
+		draw12GW(csyf, dzNames.indexOf(cssc), ynDZ); //安命身宫
+
+		var wxj = draw5XJ(PlateState["MGGZ"]);
+		var xb = 1 - YinYang.indexOf(pInfo.DateInfo.Sex.toString()) % 2;
+		var yy = 1 - tgNames.indexOf(ynTG) % 2;
+		drawSpaceNld(xb, yy, wxj, parseInt(PlateState["MGIndex"]));
+		drawZWTFStar(csrq, wxj);
+		drawLCYTBSX(ynTG, xb, yy); //禄存12博士
+		drawNZStar(ynDZ); //年支星系
+		drawShizhi(cssc, ynDZ, csrq); //时支星系
+		drawYueStar(csyf, csrq); //月系
+		var snSFStr = TGSHConfig[tgNames.indexOf(ynTG)];
+		var bmTG = PlateState["MGGZ"].charAt(0);
+		var bmSFStr = TGSHConfig[tgNames.indexOf(bmTG)];
+		DrawSpaceSH(snSFStr.split(''), bmSFStr.split(''));
+		PlateState.Rendered = true;
+	},
+	StoreSpace: function (idx, obj) { PlateState['Space' + idx] = obj; },
+	Empty: function () { //清除原始数据
+		for (var i = 0; i < 12; i++) {
+			var space = PlateState.GetSpaceByIndex(i);
+			if (space) space.ClearStar();
+		}
+	}
+};
+
+$(function(){
+   $("#mpSum").hide();$("#mpInput").show();
+   $("#btnCloseCalc").click(function(){
+		$("#mpInput").hide();$("#mpSum").show();
+   });
+   $("#calcSpace").click(function(){
+		$("#mpSum").hide();$("#mpInput").show();
+   });
+   $('#inpYear,#selMonth,#selDay').focus(function(){$(this).val('');});
+   $("#btnCalcByDate").click(function(){
+		var pInfo = {ByDate:true,DateInfo:{Sex:($('#rdoNan')[0].checked)?1:0,LiFa:($('#rdoYinli')[0].checked)?1:0,MonthRun:$('#cbxRun')[0].checked,
+			Year:parseInt($('#inpYear').val()),Month:parseInt($('#selMonth').val()),Day:parseInt($('#selDay').val()),SC:$('#ylscSel').val()}};
+		PlateState.Calculate(pInfo);
+		$("#mpInput").hide();$("#mpSum").show();
+   });
+});
+
+</script>
+</head>
+<body style="margin:0px; padding:0px;">
+<table class="zi" border=0 width=304 cellpadding="0" cellspaceing="0"><!--outer cells-->
+<tr><td bgcolor="#eeeeee" height=25 width=32 id="shlc5">&nbsp;</td><td bgcolor="#eeeeee" width=60>&nbsp;  </td><td width=60 height=25 align="center" bgcolor="#eeddee" id="shlc6"><div align="center"> &nbsp; </div></td><td width=60 height=25 align="center" bgcolor="#eeeeee" id="shlc7"><div align="center"> &nbsp; </div></td><td bgcolor="#eeddee" width=51><div align="right"> &nbsp; </div></td>
+  <td bgcolor="#eeddee" width=32 id="shlc8">&nbsp;</td>
+</tr>
+<tr><td bgcolor="#eeeeee" width=32 height=50 valign="top">&nbsp;  </td><td colspan="4" rowspan="4" width=240>
+
+<table class="zi" border=0 cellpadding="0" cellspaceing="0"> <tr>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std5"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps5">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">丁</font></td>
+                    <td width="21" id="nld5"><font color="">52</font></td>
+		    <td width="21" class="gwm"><font color="">疾</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std6"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps6">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">戊</font></td>
+                    <td width="21" id="nld6"><font color="">42</font></td>
+		    <td width="21" class="gwm"><font color="">財</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std7"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps7">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">已</font></td>
+                    <td width="21" id="nld7"><font color="">32</font></td>
+		    <td width="21" class="gwm"><font color="">子</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std8"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps8">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">庚</font></td>
+                    <td width="21" id="nld8"><font color="">22</font></td>
+		    <td width="21" class="gwm"><font color="">夫</font></td>
+		</tr>
+        </table>	 </td>
+</tr> <tr>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std4"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps4"><font color=""></font></td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">丙</font></td>
+                    <td width="21" id="nld4"><font color="">62</font></td>
+		    <td width="21" class="gwm"><font color="">遷</font></td>
+		</tr>
+        </table>	 </td>
+                <td rowspan="2" colspan="2"><div align="center" id="mpInput" style="display:none">
+				<div>性别<input type="radio" value="1" id="rdoNan" name="sex" checked /><label for="rdoNan">男</label>
+						<input type="radio" value="0" id="rdoNv" name="sex" /><label for="rdoNv">女</label></div>
+				<div><input type="checkbox" value="0" id="rdoYinli" name="lifa" /><label for="rdoYinli">阴历</label>
+						<input type="checkbox" id="cbxRun"><label for="cbxRun">闰月</label>
+				</div>
+				<div><input type="text" size="4" id="inpYear" value="2013" />/<input type="text" size="2" id="selMonth" value="8"/>/<input id="selDay" type="text" size="2" value="10" />		
+				</div>
+				<div>时辰<select id="ylscSel">
+						<option value="子">子时(23:00-0:59)</option>
+						<option value="丑">丑时(1:00-2:59)</option>
+						<option value="寅">寅时(3:00-4:59)</option>
+						<option value="卯">卯时(5:00-6:59)</option>
+						<option value="辰">辰时(7:00-8:59)</option>
+						<option value="巳">巳时(9:00-10:59)</option>
+						<option value="午">午时(11:00-12:59)</option>
+						<option value="未">未时(13:00-14:59)</option>
+						<option value="申">申时(15:00-16:59)</option>
+						<option value="酉" selected>酉时(17:00-18:59)</option>
+						<option value="戌">戌时(19:00-20:59)</option>
+						<option value="亥">亥时(21:00-22:59)</option>
+					</select>
+			   </div>
+			   <div><span id="btnCalcByDate">排 盘</span> &nbsp;&nbsp; <span id="btnCloseCalc">关 闭</span></div>
+		</div>
+		<div align="center" id="mpSum" style="display:block">
+<!--inner -->
+                <table width="100%" class="inb" cellpadding="0" cellspaceing="0">
+                        <tr height=25>
+                                <td width="25%" bgcolor="#eeeeee" id="shxx5"><div align="left"></div></td>
+                                <td width="25%" bgcolor="#eeddee" id="shxx6"><div align="left"></div></td>
+                                <td width="25%" bgcolor="#eeeeee" id="shxx7"><div align="center"></div></td>
+                                <td width="25%" bgcolor="#eeddee" id="shxx8"><div align="center"></div></td>
+                        </tr>
+                </table>
+                <table width="100%" class="inb" cellpadding="0" cellspaceing="0">
+                        <tr>
+                                <td width=32 height=31 bgcolor="#eeddee" id="shxx4">&nbsp;</td>
+                                <td colspan="2" rowspan="2" class="inb2"><div align="center"><span id="calcSpace" title="排盘">&#9775;</span>
+								<br><span id="ylgz">癸巳男</span>
+								</div></td>
+                                <td width=32 height=31 bgcolor="#eeeeee" id="shxx9"><div align="right"></div></td>
+                        </tr>
+                        <tr>
+                                <td width=32 height=31 bgcolor="#eeeeee" id="shxx3">&nbsp;</td>
+                                <td width=32 height=31 bgcolor="#eeddee" id="shxx10"><div align="right"></div></td>
+                        </tr>
+                </table>
+                <table width="100%" class="inb" cellpadding="0" cellspaceing="0">
+                        <tr height=25>
+                                <td width="25%" valign="bottom" bgcolor="#eeddee" id="shxx2"><div align="left"></div></td>
+                                <td width="25%" valign="bottom" bgcolor="#eeeeee" id="shxx1"><div align="left"></div></td>
+                                <td width="25%" valign="bottom" bgcolor="#eeddee" id="shxx0"><div align="center"></div></td>
+                                <td width="25%" valign="bottom" bgcolor="#eeeeee" id="shxx11"><div align="center"></div></td>
+                        </tr>
+                </table>
+<!--inner -->
+		</div>                </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std9"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps9">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">辛</font></td>
+                    <td width="21" id="nld9"><font color="">12</font></td>
+		    <td width="21" class="gwm"><font color="">兄</font></td>
+		</tr>
+        </table>	 </td>
+</tr> <tr>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std3"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps3">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">乙</font></td>
+                    <td width="21" id="nld3"><font color="">72</font></td>
+		    <td width="21" class="gwm"><font color="">友</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std10"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps10">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">壬</font></td>
+                    <td width="21" id="nld10"><font color="">2</font></td>
+		    <td width="21" class="gwm"><font color="">命</font></td>
+		</tr>
+        </table>	 </td>
+</tr> <tr>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std2"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps2"><font color=""></font></td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">甲</font></td>
+                    <td width="21" id="nld2"><font color="">82</font></td>
+		    <td width="21" class="gwm"><font color="">官</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std1"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps1">&nbsp;</td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">乙</font></td>
+                    <td width="21" id="nld1"><font color="">92</font></td>
+		    <td width="21" class="gwm"><font color="">田</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std0"> 
+        <table height="30" width="60" border=0>
+                <tr>
+                  <td rowspan="2" valign="top" id="ps0"><font color=""></font></td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">甲</font></td>
+                    <td width="21" id="nld0"><font color="">102</font></td>
+		    <td width="21" class="gwm"><font color="">福</font></td>
+		</tr>
+        </table>	 </td>
+                <td width=60 height=50 bgcolor="#faeec4" class="outer" id="std11"> 
+        <table height="30" width="60" border=0>
+                <tr><td valign="top" id="ps11"></td>
+        </table>
+        <table width=60 height=20 border=0>
+                <tr><td width="21" class="pgz"><font color="">癸</font></td>
+                    <td width="21" id="nld11"><font color="">112</font></td>
+		    <td width="21" class="gwm"><font color="">父</font></td>
+		</tr>
+        </table>	 </td>
+</tr> </table>
+
+</td><td bgcolor="#eeddee" width=32 height=50>&nbsp; </td></tr>
+<tr><td width=32 height=50 valign="middle" bgcolor="#eeddee" id="shlc4">&nbsp;  </td><td width=32 height=50 valign="middle" bgcolor="#eeeeee" id="shlc9">&nbsp;</td>
+</tr>
+<tr><td width=32 height=50 valign="middle" bgcolor="#eeeeee" id="shlc3">&nbsp;  </td><td width=32 height=50 valign="middle" bgcolor="#eeddee" id="shlc10">&nbsp;</td>
+</tr>
+<tr><td bgcolor="#eeddee" width=32 height=50>&nbsp; </td><td bgcolor="#eeeeee" width=32 height=50>&nbsp; </td></tr>
+<tr><td bgcolor="#eeddee" width=32 id="shlc2">&nbsp;</td><td bgcolor="#eeddee" width=60 height=25>&nbsp;  </td><td width=60 height=25 align="center" bgcolor="#eeeeee"  id="shlc1"><div align="center"> &nbsp; </div></td><td width=60 height=25 align="center" bgcolor="#eeddee" id="shlc0"><div align="center"> &nbsp; </div></td><td bgcolor="#eeeeee" width=60 height=25><div align="right"> &nbsp; </div></td><td bgcolor="#eeeeee" height=25 width=32 id="shlc11">&nbsp;</td></tr>
+</table>
+</body>
+</html>
