@@ -1081,22 +1081,58 @@ jQuery(function($) {
 	});
 
 	//年龄段
-	$('.yfqj').click(function(e){
-		e.stopPropagation();
-		//console.log(this);
-		if (PlateState["DXNLD"])
-		{
-			$('#'+PlateState["DXNLD"]).removeClass('selBorder');
-		}
-		var jObj = $(this);
-		jObj.addClass('selBorder');
-		PlateState["DXNLD"] = jObj[0].id;
-	});
+	 $('.yfqj').click(function (e) {
+                e.stopPropagation();
+                if (PlateState["DXNLD"]) {
+                    $('#' + PlateState["DXNLD"]).removeClass('selBorder');
+                }
+                var jObj = $(this);
+                jObj.addClass('selBorder');
+                PlateState["DXNLD"] = jObj[0].id;
+
+				var sPidx = dzNames.indexOf($('#ylgz').text().substr(1,1));
+				var sAge = parseInt($(this).text().split('-')[0]);
+				var baseYear = parseInt($('#ylnf').val());//yaln
+				var aSIdx = fixRange(sPidx+fixRange((sAge%12)+11,0,11),0,11);
+				var dxName="命父福田官友迁疾财子夫兄".split('');
+				var daxSpIdx = parseInt(jObj[0].id.replace(/[^\d]+/,''));
+				for(var i=0;i<12;i++)
+				{
+					if (i>9) {
+						$('td#p' + fixRange((aSIdx+i),0,11)).find('table>tbody>tr:eq(1)').html('<font name="Verdana" size="2" color="white"><b>大'+ dxName[fixRange(aSIdx-daxSpIdx+i,0,11)]+'</b></font>');
+					}
+					else {
+					  $('td#p' + fixRange((aSIdx+i),0,11)).find('table>tbody>tr:eq(1)').html('<font name="Verdana" size="2" color="gray"><b>' + (sAge + i) 
+						 + '/'+ (baseYear + sAge + i -1 ).toString()
+						 + '</b></font><font name="Verdana" size="2" color="white"><b>/大'+ dxName[fixRange(aSIdx-daxSpIdx+i,0,11)] +'</b></font>');
+					}
+				}
+            });
 
 	//盘干支
-	$('div.pgz').click(function(e){
-		e.stopPropagation();
-	});
+	var tgshColor=["silver","orange","green","black"];
+            $('div.pgz').mouseover(function (e) {
+                e.stopPropagation();
+				$(this).css("background-color","yellow");
+				var shxy = TGSHConfig[tgNames.indexOf($(this).text().substr(0,1))];
+				if (shxy) {
+					for (var i=0;i<4; i++)
+					{
+						$('#s_'+shxy.substr(i,1).charCodeAt(0)).css("background-color",tgshColor[i]);
+					}
+				}
+				
+            }).mouseout(function (e) {
+                e.stopPropagation();
+				$(this).css("background-color","");
+				var shxy = TGSHConfig[tgNames.indexOf($(this).text().substr(0,1))];
+				if (shxy) {
+					for (var i=0;i<4; i++)
+					{
+						$('#s_'+shxy.substr(i,1).charCodeAt(0)).css("background-color","");
+					}
+				}
+            });
 
 	//通过阳历计算农历
 	$('#calLuna').click(function(e){
